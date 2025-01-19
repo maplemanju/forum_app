@@ -1,0 +1,30 @@
+services:
+  db:
+    container_name: db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: "app"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "33061:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  shadow_db:
+    container_name: shadow_db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: "app"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "33062:3306"
+    volumes:
+      - shadow_db:/var/lib/mysql
+
+volumes:
+  db:
+  shadow_db:
