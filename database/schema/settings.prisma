@@ -1,0 +1,6 @@
+model Settings {
+  settingName String @id @map("setting_name") @db.VarChar(50)
+  value       String @db.VarChar(50)
+
+  @@map("settings")
+}

@@ -1,0 +1,15 @@
+model Votes {
+  id        Int      @id @default(autoincrement())
+  postId    Int?     @map("post_id")
+  commentId Int?     @map("comment_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user    Users     @relation(fields: [userId], references: [id])
+  post    Posts?    @relation(fields: [postId], references: [id])
+  comment Comments? @relation(fields: [commentId], references: [id])
+
+  @@unique([userId, postId, commentId])
+  @@map("votes")
+}

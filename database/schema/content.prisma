@@ -1,0 +1,52 @@
+model Categories {
+  id                  Int      @id @default(autoincrement())
+  categoryName        String   @map("category_name") @db.VarChar(255)
+  categoryDescription String?  @map("category_description")
+  parentCategoryId    Int?     @map("parent_category_id")
+  createdBy           Int      @map("created_by")
+  updatedBy           Int      @map("updated_by")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  childCategories Categories[] @relation("related_category")
+  parentCategory  Categories?  @relation(name: "related_category", fields: [parentCategoryId], references: [id])
+  roles           Roles[]      @relation
+  posts           Posts[]      @relation
+
+  @@map("categories")
+}
+
+model Posts {
+  id          Int      @id @default(autoincrement())
+  categoryId  Int      @map("category_id")
+  postTitle   String   @map("post_title") @db.VarChar(255)
+  postContent String   @map("post_content")
+  createdBy   Int      @map("created_by")
+  updatedBy   Int      @map("updated_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  category Categories @relation(fields: [categoryId], references: [id])
+  comments Comments[] @relation
+  votes    Votes[]    @relation
+
+  @@map("posts")
+}
+
+model Comments {
+  id              Int      @id @default(autoincrement())
+  postId          Int      @map("post_id")
+  commentContent  String   @map("post_content")
+  parentCommentId Int      @map("parent_comment_id")
+  createdBy       Int      @map("created_by")
+  updatedBy       Int      @map("updated_by")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  post           Posts      @relation(fields: [postId], references: [id])
+  votes          Votes[]    @relation
+  childComments  Comments[] @relation("related_comments")
+  parentComments Comments?  @relation(name: "related_comments", fields: [parentCommentId], references: [id])
+
+  @@map("comments")
+}
