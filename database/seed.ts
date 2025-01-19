@@ -2,24 +2,22 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  await prisma.users.createMany({
-    data: [
-      {
-        id: 1,
-        snsId: 'test',
-        authProvider:'test',
-        email:'test@',
-      },
-    ],
-  })
-
-  await prisma.userInfo.createMany({
-    data: [
-      {
-        userId: 1,
-        displayName:'testuser'
-      },
-    ],
+  // add init site settings
+  const initSettings = [
+    { settingName: 'forum_name', value: 'Forum App' },
+    { settingName: 'max_category_level', value: '1' },
+    { settingName: 'allow_md_comment', value: '1' },
+  ]
+  await prisma.$transaction(async () => {
+    for (const settings of initSettings) {
+      await prisma.settings.upsert({
+        where: {
+          settingName: settings.settingName,
+        },
+        create: settings,
+        update: settings,
+      })
+    }
   })
 }
 main()
