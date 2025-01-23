@@ -6,7 +6,12 @@
     "dev": "dotenv -e env/.env.dev next dev --turbopack",
     "build": "dotenv -e env/.env.dev next build",
     "start": "dotenv -e env/.env.dev next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "dotenv -e env/.env.dev prisma generate",
+    "prisma:migrate": "dotenv -e env/.env.dev prisma migrate dev",
+    "prisma:studio": "dotenv -e env/.env.dev prisma studio",
+    "prisma:seed": "dotenv -e env/.env.dev prisma db seed",
+    "prisma:reset": "dotenv -e env/.env.dev prisma migrate reset"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} database/seed.ts",
