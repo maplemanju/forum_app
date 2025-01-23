@@ -17,13 +17,28 @@ export default function Header() {
       setOpenLoginModal(true)
     }
   }
+
   return (
-    <div className="p-3">
-      <button className="text-right" onClick={loginOrLogout}>
-        {session ? 'Logout' : 'Login'}
-      </button>
-      <div>Content</div>
-      <div>Footer</div>
+    <div className="w-full bg-white border-b border-gray-200 px-4 py-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/** left */}
+        <div>
+          <h1 className="text-xl font-semibold">Forum App</h1>
+        </div>
+
+        {/** right */}
+        <div className="flex items-center gap-4">
+          {session && (
+            <div className="text-gray-600">Welcome, {session.user?.name}</div>
+          )}
+          <button
+            className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+            onClick={loginOrLogout}
+          >
+            {session ? 'Logout' : 'Login'}
+          </button>
+        </div>
+      </div>
       <Modal open={openLoginModal} onClose={() => setOpenLoginModal(false)}>
         <Login />
       </Modal>
