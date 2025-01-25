@@ -1,13 +1,17 @@
 model Users {
-  id           Int         @id @default(autoincrement())
-  snsId        String      @unique @map("sns_id") @db.VarChar(255)
-  authProvider String      @map("auth_provider") @db.VarChar(50)
-  email        String      @unique @map("email") @db.VarChar(255)
-  createdAt    DateTime    @default(now()) @map("created_at")
-  updatedAt    DateTime    @updatedAt @map("updated_at")
-  userRoles    UserRoles[] @relation
-  userInfo     UserInfo?   @relation
-  votes        Votes[]     @relation
+  id           Int      @id @default(autoincrement())
+  snsId        String   @unique @map("sns_id") @db.VarChar(255)
+  authProvider String   @map("auth_provider") @db.VarChar(50)
+  email        String   @unique @map("email") @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  isDeleted    Boolean? @map("is_deleted")
+
+  userRoles UserRoles[] @relation
+  userInfo  UserInfo?   @relation
+  votes     Votes[]     @relation
+  posts     Posts[]     @relation
+  comments  Comments[]  @relation
 
   @@map("users")
 }
@@ -17,6 +21,7 @@ model Roles {
   roleName   String      @unique @map("role_name") @db.VarChar(50)
   categoryId Int?        @map("categoryId")
   userRoles  UserRoles[] @relation
+  isDeleted  Boolean?    @map("is_deleted")
 
   category Categories? @relation(fields: [categoryId], references: [id])
 
@@ -24,10 +29,12 @@ model Roles {
 }
 
 model UserRoles {
-  userId Int
-  roleId Int
-  user   Users @relation(fields: [userId], references: [id])
-  role   Roles @relation(fields: [roleId], references: [id])
+  userId    Int
+  roleId    Int
+  isDeleted Boolean? @map("is_deleted")
+
+  user Users @relation(fields: [userId], references: [id])
+  role Roles @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
   @@map("user_roles")
@@ -39,6 +46,7 @@ model UserInfo {
   score       Int      @default(0) @map("score")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  isDeleted   Boolean? @map("is_deleted")
 
   user Users @relation(fields: [userId], references: [id])
 
