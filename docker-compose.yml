@@ -1,29 +1,27 @@
 services:
   db:
     container_name: db
-    image: mysql:5.7
+    image: postgres:15
     environment:
-      MYSQL_DATABASE: "app"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "password"
-      MYSQL_ROOT_PASSWORD: "password"
+      POSTGRES_DB: 'app'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
     ports:
-      - "33061:3306"
+      - '5432:5432'
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/postgresql/data
 
   shadow_db:
     container_name: shadow_db
-    image: mysql:5.7
+    image: postgres:15
     environment:
-      MYSQL_DATABASE: "app"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "password"
-      MYSQL_ROOT_PASSWORD: "password"
+      POSTGRES_DB: 'app'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
     ports:
-      - "33062:3306"
+      - '54321:5432'
     volumes:
-      - shadow_db:/var/lib/mysql
+      - shadow_db:/var/lib/postgresql/data
 
 volumes:
   db:
