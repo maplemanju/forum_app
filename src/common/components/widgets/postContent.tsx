@@ -30,7 +30,7 @@ export const PostContent = ({ post }: PostProps) => {
           <span>{dayjs(post.createdAt).fromNow()}</span>
         </Tooltip>
         <div className="text-gray-600 mb-4">
-          Votes: <span>{post.votes.length}</span>
+          Votes: <span>{post._count.votes}</span>
         </div>
       </div>
       <div className="prose max-w-none">

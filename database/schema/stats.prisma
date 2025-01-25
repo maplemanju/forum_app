@@ -1,5 +1,6 @@
 model Votes {
   id        Int      @id @default(autoincrement())
+  vote      Int      @map("vote") @db.SmallInt
   postId    Int?     @map("post_id")
   commentId Int?     @map("comment_id")
   userId    Int      @map("user_id")

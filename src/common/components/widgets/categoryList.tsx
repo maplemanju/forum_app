@@ -1,4 +1,3 @@
-import { useState, useEffect, Component } from 'react'
 import Link from 'next/link'
 
 import { Category } from '@/types/category'

@@ -37,11 +37,11 @@ export const PostList = ({ posts }: PostListProps) => {
                 >
                   <span>{dayjs(post.createdAt).fromNow()}</span>
                 </Tooltip>
-                <span>{post.comments?.length || 0} comments</span>
+                <span>{post._count.comments || 0} comments</span>
               </div>
             </div>
             <div className="text-center text-gray-600">
-              <div className="font-medium">{post.votes?.length || 0}</div>
+              <div className="font-medium">{post._count.votes || 0}</div>
               <div className="text-sm">votes</div>
             </div>
           </div>

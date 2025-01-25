@@ -4,6 +4,7 @@ import { getCategory } from '@/process/actions/categoryAction'
 import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
 import { getPostsById } from '@/process/actions/postAction'
 import { PostContent } from '@/common/components/widgets/postContent'
+import Comments from '@/common/components/widgets/comments'
 
 export default async function PostPage({
   params,
@@ -25,6 +26,7 @@ export default async function PostPage({
       <Content>
         <Breadcrumbs category={category} post={post} />
         <PostContent post={post} />
+        {/* <Comments comments={post?.comments || []} /> */}
       </Content>
       <Footer />
     </>
