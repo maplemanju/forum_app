@@ -16,6 +16,11 @@ export const postRepository = {
         comments: true,
         category: true,
         votes: true,
+        createdUser: {
+          include: {
+            userInfo: true,
+          },
+        },
       },
     })
   },
@@ -29,6 +34,11 @@ export const postRepository = {
         comments: true,
         category: true,
         votes: true,
+        createdUser: {
+          include: {
+            userInfo: true,
+          },
+        },
       },
     })
   },

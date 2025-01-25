@@ -15,12 +15,9 @@ export const PostList = ({ posts }: PostListProps) => {
   }
 
   return (
-    <div className="space-y-4">
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
-        >
+    <div>
+      {posts.map((post: PostType) => (
+        <div key={post.id} className="bg-white p-6  border-b border-gray-200">
           <div className="flex justify-between items-start">
             <div className="flex-grow">
               <Link href={`${post.categoryId}/${post.id}`}>
@@ -29,7 +26,10 @@ export const PostList = ({ posts }: PostListProps) => {
                 </h3>
               </Link>
               <div className="flex items-center space-x-4 text-sm text-gray-500 mt-2">
-                <span>Posted by {post.createdBy || 'Anonymous'}</span>
+                <span>
+                  Posted by{' '}
+                  {post.createdUser.userInfo?.displayName || 'Anonymous'}
+                </span>
                 <Tooltip
                   text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
                   width="115px"
