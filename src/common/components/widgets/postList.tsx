@@ -1,5 +1,9 @@
 import { PostType } from '@/types/post'
 import Link from 'next/link'
+import Tooltip from '@/common/components/tooltip'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 type PostListProps = {
   posts?: PostType[]
@@ -26,9 +30,13 @@ export const PostList = ({ posts }: PostListProps) => {
               </Link>
               <div className="flex items-center space-x-4 text-sm text-gray-500 mt-2">
                 <span>Posted by {post.createdBy || 'Anonymous'}</span>
-                <span>•</span>
-                <span>a ago</span>
-                <span>•</span>
+                <Tooltip
+                  text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+                  width="115px"
+                  className="text-center"
+                >
+                  <span>{dayjs(post.createdAt).fromNow()}</span>
+                </Tooltip>
                 <span>{post.comments?.length || 0} comments</span>
               </div>
             </div>
@@ -38,16 +46,6 @@ export const PostList = ({ posts }: PostListProps) => {
             </div>
           </div>
           <p className="text-gray-600 mt-3 line-clamp-3">{post.postContent}</p>
-          {/* <div className="mt-4 flex items-center space-x-2">
-            {post.tags?.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </div> */}
         </div>
       ))}
     </div>

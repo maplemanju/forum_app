@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { Category } from '@/types/category'
-import { Post } from '@/types/post'
+import { PostType } from '@/types/post'
 
 type BreadcrumbsProps = {
   category?: Category | null
-  post?: Post | null
+  post?: PostType | null
 }
 
 export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
@@ -32,7 +32,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
             Home
           </Link>
         </li>
-        {(category.parentCategory || post) && (
+        {category.parentCategory && (
           <li>
             <div className="flex items-center">
               <svg
@@ -50,55 +50,66 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
                   d="m1 9 4-4-4-4"
                 />
               </svg>
-              {post ? (
-                <Link
-                  href={`/${category.id}`}
-                  className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
-                >
-                  {category.categoryName}
-                </Link>
-              ) : (
-                <Link
-                  href={`/${category.parentCategory?.id}`}
-                  className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
-                >
-                  {category.parentCategory?.categoryName}
-                </Link>
-              )}
+              <Link
+                href={`/${category.parentCategory.id}`}
+                className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
+              >
+                {category.parentCategory.categoryName}
+              </Link>
             </div>
           </li>
         )}
-        <li>
-          <div className="flex items-center">
-            <svg
-              className="w-3 h-3 text-gray-400 mx-1"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-            {post ? (
-              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
-                {post.postTitle}
-              </span>
-            ) : (
+        {category && (
+          <li>
+            <div className="flex items-center">
+              <svg
+                className="w-3 h-3 text-gray-400 mx-1"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
               <Link
                 href={`/${category.id}`}
                 className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
               >
                 {category.categoryName}
               </Link>
-            )}
-          </div>
-        </li>
+            </div>
+          </li>
+        )}
+        {post && (
+          <li>
+            <div className="flex items-center">
+              <svg
+                className="w-3 h-3 text-gray-400 mx-1"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
+                {post.postTitle}
+              </span>
+            </div>
+          </li>
+        )}
       </ol>
     </nav>
   )

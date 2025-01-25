@@ -10,7 +10,7 @@ export const postRepository = {
   getByCategory: async (args: GetByCategory) => {
     return await prisma.posts.findMany({
       where: {
-        id: args.categoryId,
+        categoryId: args.categoryId,
       },
       include: {
         comments: true,

@@ -6,12 +6,12 @@ import categoryRepository, {
 
 export const getAllCategories = async () => {
   const response = categoryRepository.getAll()
-  console.log('getAllCategories', response)
+  console.log('getAllCategories')
   return response
 }
 
 export const getCategory = async (args: GetCategoryProps) => {
   const response = categoryRepository.getCategory(args)
-  console.log('getCategory', response)
+  console.log('getCategory')
   return response
 }

@@ -18,6 +18,7 @@ export default async function CategoryPage({
   if (categoryId) {
     category = await getCategory({ id: Number(categoryId) })
     posts = await getPostsByCategory({ categoryId: Number(categoryId) })
+    console.log('posts', posts)
   }
   return (
     <>
