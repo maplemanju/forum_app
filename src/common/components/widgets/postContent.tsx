@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 type PostProps = {
-  post?: PostType | null
+  post: PostType | null
 }
 
 export const PostContent = ({ post }: PostProps) => {

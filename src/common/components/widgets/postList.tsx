@@ -25,11 +25,12 @@ export const PostList = ({ posts }: PostListProps) => {
                   {post.postTitle}
                 </h3>
               </Link>
-              <div className="flex items-center space-x-4 text-sm text-gray-500 mt-2">
+              <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
                 <span>
                   Posted by{' '}
                   {post.createdUser.userInfo?.displayName || 'Anonymous'}
                 </span>
+                <span>•</span>
                 <Tooltip
                   text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
                   width="115px"
@@ -37,6 +38,7 @@ export const PostList = ({ posts }: PostListProps) => {
                 >
                   <span>{dayjs(post.createdAt).fromNow()}</span>
                 </Tooltip>
+                <span>•</span>
                 <span>{post._count.comments || 0} comments</span>
               </div>
             </div>
