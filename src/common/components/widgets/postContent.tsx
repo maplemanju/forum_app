@@ -1,4 +1,4 @@
-import { Post as PostType } from '@/types/post'
+import { PostType } from '@/types/post'
 
 type PostProps = {
   post?: PostType | null

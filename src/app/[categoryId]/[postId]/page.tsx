@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
 import { getPostsById } from '@/process/actions/postAction'
 import { PostContent } from '@/common/components/widgets/postContent'
 
-export default async function CategoryPage({
+export default async function PostPage({
   params,
 }: {
   params: Promise<{ categoryId: string; postId: string }>

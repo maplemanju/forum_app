@@ -13,9 +13,9 @@ export const postRepository = {
         id: args.categoryId,
       },
       include: {
-        //   comments: true,
+        comments: true,
         category: true,
-        //   votes: true,
+        votes: true,
       },
     })
   },
@@ -25,11 +25,11 @@ export const postRepository = {
       where: {
         id: args.id,
       },
-      // include: {
-      //   comments: true,
-      //   category: true,
-      //   votes: true,
-      // },
+      include: {
+        comments: true,
+        category: true,
+        votes: true,
+      },
     })
   },
 }
