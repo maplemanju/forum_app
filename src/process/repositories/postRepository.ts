@@ -71,7 +71,5 @@ export default postRepository
 const getVoteCounts = (votes: Votes[]) => {
   const upvotes = votes.filter((vote) => vote.vote === 1).length
   const downvotes = votes.filter((vote) => vote.vote === -1).length
-  return {
-    votes: upvotes - downvotes,
-  }
+  return upvotes - downvotes
 }
