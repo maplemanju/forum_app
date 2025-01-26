@@ -4,7 +4,10 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Category } from '@/types/category'
 import { useRouter } from 'next/navigation'
-import { createCategory } from '@/process/actions/categoryAction'
+import {
+  createCategory,
+  updateCategory,
+} from '@/process/actions/categoryAction'
 
 interface EditCategoryProps {
   category?: Category | null
@@ -33,13 +36,22 @@ export default function EditCategory({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log(title, description, slug, parentCategoryId)
-    const response = await createCategory({
-      categoryName: title,
-      categoryDescription: description,
-      slug: slug,
-      parentCategoryId: parentCategoryId,
-    })
-    console.log(response)
+
+    if (category) {
+      await updateCategory({
+        id: category.id,
+        categoryName: title,
+        categoryDescription: description,
+        slug: slug,
+      })
+    } else {
+      await createCategory({
+        categoryName: title,
+        categoryDescription: description,
+        slug: slug,
+        parentCategoryId: parentCategoryId,
+      })
+    }
     router.push(`/${slug}`)
   }
 

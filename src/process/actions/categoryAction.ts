@@ -3,6 +3,7 @@
 import categoryRepository, {
   GetCategoryProps,
   CreateCategoryProps,
+  UpdateCategoryProps,
 } from '../repositories/categoryRepository'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -26,5 +27,13 @@ export const createCategory = async (args: CreateCategoryProps) => {
   if (!session?.user) throw new Error('Unauthorized')
 
   const response = await categoryRepository.createCategory(args, session)
+  return response
+}
+
+export const updateCategory = async (args: UpdateCategoryProps) => {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) throw new Error('Unauthorized')
+
+  const response = await categoryRepository.updateCategory(args, session)
   return response
 }

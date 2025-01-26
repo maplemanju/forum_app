@@ -10,6 +10,12 @@ export type CreateCategoryProps = {
   slug: string
   parentCategoryId?: number | null
 }
+export type UpdateCategoryProps = {
+  id: number
+  categoryName: string
+  categoryDescription: string
+  slug: string
+}
 export const categoryRepository = {
   getAll: async () => {
     return await prisma.categories.findMany({
@@ -37,6 +43,15 @@ export const categoryRepository = {
         slug: args.slug,
         parentCategoryId: args.parentCategoryId,
         createdBy: Number(session.user.id),
+        updatedBy: Number(session.user.id),
+      },
+    })
+  },
+  updateCategory: async (args: UpdateCategoryProps, session: Session) => {
+    return await prisma.categories.update({
+      where: { id: args.id },
+      data: {
+        ...args,
         updatedBy: Number(session.user.id),
       },
     })
