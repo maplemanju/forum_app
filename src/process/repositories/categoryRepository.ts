@@ -71,6 +71,7 @@ export const categoryRepository = {
       where: { id: args.id },
       data: {
         isDeleted: true,
+        updatedBy: Number(session.user.id),
       },
     })
   },

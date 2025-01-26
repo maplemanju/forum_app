@@ -6,6 +6,7 @@ import postRepository, {
   GetBySlug,
   CreatePost,
   UpdatePost,
+  DeletePostProps,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -43,5 +44,15 @@ export const updatePost = async (args: UpdatePost) => {
   }
   const response = postRepository.updatePost(args, session)
   console.log('updatePost')
+  return response
+}
+
+export const deletePost = async (args: DeletePostProps) => {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    throw new Error('Unauthorized')
+  }
+  const response = postRepository.deletePost(args, session)
+  console.log('deletePost')
   return response
 }

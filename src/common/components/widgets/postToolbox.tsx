@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PostType } from '@/types/post'
+import { deletePost } from '@/process/actions/postAction'
 
 interface PostToolboxProps {
   post: PostType | null
@@ -22,13 +23,9 @@ export default function PostToolbox({ post }: PostToolboxProps) {
     if (!confirm('Are you sure you want to delete this post?')) return
 
     setIsDeleting(true)
-    try {
-      // TODO: Implement delete functionality
-      router.push(`/${post.category.slug}`)
-    } catch (error) {
-      console.error('Failed to delete post:', error)
-      setIsDeleting(false)
-    }
+    await deletePost({ id: post.id })
+    router.push(`/${post.category.slug}`)
+    setIsDeleting(false)
   }
 
   return (

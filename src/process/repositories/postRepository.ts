@@ -14,11 +14,13 @@ export type CreatePost = {
   postContent: string
   categoryId: number
 }
-
 export type UpdatePost = {
   id: number
   postTitle: string
   postContent: string
+}
+export type DeletePostProps = {
+  id: number
 }
 
 export const postRepository = {
@@ -26,6 +28,7 @@ export const postRepository = {
     const posts = await prisma.posts.findMany({
       where: {
         categoryId: args.categoryId,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
         _count: {
@@ -58,6 +61,7 @@ export const postRepository = {
     const post = await prisma.posts.findUnique({
       where: {
         slug: args.slug,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
         _count: {
@@ -98,6 +102,13 @@ export const postRepository = {
       data: { ...args, updatedBy: Number(session.user.id) },
     })
     return post
+  },
+
+  deletePost: async (args: DeletePostProps, session: Session) => {
+    return await prisma.posts.update({
+      where: { id: args.id },
+      data: { isDeleted: true, updatedBy: Number(session.user.id) },
+    })
   },
 }
 

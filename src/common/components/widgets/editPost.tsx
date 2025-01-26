@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Category } from '@/types/category'
 import { PostType } from '@/types/post'
-import { createPost, updatePost } from '@/process/actions/postAction'
+import {
+  createPost,
+  deletePost,
+  updatePost,
+} from '@/process/actions/postAction'
 
 interface EditPostProps {
   post: PostType | null
@@ -41,6 +45,13 @@ export default function EditPost({ post, category }: EditPostProps) {
     console.log(response)
     router.push(`/${category.slug}/${response.slug}`)
     setIsSubmitting(false)
+  }
+
+  const handleDeletePost = async () => {
+    if (!post || !category) return
+    if (!confirm('Are you sure you want to delete this post?')) return
+    await deletePost({ id: post.id })
+    router.push(`/${category.slug}`)
   }
 
   return (
@@ -95,6 +106,15 @@ export default function EditPost({ post, category }: EditPostProps) {
           />
         </div>
         <div className="flex justify-end gap-2">
+          {post && (
+            <button
+              type="button"
+              onClick={() => handleDeletePost()}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 disabled:bg-red-300"
+            >
+              Delete
+            </button>
+          )}
           <button
             type="button"
             onClick={() => router.back()}
