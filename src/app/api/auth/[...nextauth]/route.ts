@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import { getUserBySnsId, createUser } from '@/process/actions/userActions'
 
-export const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -14,8 +14,10 @@ export const handler = NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
+    maxAge: 24 * 60 * 60, // 1 day
   },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -26,6 +28,7 @@ export const handler = NextAuth({
           authProvider: account.provider,
         })
         let userName = existingUser?.userInfo?.displayName || '-'
+        let userId = existingUser?.id || null
         if (!existingUser) {
           // Create a new user in the database if they don't exist
           const createdUser = await createUser({
@@ -34,10 +37,12 @@ export const handler = NextAuth({
             authProvider: account.provider,
           })
           userName = createdUser?.userInfo?.displayName
+          userId = createdUser?.id
         }
 
         // Attach user information to the JWT token
         token.name = userName
+        token.userId = userId
       }
       return token
     },
@@ -45,10 +50,13 @@ export const handler = NextAuth({
       console.log('session', session)
       if (session?.user) {
         session.user.name = String(token.name)
+        session.user.id = String(token.userId)
       }
       return session
     },
   },
-})
+}
+
+export const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
