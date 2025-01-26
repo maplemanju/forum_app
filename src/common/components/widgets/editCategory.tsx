@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Category } from '@/types/category'
 import { useRouter } from 'next/navigation'
+import { createCategory } from '@/process/actions/categoryAction'
 
 interface EditCategoryProps {
   category?: Category | null
@@ -29,10 +30,17 @@ export default function EditCategory({
     return null
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log(title, description, slug, parentCategoryId)
-    // onSubmit({ title, description })
+    const response = await createCategory({
+      categoryName: title,
+      categoryDescription: description,
+      slug: slug,
+      parentCategoryId: parentCategoryId,
+    })
+    console.log(response)
+    router.push(`/${slug}`)
   }
 
   const onCancel = () => {
@@ -64,7 +72,7 @@ export default function EditCategory({
                 id="name"
                 value={parentCategory.categoryName}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                // required
                 disabled
                 readOnly
               />
@@ -85,7 +93,7 @@ export default function EditCategory({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            // required
           />
         </div>
 
