@@ -5,6 +5,7 @@ import { CategoryList } from '@/common/components/widgets/categoryList'
 import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
 import { getPostsByCategory } from '@/process/actions/postAction'
 import { PostList } from '@/common/components/widgets/postList'
+import CategoryToolbox from '@/common/components/widgets/categoryToolbox'
 
 export default async function CategoryPage({
   params,
@@ -26,6 +27,7 @@ export default async function CategoryPage({
     <>
       <Content>
         <Breadcrumbs category={category} />
+        <CategoryToolbox parentCategory={category} />
         <CategoryList categories={category?.childCategories} />
         <PostList posts={posts} categorySlug={categorySlug} />
       </Content>
