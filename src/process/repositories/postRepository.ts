@@ -15,6 +15,12 @@ export type CreatePost = {
   categoryId: number
 }
 
+export type UpdatePost = {
+  id: number
+  postTitle: string
+  postContent: string
+}
+
 export const postRepository = {
   getByCategory: async (args: GetByCategory) => {
     const posts = await prisma.posts.findMany({
@@ -82,6 +88,14 @@ export const postRepository = {
         createdBy: Number(session.user.id),
         updatedBy: Number(session.user.id),
       },
+    })
+    return post
+  },
+
+  updatePost: async (args: UpdatePost, session: Session) => {
+    const post = await prisma.posts.update({
+      where: { id: args.id },
+      data: { ...args, updatedBy: Number(session.user.id) },
     })
     return post
   },

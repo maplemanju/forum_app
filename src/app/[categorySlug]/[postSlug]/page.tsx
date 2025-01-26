@@ -9,6 +9,7 @@ import { getCommentsByPostId } from '@/process/actions/commentAction'
 import { CommentType } from '@/types/comment'
 import { PostType } from '@/types/post'
 import { Category } from '@/types/category'
+import PostToolbox from '@/common/components/widgets/postToolbox'
 
 export default async function PostPage({
   params,
@@ -36,6 +37,7 @@ export default async function PostPage({
     <>
       <Content>
         <Breadcrumbs category={category} post={post} />
+        <PostToolbox post={post} />
         <PostContent post={post} />
         <CommentList comments={comments} postId={post?.id} />
       </Content>

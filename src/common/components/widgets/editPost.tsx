@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Category } from '@/types/category'
 import { PostType } from '@/types/post'
-import { createPost } from '@/process/actions/postAction'
+import { createPost, updatePost } from '@/process/actions/postAction'
 
 interface EditPostProps {
   post: PostType | null
@@ -24,11 +24,20 @@ export default function EditPost({ post, category }: EditPostProps) {
       return
     }
     setIsSubmitting(true)
-    const response = await createPost({
-      postTitle: title,
-      postContent: content,
-      categoryId: category.id,
-    })
+    let response: any
+    if (post) {
+      response = await updatePost({
+        id: post.id,
+        postTitle: title,
+        postContent: content,
+      })
+    } else {
+      response = await createPost({
+        postTitle: title,
+        postContent: content,
+        categoryId: category.id,
+      })
+    }
     console.log(response)
     router.push(`/${category.slug}/${response.slug}`)
     setIsSubmitting(false)

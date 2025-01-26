@@ -5,6 +5,7 @@ import postRepository, {
   GetByCategory,
   GetBySlug,
   CreatePost,
+  UpdatePost,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -32,5 +33,15 @@ export const createPost = async (args: CreatePost) => {
   }
   const response = postRepository.createPost(args, session)
   console.log('createPost')
+  return response
+}
+
+export const updatePost = async (args: UpdatePost) => {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    throw new Error('Unauthorized')
+  }
+  const response = postRepository.updatePost(args, session)
+  console.log('updatePost')
   return response
 }
