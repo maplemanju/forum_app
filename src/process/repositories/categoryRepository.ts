@@ -16,11 +16,15 @@ export type UpdateCategoryProps = {
   categoryDescription: string
   slug: string
 }
+export type DeleteCategoryProps = {
+  id: number
+}
 export const categoryRepository = {
   getAll: async () => {
     return await prisma.categories.findMany({
       where: {
         parentCategoryId: null,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
     })
   },
@@ -28,9 +32,14 @@ export const categoryRepository = {
     return await prisma.categories.findUnique({
       where: {
         slug: args.slug,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
-        childCategories: true,
+        childCategories: {
+          where: {
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+          },
+        },
         parentCategory: true,
       },
     })
@@ -53,6 +62,15 @@ export const categoryRepository = {
       data: {
         ...args,
         updatedBy: Number(session.user.id),
+      },
+    })
+  },
+
+  deleteCategory: async (args: DeleteCategoryProps, session: Session) => {
+    return await prisma.categories.update({
+      where: { id: args.id },
+      data: {
+        isDeleted: true,
       },
     })
   },

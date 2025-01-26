@@ -6,6 +6,7 @@ import { Category } from '@/types/category'
 import { useRouter } from 'next/navigation'
 import {
   createCategory,
+  deleteCategory,
   updateCategory,
 } from '@/process/actions/categoryAction'
 
@@ -53,6 +54,12 @@ export default function EditCategory({
       })
     }
     router.push(`/${slug}`)
+  }
+
+  const handleDeleteCategory = async () => {
+    if (!category) return
+    await deleteCategory({ id: category.id })
+    router.push(`/${parentCategory?.slug}`)
   }
 
   return (
@@ -135,6 +142,15 @@ export default function EditCategory({
         </div>
 
         <div className="flex justify-end gap-4">
+          {category && (
+            <button
+              type="button"
+              onClick={() => handleDeleteCategory()}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 border border-gray-300 rounded-md hover:bg-red-600"
+            >
+              Delete
+            </button>
+          )}
           <button
             type="button"
             onClick={() => router.back()}
