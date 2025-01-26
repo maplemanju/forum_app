@@ -5,12 +5,10 @@ import { useSession } from 'next-auth/react'
 import { Category } from '@/types/category'
 
 interface CategoryToolboxProps {
-  parentCategory?: Category | null
+  category?: Category | null
 }
 
-export default function CategoryToolbox({
-  parentCategory,
-}: CategoryToolboxProps) {
+export default function CategoryToolbox({ category }: CategoryToolboxProps) {
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -19,7 +17,7 @@ export default function CategoryToolbox({
   }
 
   const handleAddCategory = () => {
-    router.push(`/edit?add=true&parentCategorySlug=${parentCategory?.slug}`)
+    router.push(`/edit/category?addNew&parentCategorySlug=${category?.slug}`)
   }
 
   return (
@@ -46,7 +44,7 @@ export default function CategoryToolbox({
       </button>
       <button
         onClick={() =>
-          router.push(`/post/edit?categorySlug=${parentCategory?.slug}`)
+          router.push(`/edit/post?addNew&categorySlug=${category?.slug}`)
         }
         className="px-4 py-2 ml-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 flex items-center gap-2"
       >

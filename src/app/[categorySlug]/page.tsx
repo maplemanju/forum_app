@@ -27,7 +27,7 @@ export default async function CategoryPage({
     <>
       <Content>
         <Breadcrumbs category={category} />
-        <CategoryToolbox parentCategory={category} />
+        <CategoryToolbox category={category} />
         <CategoryList categories={category?.childCategories} />
         <PostList posts={posts} categorySlug={categorySlug} />
       </Content>

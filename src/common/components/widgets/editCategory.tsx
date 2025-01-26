@@ -43,14 +43,6 @@ export default function EditCategory({
     router.push(`/${slug}`)
   }
 
-  const onCancel = () => {
-    console.log('cancel')
-    router.push('/')
-    if (parentCategory) {
-      router.push(`/${parentCategory.slug}`)
-    }
-  }
-
   return (
     <div className="w-full max-w-2xl mx-auto bg-white p-6">
       <h2 className="text-2xl font-semibold mb-6">
@@ -133,7 +125,7 @@ export default function EditCategory({
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={() => router.back()}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
           >
             Cancel

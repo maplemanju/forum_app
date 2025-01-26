@@ -1,5 +1,7 @@
 import prisma from '@/utils/prisma'
+import { generateSlug } from '@/utils/slugGenerator'
 import { Votes } from '@prisma/client'
+import { Session } from 'next-auth'
 
 export type GetByCategory = {
   categoryId: number
@@ -7,6 +9,12 @@ export type GetByCategory = {
 export type GetBySlug = {
   slug: string
 }
+export type CreatePost = {
+  postTitle: string
+  postContent: string
+  categoryId: number
+}
+
 export const postRepository = {
   getByCategory: async (args: GetByCategory) => {
     const posts = await prisma.posts.findMany({
@@ -63,6 +71,19 @@ export const postRepository = {
     if (!post) return null
     const voteCounts = getVoteCounts(post.votes)
     return { ...post, _count: { ...post._count, votes: voteCounts } }
+  },
+
+  createPost: async (args: CreatePost, session: Session) => {
+    const slug = generateSlug(args.postTitle)
+    const post = await prisma.posts.create({
+      data: {
+        ...args,
+        slug,
+        createdBy: Number(session.user.id),
+        updatedBy: Number(session.user.id),
+      },
+    })
+    return post
   },
 }
 
