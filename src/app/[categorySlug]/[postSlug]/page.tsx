@@ -2,7 +2,7 @@ import { Content } from '@/common/components/content'
 import { Footer } from '@/common/components/footer'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
-import { getPostsById } from '@/process/actions/postAction'
+import { getPostBySlug } from '@/process/actions/postAction'
 import { PostContent } from '@/common/components/widgets/postContent'
 import CommentList from '@/common/components/widgets/commentList'
 import { getCommentsByPostId } from '@/process/actions/commentAction'
@@ -13,21 +13,23 @@ import { Category } from '@/types/category'
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ categoryId: string; postId: string }>
+  params: Promise<{ categorySlug: string; postSlug: string }>
 }) {
-  const postId = (await params)?.postId
+  const postSlug = (await params)?.postSlug
   let post: PostType | null = null
   let comments: CommentType[] = []
-  if (postId) {
-    post = await getPostsById({ id: Number(postId) })
+  if (postSlug) {
+    post = await getPostBySlug({ slug: postSlug })
     console.log('post', post)
-    comments = await getCommentsByPostId({ postId: Number(postId) })
+    if (post) {
+      comments = await getCommentsByPostId({ postId: Number(post?.id) })
+    }
     console.log('comments', comments)
   }
-  const categoryId = (await params)?.categoryId
+  const categorySlug = (await params)?.categorySlug
   let category: Category | null = null
-  if (categoryId) {
-    category = await getCategory({ id: Number(categoryId) })
+  if (categorySlug) {
+    category = await getCategory({ slug: categorySlug })
     console.log('category', category)
   }
   return (

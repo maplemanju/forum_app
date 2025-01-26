@@ -1,5 +1,6 @@
 model Categories {
   id                  Int      @id @default(autoincrement())
+  slug                String   @unique @map("slug") @db.VarChar(255)
   categoryName        String   @map("category_name") @db.VarChar(255)
   categoryDescription String?  @map("category_description")
   parentCategoryId    Int?     @map("parent_category_id")
@@ -19,6 +20,7 @@ model Categories {
 
 model Posts {
   id          Int      @id @default(autoincrement())
+  slug        String   @unique @map("slug") @db.VarChar(255)
   categoryId  Int      @map("category_id")
   postTitle   String   @map("post_title") @db.VarChar(255)
   postContent String   @map("post_content")

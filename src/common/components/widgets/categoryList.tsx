@@ -10,7 +10,7 @@ export const CategoryList = ({ categories }: Props) => {
     return (
       <div key={category.id} className="mb-4">
         <div className="bg-white p-4 rounded-lg bg-gray-200">
-          <Link href={`/${category.id}`}>
+          <Link href={`/${category.slug}`}>
             <h3 className="text-lg font-semibold text-gray-800">
               {category.categoryName}
             </h3>

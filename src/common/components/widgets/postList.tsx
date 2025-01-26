@@ -7,9 +7,10 @@ dayjs.extend(relativeTime)
 
 type PostListProps = {
   posts?: PostType[]
+  categorySlug?: string
 }
 
-export const PostList = ({ posts }: PostListProps) => {
+export const PostList = ({ posts, categorySlug }: PostListProps) => {
   if (!posts || posts.length === 0) {
     return <div className="text-gray-500 italic">No posts found</div>
   }
@@ -20,7 +21,7 @@ export const PostList = ({ posts }: PostListProps) => {
         <div key={post.id} className="bg-white p-6  border-b border-gray-200">
           <div className="flex justify-between items-start">
             <div className="flex-grow">
-              <Link href={`${post.categoryId}/${post.id}`}>
+              <Link href={`/${categorySlug}/${post.slug}`}>
                 <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-600">
                   {post.postTitle}
                 </h3>

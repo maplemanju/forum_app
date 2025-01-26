@@ -1,20 +1,20 @@
 import prisma from '@/utils/prisma'
 
 export type GetCategoryProps = {
-  id: number
+  slug: string
 }
 export const categoryRepository = {
   getAll: async () => {
     return await prisma.categories.findMany({
       where: {
-        parentCategory: null,
+        parentCategoryId: null,
       },
     })
   },
   getCategory: async (args: GetCategoryProps) => {
     return await prisma.categories.findUnique({
       where: {
-        id: args.id,
+        slug: args.slug,
       },
       include: {
         childCategories: true,

@@ -51,7 +51,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
                 />
               </svg>
               <Link
-                href={`/${category.parentCategory.id}`}
+                href={`/${category.parentCategory.slug}`}
                 className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
               >
                 {category.parentCategory.categoryName}
@@ -78,7 +78,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
                 />
               </svg>
               <Link
-                href={`/${category.id}`}
+                href={`/${category.slug}`}
                 className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
               >
                 {category.categoryName}

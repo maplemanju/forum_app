@@ -2,7 +2,7 @@
 
 import postRepository, {
   GetByCategory,
-  GetById,
+  GetBySlug,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 
@@ -14,8 +14,10 @@ export const getPostsByCategory = async (
   return response
 }
 
-export const getPostsById = async (args: GetById): Promise<PostType | null> => {
-  const response = postRepository.getById(args)
-  console.log('getPostsById')
+export const getPostBySlug = async (
+  args: GetBySlug
+): Promise<PostType | null> => {
+  const response = postRepository.getBySlug(args)
+  console.log('getPostBySlug')
   return response
 }

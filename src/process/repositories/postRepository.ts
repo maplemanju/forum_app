@@ -4,8 +4,8 @@ import { Votes } from '@prisma/client'
 export type GetByCategory = {
   categoryId: number
 }
-export type GetById = {
-  id: number
+export type GetBySlug = {
+  slug: string
 }
 export const postRepository = {
   getByCategory: async (args: GetByCategory) => {
@@ -40,10 +40,10 @@ export const postRepository = {
     return postsWithVotes
   },
 
-  getById: async (args: GetById) => {
+  getBySlug: async (args: GetBySlug) => {
     const post = await prisma.posts.findUnique({
       where: {
-        id: args.id,
+        slug: args.slug,
       },
       include: {
         _count: {

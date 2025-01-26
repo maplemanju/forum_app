@@ -9,15 +9,17 @@ import { PostList } from '@/common/components/widgets/postList'
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ categoryId: string }>
+  params: Promise<{ categorySlug: string }>
 }) {
-  const categoryId = (await params)?.categoryId
+  const categorySlug = (await params)?.categorySlug
 
   let category
   let posts
-  if (categoryId) {
-    category = await getCategory({ id: Number(categoryId) })
-    posts = await getPostsByCategory({ categoryId: Number(categoryId) })
+  if (categorySlug) {
+    category = await getCategory({ slug: categorySlug })
+    if (category) {
+      posts = await getPostsByCategory({ categoryId: Number(category?.id) })
+    }
     console.log('posts', posts)
   }
   return (
@@ -25,7 +27,7 @@ export default async function CategoryPage({
       <Content>
         <Breadcrumbs category={category} />
         <CategoryList categories={category?.childCategories} />
-        <PostList posts={posts} />
+        <PostList posts={posts} categorySlug={categorySlug} />
       </Content>
       <Footer />
     </>
