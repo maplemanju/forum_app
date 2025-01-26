@@ -26,9 +26,6 @@ export default function EditCategory({
     category?.categoryDescription || ''
   )
   const [slug, setSlug] = useState(category?.slug || '')
-  const [parentCategoryId, setParentCategoryId] = useState(
-    parentCategory?.id || null
-  )
 
   if (!session) {
     return null
@@ -36,7 +33,7 @@ export default function EditCategory({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(title, description, slug, parentCategoryId)
+    console.log(title, description, slug, category?.parentCategoryId)
 
     if (category) {
       await updateCategory({
@@ -50,7 +47,7 @@ export default function EditCategory({
         categoryName: title,
         categoryDescription: description,
         slug: slug,
-        parentCategoryId: parentCategoryId,
+        parentCategoryId: parentCategory?.id,
       })
     }
     router.push(`/${slug}`)
@@ -59,7 +56,11 @@ export default function EditCategory({
   const handleDeleteCategory = async () => {
     if (!category) return
     await deleteCategory({ id: category.id })
-    router.push(`/${parentCategory?.slug}`)
+    if (parentCategory) {
+      router.push(`/${parentCategory.slug}`)
+    } else {
+      router.push('/')
+    }
   }
 
   return (
