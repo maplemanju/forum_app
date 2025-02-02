@@ -1,8 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect, useOptimistic } from 'react'
 import CommentContent from '@/common/components/widgets/commentContent'
 import { CommentType } from '@/types/comment'
+import { CommentEdit } from './commentEdit'
 
 interface CommentsProps {
   comments: CommentType[]
@@ -10,17 +11,60 @@ interface CommentsProps {
 }
 
 const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
+  const [openAddComments, setOpenAddComments] = useState(false)
+  const [commentsState, setCommentsState] =
+    useState<Partial<CommentType & { isNewComment: boolean }>[]>(comments)
+
+  useEffect(() => {
+    setCommentsState(comments ?? [])
+  }, [comments])
+
+  const [optimisticComments, addOptimisticComments] = useOptimistic(
+    commentsState,
+    (currentState, optimisticValue: Partial<CommentType>) => {
+      return [optimisticValue, ...currentState]
+    }
+  )
+
+  const submitCallback = (
+    comment: Partial<CommentType>,
+    isOptimistic: boolean
+  ) => {
+    const newComment = { ...comment, isNewComment: true }
+    if (isOptimistic) {
+      addOptimisticComments(newComment)
+    } else {
+      setCommentsState([newComment, ...commentsState])
+    }
+  }
+
   return (
     <div className="space-y-4 mt-6">
-      <h2 className="text-2xl font-bold text-gray-900">Comments</h2>
-      {comments.length === 0 ? (
+      <div className="mb-4">
+        <button
+          onClick={() => setOpenAddComments(!openAddComments)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Add Comment
+        </button>
+      </div>
+      {openAddComments && (
+        <CommentEdit
+          setOpenAddComments={setOpenAddComments}
+          postId={postId}
+          submitCallback={submitCallback}
+        />
+      )}
+      {optimisticComments.length === 0 ? (
         <div className="text-gray-600">No comments yet</div>
       ) : (
-        comments.map((comment) => {
+        optimisticComments.map((comment) => {
           return (
             <div
-              key={comment.id}
-              className="bg-white p-4 rounded-lg mb-3 shadow-sm"
+              key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
+              className={`bg-white p-4 rounded-lg mb-3 shadow-sm transition-colors duration-300 ${
+                comment.isNewComment ? 'bg-yellow-100' : ''
+              }`}
             >
               <CommentContent comment={comment} postId={postId} />
             </div>

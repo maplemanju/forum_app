@@ -1,11 +1,28 @@
-import { Comments as PrismaComment, UserInfo, Users } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
-export type CommentType = PrismaComment & {
-  _count: {
-    votes: number
+export type CommentType = Prisma.CommentsGetPayload<{
+  select: {
+    id: true
+    postId: true
+    commentContent: true
+    parentCommentId: true
+    createdBy: true
+    updatedBy: true
+    createdAt: true
+    updatedAt: true
+    isDeleted: true
   }
-  createdUser: Users & {
-    userInfo?: UserInfo | null
+  include: {
+    childComments: true
+    createdUser: {
+      include: {
+        userInfo: true
+      }
+    }
+    _count: {
+      select: {
+        votes: true
+      }
+    }
   }
-  childComments: CommentType[]
-}
+}>
