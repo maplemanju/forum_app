@@ -1,10 +1,10 @@
 import { Content } from '@/common/components/content'
 import { Footer } from '@/common/components/footer'
-import EditPost from '@/common/components/widgets/editPost'
+import PostEdit from '@/common/components/widgets/postEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Category } from '@/types/category'
 
-export default async function EditPostPage({
+export default async function AddPostPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -18,7 +18,7 @@ export default async function EditPostPage({
   return (
     <>
       <Content>
-        <EditPost post={null} category={category} />
+        <PostEdit post={null} category={category} />
       </Content>
       <Footer />
     </>

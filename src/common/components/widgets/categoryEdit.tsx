@@ -10,15 +10,15 @@ import {
   updateCategory,
 } from '@/process/actions/categoryAction'
 
-interface EditCategoryProps {
+interface CategoryEditProps {
   category?: Category | null
   parentCategory?: Category | null
 }
 
-export default function EditCategory({
+export default function CategoryEdit({
   category,
   parentCategory,
-}: EditCategoryProps) {
+}: CategoryEditProps) {
   const router = useRouter()
   const { data: session } = useSession()
   const [title, setTitle] = useState(category?.categoryName || '')

@@ -10,12 +10,12 @@ import {
   updatePost,
 } from '@/process/actions/postAction'
 
-interface EditPostProps {
+interface PostEditProps {
   post: PostType | null
   category: Category | null
 }
 
-export default function EditPost({ post, category }: EditPostProps) {
+export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
   const [title, setTitle] = useState(post?.postTitle || '')
   const [content, setContent] = useState(post?.postContent || '')

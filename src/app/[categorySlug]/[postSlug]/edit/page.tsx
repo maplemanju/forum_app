@@ -1,6 +1,6 @@
 import { getPostBySlug } from '@/process/actions/postAction'
 import { PostType } from '@/types/post'
-import EditPost from '@/common/components/widgets/editPost'
+import PostEdit from '@/common/components/widgets/postEdit'
 
 export default async function EditPage({
   params,
@@ -14,5 +14,5 @@ export default async function EditPage({
   if (postSlug) {
     post = await getPostBySlug({ slug: postSlug })
   }
-  return <EditPost post={post} category={post?.category || null} />
+  return <PostEdit post={post} category={post?.category || null} />
 }

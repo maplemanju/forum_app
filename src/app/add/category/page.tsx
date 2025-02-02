@@ -1,10 +1,10 @@
 import { Content } from '@/common/components/content'
 import { Footer } from '@/common/components/footer'
-import EditCategory from '@/common/components/widgets/editCategory'
+import CategoryEdit from '@/common/components/widgets/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Category } from '@/types/category'
 
-export default async function EditPage({
+export default async function AddCategoryPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -17,7 +17,7 @@ export default async function EditPage({
   return (
     <>
       <Content>
-        <EditCategory category={null} parentCategory={parentCategory} />
+        <CategoryEdit category={null} parentCategory={parentCategory} />
       </Content>
       <Footer />
     </>

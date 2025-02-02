@@ -1,17 +1,15 @@
-import EditCategory from '@/common/components/widgets/editCategory'
+import CategoryEdit from '@/common/components/widgets/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 
-export default async function EditPage({
+export default async function CategoryEditPage({
   params,
-  searchParams,
 }: {
   params: { categorySlug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const categorySlug = params.categorySlug
   const category = await getCategory({ slug: categorySlug })
   return (
-    <EditCategory
+    <CategoryEdit
       category={category}
       parentCategory={category?.parentCategory}
     />

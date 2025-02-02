@@ -17,7 +17,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
   }
 
   const handleAddCategory = () => {
-    router.push(`/edit/category?addNew&parentCategorySlug=${category?.slug}`)
+    router.push(`/add/category?parentCategorySlug=${category?.slug}`)
   }
 
   return (
@@ -66,9 +66,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
         Add Category
       </button>
       <button
-        onClick={() =>
-          router.push(`/edit/post?addNew&categorySlug=${category?.slug}`)
-        }
+        onClick={() => router.push(`/add/post?categorySlug=${category?.slug}`)}
         className="px-4 py-2 ml-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 flex items-center gap-2"
       >
         <svg
