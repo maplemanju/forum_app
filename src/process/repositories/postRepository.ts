@@ -38,9 +38,13 @@ export const postRepository = {
                 OR: [{ isDeleted: false }, { isDeleted: null }],
               },
             },
+            votes: {
+              where: {
+                vote: 1,
+              },
+            },
           },
         },
-        votes: true,
         category: true,
         createdUser: {
           include: {
@@ -49,16 +53,7 @@ export const postRepository = {
         },
       },
     })
-
-    const postsWithVotes = posts.map((post) => ({
-      ...post,
-      _count: {
-        ...post._count,
-        votes: getVoteCounts(post.votes),
-      },
-    }))
-
-    return postsWithVotes
+    return posts
   },
 
   getBySlug: async (args: GetBySlug) => {
@@ -71,10 +66,14 @@ export const postRepository = {
         _count: {
           select: {
             comments: true,
+            votes: {
+              where: {
+                vote: 1,
+              },
+            },
           },
         },
         category: true,
-        votes: true,
         createdUser: {
           include: {
             userInfo: true,
@@ -83,8 +82,7 @@ export const postRepository = {
       },
     })
     if (!post) return null
-    const voteCounts = getVoteCounts(post.votes)
-    return { ...post, _count: { ...post._count, votes: voteCounts } }
+    return post
   },
 
   createPost: async (args: CreatePost, session: Session) => {
@@ -118,6 +116,7 @@ export const postRepository = {
 
 export default postRepository
 
+// votes with negative downvotes
 const getVoteCounts = (votes: Votes[]) => {
   const upvotes = votes.filter((vote) => vote.vote === 1).length
   const downvotes = votes.filter((vote) => vote.vote === -1).length

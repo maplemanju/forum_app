@@ -35,34 +35,40 @@ export const commentRepository = {
             OR: [{ isDeleted: false }, { isDeleted: null }],
           },
           include: {
-            votes: true,
             childComments: true,
             createdUser: {
               include: {
                 userInfo: true,
               },
             },
+            _count: {
+              select: {
+                votes: {
+                  where: {
+                    vote: 1,
+                  },
+                },
+              },
+            },
           },
         },
-        votes: true,
         createdUser: {
           include: {
             userInfo: true,
           },
         },
+        _count: {
+          select: {
+            votes: {
+              where: {
+                vote: 1,
+              },
+            },
+          },
+        },
       },
     })
-    const mapCommentWithVotes = (comment: any) => ({
-      ...comment,
-      _count: {
-        votes: getVoteCounts(comment.votes),
-      },
-      childComments: comment.childComments.map(mapCommentWithVotes),
-    })
-
-    const commentsWithVotes = comments.map(mapCommentWithVotes)
-
-    return commentsWithVotes
+    return comments
   },
 
   getById: async (args: GetById) => {
@@ -72,17 +78,20 @@ export const commentRepository = {
         OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
-        votes: true,
         createdUser: {
           include: {
             userInfo: true,
           },
         },
+        votes: {
+          where: {
+            vote: 1,
+          },
+        },
       },
     })
     if (!comment) return null
-    const voteCounts = getVoteCounts(comment.votes)
-    return { ...comment, _count: { votes: voteCounts } }
+    return comment
   },
 
   createComment: async (args: CreateComment, session: Session) => {
@@ -130,6 +139,7 @@ export const commentRepository = {
 
 export default commentRepository
 
+// votes with negative downvotes
 const getVoteCounts = (votes: Votes[]) => {
   const upvotes = votes.filter((vote) => vote.vote === 1).length
   const downvotes = votes.filter((vote) => vote.vote === -1).length

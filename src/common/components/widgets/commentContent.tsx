@@ -2,6 +2,7 @@ import { CommentType } from '@/types/comment'
 import Tooltip from '../tooltip'
 import { useEffect, useOptimistic, useState } from 'react'
 import { CommentEdit } from './commentEdit'
+import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { deleteComment } from '@/process/actions/commentAction'
@@ -107,6 +108,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
   const renderComments = (comment: Partial<CommentType>) => {
     return (
       <div className="space-y-2">
+        {/* edit  */}
         {isEditing === comment.id ? (
           <CommentEdit
             onCloseEdit={() => setIsEditing(null)}
@@ -117,9 +119,11 @@ const CommentContent: React.FC<CommentContentProps> = ({
             submitCallback={editCallback}
           />
         ) : (
+          /* content  */
           <p className="text-gray-700">{comment.commentContent}</p>
         )}
 
+        {/* info bar  */}
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <span>
             Posted by {comment.createdUser?.userInfo?.displayName ?? '-'}
@@ -132,55 +136,40 @@ const CommentContent: React.FC<CommentContentProps> = ({
           >
             <span>{dayjs(comment.createdAt).fromNow()}</span>
           </Tooltip>
-          <span>•</span>
-          <span>{comment._count?.votes || 0} votes</span>
         </div>
 
-        <div className="flex gap-2 pt-2">
+        {/* action bar  */}
+        <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
           {optimisticChildComments.length > 0 &&
             comment.parentCommentId === null && (
-              <button
-                onClick={onOpenComments}
-                className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
-              >
+              <button onClick={onOpenComments}>
                 {openComments
                   ? 'Hide replies'
                   : `Show replies (${optimisticChildComments.length})`}
               </button>
             )}
-          {onVote && (
-            <button
-              onClick={() => comment.id && onVote(comment.id)}
-              className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              Vote
-            </button>
-          )}
           {onReply && comment.parentCommentId === null && (
-            <button
-              onClick={() => comment.id && onReply(comment.id)}
-              className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
-            >
+            <button onClick={() => comment.id && onReply(comment.id)}>
               Reply
             </button>
           )}
           {onEdit && (
-            <button
-              onClick={() => comment.id && onEdit(comment.id)}
-              className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
-            >
+            <button onClick={() => comment.id && onEdit(comment.id)}>
               Edit
             </button>
           )}
           {onDelete && (
-            <button
-              onClick={() => comment.id && onDelete(comment.id)}
-              className="text-sm text-gray-600 hover:text-red-600 transition-colors"
-            >
+            <button onClick={() => comment.id && onDelete(comment.id)}>
               Delete
             </button>
           )}
+          <VoteButtons
+            commentId={comment.id}
+            voteCount={comment._count?.votes || 0}
+          />
         </div>
+
+        {/* reply  */}
         {openReply && comment.parentCommentId === null && (
           <CommentEdit
             onCloseEdit={() => setOpenReply(false)}

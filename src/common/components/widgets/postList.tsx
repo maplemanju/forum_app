@@ -1,6 +1,7 @@
 import { PostType } from '@/types/post'
 import Link from 'next/link'
 import Tooltip from '@/common/components/tooltip'
+import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -19,35 +20,33 @@ export const PostList = ({ posts, categorySlug }: PostListProps) => {
     <div>
       {posts.map((post: PostType) => (
         <div key={post.id} className="bg-white p-6  border-b border-gray-200">
-          <div className="flex justify-between items-start">
-            <div className="flex-grow">
-              <Link href={`/${categorySlug}/${post.slug}`}>
-                <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-600">
-                  {post.postTitle}
-                </h3>
-              </Link>
-              <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
-                <span>
-                  Posted by{' '}
-                  {post.createdUser.userInfo?.displayName || 'Anonymous'}
-                </span>
-                <span>•</span>
-                <Tooltip
-                  text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
-                  width="115px"
-                  className="text-center"
-                >
-                  <span>{dayjs(post.createdAt).fromNow()}</span>
-                </Tooltip>
-                <span>•</span>
-                <span>{post._count.comments || 0} comments</span>
-              </div>
-            </div>
-            <div className="text-center text-gray-600">
-              <div className="font-medium">{post._count.votes || 0}</div>
-              <div className="text-sm">votes</div>
-            </div>
+          {/* title  */}
+          <Link href={`/${categorySlug}/${post.slug}`}>
+            <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-600">
+              {post.postTitle}
+            </h3>
+          </Link>
+
+          {/* info bar  */}
+          <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
+            <span>
+              Posted by {post.createdUser.userInfo?.displayName || 'Anonymous'}
+            </span>
+            <span>•</span>
+            <Tooltip
+              text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+              width="115px"
+              className="text-center"
+            >
+              <span>{dayjs(post.createdAt).fromNow()}</span>
+            </Tooltip>
+            <span>•</span>
+            <span>{post._count.comments || 0} comments</span>
+            <span>•</span>
+            <VoteButtons postId={post.id} voteCount={post._count.votes || 0} />
           </div>
+
+          {/* content  */}
           <p className="text-gray-600 mt-3 line-clamp-3">{post.postContent}</p>
         </div>
       ))}
