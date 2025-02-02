@@ -41,7 +41,7 @@ model Posts {
 model Comments {
   id              Int      @id @default(autoincrement())
   postId          Int      @map("post_id")
-  commentContent  String   @map("post_content")
+  commentContent  String   @map("comment_content")
   parentCommentId Int?     @map("parent_comment_id")
   createdBy       Int      @map("created_by")
   updatedBy       Int      @map("updated_by")
