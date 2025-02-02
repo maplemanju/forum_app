@@ -1,15 +1,18 @@
-import {
-  Posts as PrismaPost,
-  Categories,
-  Users,
-  UserInfo,
-} from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
-export type PostType = PrismaPost & {
-  category: Categories
-  createdUser: Users & { userInfo?: UserInfo | null }
-  _count: {
-    comments: number
-    votes: number
+export type PostType = Prisma.PostsGetPayload<{
+  include: {
+    category: true
+    createdUser: {
+      include: {
+        userInfo: true
+      }
+    }
+    _count: {
+      select: {
+        comments: true
+        votes: true
+      }
+    }
   }
-}
+}>

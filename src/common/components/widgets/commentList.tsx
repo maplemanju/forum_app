@@ -38,6 +38,12 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
     }
   }
 
+  const deleteCallback = (commentId: number) => {
+    setCommentsState(
+      commentsState.filter((comment) => comment.id !== commentId)
+    )
+  }
+
   return (
     <div className="space-y-4 mt-6">
       <div className="mb-4">
@@ -50,7 +56,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
       </div>
       {openAddComments && (
         <CommentEdit
-          setOpenAddComments={setOpenAddComments}
+          onCloseEdit={() => setOpenAddComments(false)}
           postId={postId}
           submitCallback={submitCallback}
         />
@@ -66,7 +72,11 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
                 comment.isNewComment ? 'bg-yellow-100' : ''
               }`}
             >
-              <CommentContent comment={comment} postId={postId} />
+              <CommentContent
+                comment={comment}
+                postId={postId}
+                deleteCallback={deleteCallback}
+              />
             </div>
           )
         })

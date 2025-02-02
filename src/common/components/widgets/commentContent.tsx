@@ -4,21 +4,31 @@ import { useEffect, useOptimistic, useState } from 'react'
 import { CommentEdit } from './commentEdit'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { deleteComment } from '@/process/actions/commentAction'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {
   comment: Partial<CommentType>
   postId?: number | null
+  deleteCallback?: (commentId: number) => void
 }
 
-const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
+const CommentContent: React.FC<CommentContentProps> = ({
+  comment,
+  postId,
+  deleteCallback,
+}) => {
+  const [commentState, setCommentState] =
+    useState<Partial<CommentType>>(comment)
   const [openComments, setOpenComments] = useState<boolean>(false)
   const [openReply, setOpenReply] = useState<boolean>(false)
   const [childComments, setChildComments] = useState<
     Partial<CommentType & { isNewComment: boolean }>[]
   >(comment.childComments ?? [])
+  const [isEditing, setIsEditing] = useState<string | number | null>(null)
 
   useEffect(() => {
+    setCommentState(comment)
     setChildComments(comment.childComments ?? [])
   }, [comment])
 
@@ -42,11 +52,17 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
   }
 
   const onEdit = (commentId: number) => {
-    console.log('edit', commentId, postId)
+    setIsEditing(commentId)
   }
 
-  const onDelete = (commentId: number) => {
-    console.log('delete', commentId, postId)
+  const onDelete = async (commentId: number) => {
+    const response = await deleteComment({ id: commentId })
+    if (response.success) {
+      setChildComments(
+        childComments.filter((comment) => comment.id !== commentId)
+      )
+      deleteCallback?.(commentId)
+    }
   }
 
   const onOpenComments = () => {
@@ -67,10 +83,42 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
     }
   }
 
+  const editCallback = (
+    editedComment: Partial<CommentType>,
+    isOptimistic: boolean
+  ) => {
+    setIsEditing(null)
+    if (editedComment.id === comment.id) {
+      setCommentState({ ...comment, ...editedComment })
+    }
+    const childCommentIndex = childComments.findIndex(
+      (child) => child.id === editedComment.id
+    )
+    if (childCommentIndex !== -1) {
+      const newChildComments = [...childComments]
+      newChildComments[childCommentIndex] = {
+        ...newChildComments[childCommentIndex],
+        ...editedComment,
+      }
+      setChildComments(newChildComments)
+    }
+  }
+
   const renderComments = (comment: Partial<CommentType>) => {
     return (
       <div className="space-y-2">
-        <p className="text-gray-700">{comment.commentContent}</p>
+        {isEditing === comment.id ? (
+          <CommentEdit
+            onCloseEdit={() => setIsEditing(null)}
+            postId={postId}
+            parentCommentId={comment.parentCommentId}
+            commentContent={comment.commentContent}
+            commentId={comment.id}
+            submitCallback={editCallback}
+          />
+        ) : (
+          <p className="text-gray-700">{comment.commentContent}</p>
+        )}
 
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <span>
@@ -135,7 +183,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
         </div>
         {openReply && comment.parentCommentId === null && (
           <CommentEdit
-            setOpenAddComments={setOpenReply}
+            onCloseEdit={() => setOpenReply(false)}
             postId={postId}
             parentCommentId={comment.id}
             submitCallback={replyCallback}
@@ -147,7 +195,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
 
   return (
     <>
-      {renderComments(comment)}
+      {renderComments(commentState)}
       {openComments && (
         <div className="space-y-2">
           {optimisticChildComments.map((childComment) => (

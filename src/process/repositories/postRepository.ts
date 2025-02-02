@@ -33,7 +33,11 @@ export const postRepository = {
       include: {
         _count: {
           select: {
-            comments: true,
+            comments: {
+              where: {
+                OR: [{ isDeleted: false }, { isDeleted: null }],
+              },
+            },
           },
         },
         votes: true,

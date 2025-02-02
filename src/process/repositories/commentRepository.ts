@@ -14,15 +14,26 @@ export type CreateComment = {
   commentContent: string
   parentCommentId?: number | null
 }
+export type DeleteComment = {
+  id: number
+}
+export type UpdateComment = {
+  id: number
+  commentContent: string
+}
 export const commentRepository = {
   getByPostId: async (args: GetByPostId) => {
     const comments = await prisma.comments.findMany({
       where: {
         postId: args.postId,
         parentCommentId: null,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
         childComments: {
+          where: {
+            OR: [{ isDeleted: false }, { isDeleted: null }],
+          },
           include: {
             votes: true,
             childComments: true,
@@ -58,6 +69,7 @@ export const commentRepository = {
     const comment = await prisma.comments.findUnique({
       where: {
         id: args.id,
+        OR: [{ isDeleted: false }, { isDeleted: null }],
       },
       include: {
         votes: true,
@@ -89,6 +101,30 @@ export const commentRepository = {
       },
     })
     return comment
+  },
+
+  deleteComment: async (args: DeleteComment, session: Session) => {
+    return await prisma.comments.update({
+      where: { id: args.id },
+      data: { isDeleted: true, updatedBy: Number(session.user.id) },
+    })
+  },
+
+  updateComment: async (args: UpdateComment, session: Session) => {
+    return await prisma.comments.update({
+      where: { id: args.id },
+      data: {
+        commentContent: args.commentContent,
+        updatedBy: Number(session.user.id),
+      },
+      include: {
+        createdUser: {
+          include: {
+            userInfo: true,
+          },
+        },
+      },
+    })
   },
 }
 
