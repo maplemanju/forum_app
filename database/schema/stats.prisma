@@ -14,3 +14,32 @@ model Votes {
   @@unique([userId, postId, commentId])
   @@map("votes")
 }
+
+model Tags {
+  id        Int        @id @default(autoincrement())
+  tagName   String     @map("tag_name")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  postsTags PostTags[] @relation
+
+  @@map("tags")
+}
+
+model PostTags {
+  postId Int
+  tagId  Int
+
+  post Posts @relation(fields: [postId], references: [id])
+  tag  Tags  @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
+  @@map("post_tags")
+}
+
+model PostUpdates {
+  postId    Int      @id @map("post_id")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  post      Posts    @relation(fields: [postId], references: [id])
+
+  @@map("post_updates")
+}

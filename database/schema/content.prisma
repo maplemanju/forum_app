@@ -30,10 +30,12 @@ model Posts {
   updatedAt   DateTime @updatedAt @map("updated_at")
   isDeleted   Boolean? @map("is_deleted")
 
-  category    Categories @relation(fields: [categoryId], references: [id])
-  comments    Comments[] @relation
-  votes       Votes[]    @relation
-  createdUser Users      @relation(fields: [createdBy], references: [id])
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  comments    Comments[]   @relation
+  votes       Votes[]      @relation
+  createdUser Users        @relation(fields: [createdBy], references: [id])
+  postsTags   PostTags[]   @relation
+  postUpdate  PostUpdates? @relation
 
   @@map("posts")
 }

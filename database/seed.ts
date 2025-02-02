@@ -87,19 +87,16 @@ async function main() {
   })
 
   // Seed posts
-  const welcomePost = await prisma.posts.create({
-    data: {
-      categoryId: mainCategory.id,
-      slug: 'welcome-to-our-forum',
-      postTitle: 'Welcome to our Forum!',
-      postContent: 'Welcome to our new forum. We hope you enjoy your stay!',
-      createdBy: admin.id,
-      updatedBy: admin.id,
-    },
-  })
-
-  await prisma.posts.createMany({
+  const forumRulesPost = await prisma.posts.createManyAndReturn({
     data: [
+      {
+        categoryId: mainCategory.id,
+        slug: 'welcome-to-our-forum',
+        postTitle: 'Welcome to our Forum!',
+        postContent: 'Welcome to our new forum. We hope you enjoy your stay!',
+        createdBy: admin.id,
+        updatedBy: admin.id,
+      },
       {
         categoryId: mainCategory.id,
         slug: 'forum-rules-and-guidelines',
@@ -139,10 +136,21 @@ async function main() {
     ],
   })
 
+  // post updates
+  Promise.all(
+    forumRulesPost.map(async (post) => {
+      await prisma.postUpdates.create({
+        data: {
+          postId: post.id,
+        },
+      })
+    })
+  )
+
   // Seed comments
   await prisma.comments.create({
     data: {
-      postId: welcomePost.id,
+      postId: forumRulesPost[0].id,
       commentContent: 'Thanks for the warm welcome!',
       createdBy: admin.id,
       updatedBy: admin.id,
