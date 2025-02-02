@@ -4,9 +4,9 @@ import { getCategory } from '@/process/actions/categoryAction'
 export default async function CategoryEditPage({
   params,
 }: {
-  params: { categorySlug: string }
+  params: Promise<{ categorySlug: string }>
 }) {
-  const categorySlug = params.categorySlug
+  const categorySlug = (await params)?.categorySlug
   const category = await getCategory({ slug: categorySlug })
   return (
     <CategoryEdit

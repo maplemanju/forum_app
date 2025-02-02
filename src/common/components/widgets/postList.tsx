@@ -8,10 +8,9 @@ dayjs.extend(relativeTime)
 
 type PostListProps = {
   posts?: PostType[]
-  categorySlug?: string
 }
 
-export const PostList = ({ posts, categorySlug }: PostListProps) => {
+export const PostList = ({ posts }: PostListProps) => {
   if (!posts || posts.length === 0) {
     return <div className="text-gray-500 italic">No posts found</div>
   }
@@ -21,7 +20,7 @@ export const PostList = ({ posts, categorySlug }: PostListProps) => {
       {posts.map((post: PostType) => (
         <div key={post.id} className="bg-white p-6  border-b border-gray-200">
           {/* title  */}
-          <Link href={`/${categorySlug}/${post.slug}`}>
+          <Link href={`/${post.category.slug}/${post.slug}`}>
             <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-600">
               {post.postTitle}
             </h3>
@@ -44,6 +43,20 @@ export const PostList = ({ posts, categorySlug }: PostListProps) => {
             <span>{post._count.comments || 0} comments</span>
             <span>•</span>
             <VoteButtons postId={post.id} voteCount={post._count.votes || 0} />
+            <span>•</span>
+            {post.postUpdate && (
+              <Tooltip
+                text={dayjs(post.postUpdate?.updatedAt).format(
+                  'YYYY/MM/DD HH:mm'
+                )}
+                width="115px"
+                className="text-center"
+              >
+                <span>
+                  updated at {dayjs(post.postUpdate?.updatedAt).fromNow()}
+                </span>
+              </Tooltip>
+            )}
           </div>
 
           {/* content  */}

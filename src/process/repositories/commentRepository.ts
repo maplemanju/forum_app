@@ -2,6 +2,7 @@ import prisma from '@/utils/prisma'
 import { Votes } from '@prisma/client'
 import { CommentType } from '@/types/comment'
 import { Session } from 'next-auth'
+import postRepository from './postRepository'
 
 export type GetByPostId = {
   postId: number
@@ -109,6 +110,9 @@ export const commentRepository = {
         },
       },
     })
+    if (!comment.parentCommentId) {
+      await postRepository.updatePostUpdate(comment.postId)
+    }
     return comment
   },
 
@@ -120,7 +124,7 @@ export const commentRepository = {
   },
 
   updateComment: async (args: UpdateComment, session: Session) => {
-    return await prisma.comments.update({
+    const comment = await prisma.comments.update({
       where: { id: args.id },
       data: {
         commentContent: args.commentContent,
@@ -134,6 +138,7 @@ export const commentRepository = {
         },
       },
     })
+    return comment
   },
 }
 

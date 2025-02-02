@@ -31,7 +31,7 @@ export default async function CategoryPage({
         <CategoryToolbox category={category} />
         <CategoryContent category={category} />
         <CategoryList categories={category?.childCategories} />
-        <PostList posts={posts} categorySlug={categorySlug} />
+        <PostList posts={posts} />
       </Content>
       <Footer />
     </>

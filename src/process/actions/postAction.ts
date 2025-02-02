@@ -11,6 +11,18 @@ import postRepository, {
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
+export const getRecentPosts = async (): Promise<PostType[]> => {
+  const response = postRepository.getRecentPosts()
+  console.log('getRecentPosts')
+  return response
+}
+
+export const getRecentlyUpdatedPosts = async (): Promise<PostType[]> => {
+  const response = postRepository.getRecentlyUpdatedPosts()
+  console.log('getRecentlyUpdatedPosts')
+  return response
+}
+
 export const getPostsByCategory = async (
   args: GetByCategory
 ): Promise<PostType[]> => {

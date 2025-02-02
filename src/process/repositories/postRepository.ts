@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma'
 import { generateSlug } from '@/utils/slugGenerator'
-import { Votes } from '@prisma/client'
+import { Votes, Prisma } from '@prisma/client'
 import { Session } from 'next-auth'
 
 export type GetByCategory = {
@@ -23,13 +23,16 @@ export type DeletePostProps = {
   id: number
 }
 
+type GetPostBy = {
+  where?: Prisma.PostsWhereInput
+  orderBy?: Prisma.PostsOrderByWithRelationInput[]
+}
+
 export const postRepository = {
-  getByCategory: async (args: GetByCategory) => {
+  getPosts: async (args: GetPostBy) => {
     const posts = await prisma.posts.findMany({
-      where: {
-        categoryId: args.categoryId,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
-      },
+      where: { ...args.where, OR: [{ isDeleted: false }, { isDeleted: null }] },
+      orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
       include: {
         _count: {
           select: {
@@ -46,12 +49,33 @@ export const postRepository = {
           },
         },
         category: true,
+        postUpdate: true,
         createdUser: {
           include: {
             userInfo: true,
           },
         },
       },
+    })
+    return posts
+  },
+
+  getByCategory: async (args: GetByCategory) => {
+    const posts = await postRepository.getPosts({
+      where: { categoryId: args.categoryId },
+      orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
+    })
+    return posts
+  },
+  getRecentPosts: async () => {
+    const posts = await postRepository.getPosts({
+      orderBy: [{ createdAt: 'desc' }],
+    })
+    return posts
+  },
+  getRecentlyUpdatedPosts: async () => {
+    const posts = await postRepository.getPosts({
+      orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
     })
     return posts
   },
@@ -74,6 +98,7 @@ export const postRepository = {
           },
         },
         category: true,
+        postUpdate: true,
         createdUser: {
           include: {
             userInfo: true,
@@ -95,6 +120,7 @@ export const postRepository = {
         updatedBy: Number(session.user.id),
       },
     })
+    await postRepository.updatePostUpdate(post.id)
     return post
   },
 
@@ -110,6 +136,14 @@ export const postRepository = {
     return await prisma.posts.update({
       where: { id: args.id },
       data: { isDeleted: true, updatedBy: Number(session.user.id) },
+    })
+  },
+
+  updatePostUpdate: async (postId: number) => {
+    return await prisma.postUpdates.upsert({
+      where: { postId },
+      update: { updatedAt: new Date() },
+      create: { postId },
     })
   },
 }

@@ -5,8 +5,7 @@ import PostEdit from '@/common/components/widgets/postEdit'
 export default async function EditPage({
   params,
 }: {
-  params: { postSlug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+  params: Promise<{ postSlug: string }>
 }) {
   const postSlug = (await params)?.postSlug
 
