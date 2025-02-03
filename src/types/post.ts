@@ -4,6 +4,7 @@ export type PostType = Prisma.PostsGetPayload<{
   include: {
     category: true
     postUpdate: true
+    postTags: true
     createdUser: {
       include: {
         userInfo: true

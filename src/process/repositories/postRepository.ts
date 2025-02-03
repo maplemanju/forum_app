@@ -13,14 +13,20 @@ export type CreatePost = {
   postTitle: string
   postContent: string
   categoryId: number
+  postTags?: Partial<UpsertPostTags>
 }
 export type UpdatePost = {
   id: number
   postTitle: string
   postContent: string
+  postTags?: Partial<UpsertPostTags>
 }
 export type DeletePostProps = {
   id: number
+}
+export type UpsertPostTags = {
+  postId: number
+  tags: string[]
 }
 
 type GetPostBy = {
@@ -50,6 +56,7 @@ export const postRepository = {
         },
         category: true,
         postUpdate: true,
+        postTags: true,
         createdUser: {
           include: {
             userInfo: true,
@@ -99,6 +106,7 @@ export const postRepository = {
         },
         category: true,
         postUpdate: true,
+        postTags: true,
         createdUser: {
           include: {
             userInfo: true,
@@ -112,23 +120,37 @@ export const postRepository = {
 
   createPost: async (args: CreatePost, session: Session) => {
     const slug = generateSlug(args.postTitle)
+    const { postTags, ...rest } = args
     const post = await prisma.posts.create({
       data: {
-        ...args,
+        ...rest,
         slug,
         createdBy: Number(session.user.id),
         updatedBy: Number(session.user.id),
       },
     })
     await postRepository.updatePostUpdate(post.id)
+    if (postTags?.tags) {
+      await postRepository.upsertPostTags({
+        tags: postTags.tags,
+        postId: post.id,
+      })
+    }
     return post
   },
 
   updatePost: async (args: UpdatePost, session: Session) => {
+    const { postTags, ...rest } = args
     const post = await prisma.posts.update({
       where: { id: args.id },
-      data: { ...args, updatedBy: Number(session.user.id) },
+      data: { ...rest, updatedBy: Number(session.user.id) },
     })
+    if (postTags?.tags) {
+      await postRepository.upsertPostTags({
+        tags: postTags.tags,
+        postId: post.id,
+      })
+    }
     return post
   },
 
@@ -144,6 +166,14 @@ export const postRepository = {
       where: { postId },
       update: { updatedAt: new Date() },
       create: { postId },
+    })
+  },
+
+  upsertPostTags: async (args: UpsertPostTags) => {
+    return await prisma.postTags.upsert({
+      where: { postId: args.postId },
+      update: { tags: args.tags },
+      create: { postId: args.postId, tags: args.tags },
     })
   },
 }

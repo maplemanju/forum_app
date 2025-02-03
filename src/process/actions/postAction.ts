@@ -11,6 +11,11 @@ import postRepository, {
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
+export type UpdatePostResponse = {
+  data?: Partial<PostType>
+  success?: boolean
+}
+
 export const getRecentPosts = async (): Promise<PostType[]> => {
   const response = postRepository.getRecentPosts()
   console.log('getRecentPosts')
@@ -39,24 +44,42 @@ export const getPostBySlug = async (
   return response
 }
 
-export const createPost = async (args: CreatePost) => {
+export const createPost = async (
+  args: CreatePost
+): Promise<UpdatePostResponse> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
   }
-  const response = postRepository.createPost(args, session)
+  const response = await postRepository.createPost(args, session)
   console.log('createPost')
-  return response
+  return {
+    data: response,
+    success: true,
+  }
 }
 
-export const updatePost = async (args: UpdatePost) => {
+export const updatePost = async (
+  args: UpdatePost
+): Promise<UpdatePostResponse> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
   }
-  const response = postRepository.updatePost(args, session)
-  console.log('updatePost')
-  return response
+  console.log('updatePost', args)
+  try {
+    const response = await postRepository.updatePost(args, session)
+    console.log('updatePost')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error updating post', error)
+    return {
+      success: false,
+    }
+  }
 }
 
 export const deletePost = async (args: DeletePostProps) => {

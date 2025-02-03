@@ -49,6 +49,14 @@ export const PostContent = ({ post }: PostProps) => {
           <span>{dayjs(post.updatedAt).format('YYYY/MM/DD HH:mm')}</span>
         </div>
       )}
+
+      {/* tags  */}
+      {post.postTags?.tags && post.postTags?.tags?.length > 0 && (
+        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600">
+          <div className="text-gray-600 mb-2">Tags</div>
+          <span>{post.postTags?.tags.join(', ')}</span>
+        </div>
+      )}
     </div>
   )
 }

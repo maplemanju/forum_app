@@ -34,7 +34,7 @@ model Posts {
   comments    Comments[]   @relation
   votes       Votes[]      @relation
   createdUser Users        @relation(fields: [createdBy], references: [id])
-  postsTags   PostTags[]   @relation
+  postTags    PostTags?    @relation
   postUpdate  PostUpdates? @relation
 
   @@map("posts")

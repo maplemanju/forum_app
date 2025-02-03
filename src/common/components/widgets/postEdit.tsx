@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useActionState } from 'react'
+import { redirect, useRouter } from 'next/navigation'
 import { Category } from '@/types/category'
 import { PostType } from '@/types/post'
 import {
   createPost,
   deletePost,
   updatePost,
+  UpdatePostResponse,
 } from '@/process/actions/postAction'
 
 interface PostEditProps {
@@ -17,35 +18,43 @@ interface PostEditProps {
 
 export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
-  const [title, setTitle] = useState(post?.postTitle || '')
-  const [content, setContent] = useState(post?.postContent || '')
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log(title, content, category?.id)
+  const handleSubmit = async (
+    prevState: UpdatePostResponse,
+    formData: FormData
+  ): Promise<UpdatePostResponse> => {
     if (!category) {
-      return
+      return { success: false }
     }
-    setIsSubmitting(true)
-    let response: any
+    const tags = formData.get('tags') as string
+    const args = {
+      id: post?.id,
+      postTitle: formData.get('title') as string,
+      postContent: formData.get('content') as string,
+      categoryId: category.id,
+      postTags: {
+        postId: post?.id,
+        tags: tags.split(' '),
+      },
+    }
+    let response: UpdatePostResponse
     if (post) {
-      response = await updatePost({
-        id: post.id,
-        postTitle: title,
-        postContent: content,
-      })
+      response = await updatePost({ ...args, id: post.id })
     } else {
-      response = await createPost({
-        postTitle: title,
-        postContent: content,
-        categoryId: category.id,
-      })
+      response = await createPost({ ...args, categoryId: category.id })
     }
-    console.log(response)
-    router.push(`/${category.slug}/${response.slug}`)
-    setIsSubmitting(false)
+    router.push(`/${category.slug}/${response.data?.slug}`)
+    return response
   }
+
+  const [formState, formAction, isPending] = useActionState(handleSubmit, {
+    data: {
+      id: post?.id,
+      postTitle: post?.postTitle || '',
+      postContent: post?.postContent || '',
+      postTags: post?.postTags,
+    },
+  })
 
   const handleDeletePost = async () => {
     if (!post || !category) return
@@ -59,16 +68,15 @@ export default function PostEdit({ post, category }: PostEditProps) {
       <h1 className="text-2xl font-bold mb-4">
         {post ? 'Edit Post' : 'Create New Post'}
       </h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium mb-1">
             Title
           </label>
           <input
             type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            defaultValue={formState.data?.postTitle || ''}
             className="w-full px-3 py-2 border rounded-md"
             required
           />
@@ -83,9 +91,9 @@ export default function PostEdit({ post, category }: PostEditProps) {
             </label>
             <input
               type="text"
-              id="category"
+              name="category"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={category.categoryName}
+              defaultValue={category.categoryName}
               readOnly
               disabled
               required
@@ -97,12 +105,22 @@ export default function PostEdit({ post, category }: PostEditProps) {
             Content
           </label>
           <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            name="content"
+            defaultValue={formState.data?.postContent || ''}
             rows={10}
             className="w-full px-3 py-2 border rounded-md"
             required
+          />
+        </div>
+        <div>
+          <label htmlFor="tags" className="block text-sm font-medium mb-1">
+            Tags
+          </label>
+          <input
+            type="text"
+            name="tags"
+            defaultValue={formState.data?.postTags?.tags.join(' ') || ''}
+            className="w-full px-3 py-2 border rounded-md"
           />
         </div>
         <div className="flex justify-end gap-2">
@@ -124,10 +142,10 @@ export default function PostEdit({ post, category }: PostEditProps) {
           </button>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isPending}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:bg-blue-300"
           >
-            {isSubmitting ? 'Saving...' : 'Save'}
+            {isPending ? 'Saving...' : 'Save'}
           </button>
         </div>
       </form>

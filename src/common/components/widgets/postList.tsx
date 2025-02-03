@@ -8,9 +8,10 @@ dayjs.extend(relativeTime)
 
 type PostListProps = {
   posts?: PostType[]
+  showCategory?: boolean
 }
 
-export const PostList = ({ posts }: PostListProps) => {
+export const PostList = ({ posts, showCategory = false }: PostListProps) => {
   if (!posts || posts.length === 0) {
     return <div className="text-gray-500 italic">No posts found</div>
   }
@@ -19,6 +20,15 @@ export const PostList = ({ posts }: PostListProps) => {
     <div>
       {posts.map((post: PostType) => (
         <div key={post.id} className="bg-white p-6  border-b border-gray-200">
+          {/* category  */}
+          {showCategory && (
+            <Link
+              href={`/${post.category.slug}`}
+              className="text-sm text-gray-500 mb-2 hover:text-blue-800"
+            >
+              {post.category.categoryName}
+            </Link>
+          )}
           {/* title  */}
           <Link href={`/${post.category.slug}/${post.slug}`}>
             <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-600">
