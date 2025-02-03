@@ -1,9 +1,32 @@
-// components/Modal.js
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 export default function Login() {
   const { data: session } = useSession()
+  const [isPopupWindow, setIsPopupWindow] = useState(false)
+
+  useEffect(() => {
+    // Check if window has an opener and is not the same window
+    const isPopup = window?.opener !== null && window?.opener !== window
+    setIsPopupWindow(isPopup)
+
+    // dont allow to access this page directly
+    if (!isPopup) {
+      redirect('/')
+    }
+  }, [])
+
+  useEffect(() => {
+    // close popup window if user is logged in
+    if (session && isPopupWindow) {
+      window.close()
+    } else if (session) {
+      redirect('/')
+    }
+  }, [session, isPopupWindow])
 
   const handleSocialLogin = (provider: string) => {
     // Replace with actual login logic
@@ -12,7 +35,7 @@ export default function Login() {
   }
 
   return !session ? (
-    <div>
+    <div className="p-4 min-w-[300px] max-w-[500px] w-full mx-auto">
       <h2 className="text-2xl font-semibold text-center mb-6">Sign In</h2>
 
       {/* SNS Login Buttons */}

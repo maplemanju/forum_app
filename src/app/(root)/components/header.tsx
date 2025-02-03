@@ -1,21 +1,29 @@
 'use client'
 
-import Modal from '@/common/components/modal'
-import Login from '@/common/components/login'
-import { useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 
 export default function Header() {
   const { data: session } = useSession()
 
-  const [openLoginModal, setOpenLoginModal] = useState(false)
-
   const loginOrLogout = () => {
     if (session) {
       signOut()
     } else {
-      setOpenLoginModal(true)
+      openLoginPopup()
     }
+  }
+
+  const openLoginPopup = () => {
+    const width = 500
+    const height = 600
+    const left = window.screenX + (window.outerWidth - width) / 2
+    const top = window.screenY + (window.outerHeight - height) / 2
+
+    window.open(
+      '/login',
+      '_blank',
+      `width=${width},height=${height},left=${left},top=${top},popup=yes,resizable=no`
+    )
   }
 
   return (
@@ -39,9 +47,6 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <Modal open={openLoginModal} onClose={() => setOpenLoginModal(false)}>
-        <Login />
-      </Modal>
     </div>
   )
 }

@@ -8,12 +8,14 @@ import {
   getRecentPosts,
   getRecentlyUpdatedPosts,
 } from '@/process/actions/postAction'
+import Header from './(root)/components/header'
 
 export default async function Home() {
   const categories = await getAllCategories()
   const posts = await getRecentlyUpdatedPosts()
   return (
     <>
+      <Header />
       <Content>
         <CategoryToolbox />
         <CategoryList categories={categories} />
