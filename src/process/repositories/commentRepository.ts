@@ -28,12 +28,12 @@ export const commentRepository = {
       where: {
         postId: args.postId,
         parentCommentId: null,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
+        isDeleted: false,
       },
       include: {
         childComments: {
           where: {
-            OR: [{ isDeleted: false }, { isDeleted: null }],
+            isDeleted: false,
           },
           include: {
             childComments: true,
@@ -76,7 +76,7 @@ export const commentRepository = {
     const comment = await prisma.comments.findUnique({
       where: {
         id: args.id,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
+        isDeleted: false,
       },
       include: {
         createdUser: {

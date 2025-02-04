@@ -24,7 +24,7 @@ export const categoryRepository = {
     return await prisma.categories.findMany({
       where: {
         parentCategoryId: null,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
+        isDeleted: false,
       },
     })
   },
@@ -32,12 +32,12 @@ export const categoryRepository = {
     return await prisma.categories.findUnique({
       where: {
         slug: args.slug,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
+        isDeleted: false,
       },
       include: {
         childCategories: {
           where: {
-            OR: [{ isDeleted: false }, { isDeleted: null }],
+            isDeleted: false,
           },
         },
         parentCategory: true,

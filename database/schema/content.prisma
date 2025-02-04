@@ -8,7 +8,7 @@ model Categories {
   updatedBy           Int      @map("updated_by")
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
-  isDeleted           Boolean? @map("is_deleted")
+  isDeleted           Boolean  @default(false) @map("is_deleted")
 
   childCategories Categories[] @relation("related_category")
   parentCategory  Categories?  @relation(name: "related_category", fields: [parentCategoryId], references: [id])
@@ -28,7 +28,7 @@ model Posts {
   updatedBy   Int      @map("updated_by")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  isDeleted   Boolean? @map("is_deleted")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
 
   category    Categories   @relation(fields: [categoryId], references: [id])
   comments    Comments[]   @relation
@@ -49,7 +49,7 @@ model Comments {
   updatedBy       Int      @map("updated_by")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
-  isDeleted       Boolean? @map("is_deleted")
+  isDeleted       Boolean  @default(false) @map("is_deleted")
 
   post           Posts      @relation(fields: [postId], references: [id])
   votes          Votes[]    @relation

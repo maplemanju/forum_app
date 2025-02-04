@@ -5,7 +5,7 @@ model Users {
   email        String   @unique @map("email") @db.VarChar(255)
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
-  isDeleted    Boolean? @map("is_deleted")
+  isDeleted    Boolean  @default(false) @map("is_deleted")
 
   userRoles UserRoles[] @relation
   userInfo  UserInfo?   @relation
@@ -21,7 +21,7 @@ model Roles {
   roleName   String      @unique @map("role_name") @db.VarChar(50)
   categoryId Int?        @map("categoryId")
   userRoles  UserRoles[] @relation
-  isDeleted  Boolean?    @map("is_deleted")
+  isDeleted  Boolean     @default(false) @map("is_deleted")
 
   category Categories? @relation(fields: [categoryId], references: [id])
 
@@ -31,7 +31,7 @@ model Roles {
 model UserRoles {
   userId    Int
   roleId    Int
-  isDeleted Boolean? @map("is_deleted")
+  isDeleted Boolean @default(false) @map("is_deleted")
 
   user Users @relation(fields: [userId], references: [id])
   role Roles @relation(fields: [roleId], references: [id])
@@ -46,7 +46,7 @@ model UserInfo {
   score       Int      @default(0) @map("score")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  isDeleted   Boolean? @map("is_deleted")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
 
   user Users @relation(fields: [userId], references: [id])
 
