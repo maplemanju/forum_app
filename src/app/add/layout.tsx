@@ -1,11 +1,7 @@
 import Header from '../(root)/components/header'
 import { Footer } from '@/common/components/footer'
 
-export default function CategoryLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AddLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />

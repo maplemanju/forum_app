@@ -1,5 +1,4 @@
 import { Content } from '@/common/components/content'
-import { Footer } from '@/common/components/footer'
 import { getCategory } from '@/process/actions/categoryAction'
 import { CategoryList } from '@/common/components/widgets/categoryList'
 import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
@@ -33,7 +32,6 @@ export default async function CategoryPage({
         <CategoryList categories={category?.childCategories} />
         <PostList posts={posts} />
       </Content>
-      <Footer />
     </>
   )
 }

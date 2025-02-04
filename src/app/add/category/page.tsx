@@ -1,5 +1,4 @@
 import { Content } from '@/common/components/content'
-import { Footer } from '@/common/components/footer'
 import CategoryEdit from '@/common/components/widgets/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Category } from '@/types/category'
@@ -19,7 +18,6 @@ export default async function AddCategoryPage({
       <Content>
         <CategoryEdit category={null} parentCategory={parentCategory} />
       </Content>
-      <Footer />
     </>
   )
 }

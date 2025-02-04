@@ -1,5 +1,4 @@
 import { Content } from '@/common/components/content'
-import { Footer } from '@/common/components/footer'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Breadcrumbs } from '@/common/components/widgets/breadcrumbs'
 import { getPostBySlug } from '@/process/actions/postAction'
@@ -41,7 +40,6 @@ export default async function PostPage({
         <PostContent post={post} />
         <CommentList comments={comments} postId={post?.id} />
       </Content>
-      <Footer />
     </>
   )
 }

@@ -30,7 +30,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       {visible && (
         <div
           style={{ width: width }}
-          className={`absolute bg-black text-white text-xs p-2 rounded z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 ${
+          className={`absolute bg-black dark:bg-gray-800 text-white  text-xs  p-2 rounded z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 ${
             className ?? ''
           }`}
         >
