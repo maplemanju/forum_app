@@ -7,6 +7,7 @@ import postRepository, {
   CreatePost,
   UpdatePost,
   DeletePostProps,
+  GetByKeyword,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -33,6 +34,14 @@ export const getPostsByCategory = async (
 ): Promise<PostType[]> => {
   const response = postRepository.getByCategory(args)
   console.log('getPostsByCategory')
+  return response
+}
+
+export const getPostsByKeyword = async (
+  args: GetByKeyword
+): Promise<PostType[]> => {
+  const response = postRepository.getPostsByKeyword(args)
+  console.log('getPostsByKeyword')
   return response
 }
 

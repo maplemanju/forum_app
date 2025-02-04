@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -31,11 +32,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/** left */}
         <div>
-          <h1 className="text-xl font-semibold">Forum App</h1>
+          <Link href="/">
+            <h1 className="text-xl font-semibold">Forum App</h1>
+          </Link>
         </div>
 
         {/** right */}
         <div className="flex items-center gap-4">
+          <Link href="/search">Search</Link>
           {session && (
             <div className="text-gray-600 dark:text-white">
               Welcome, {session.user?.name}

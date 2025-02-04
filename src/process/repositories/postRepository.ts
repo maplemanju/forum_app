@@ -34,17 +34,21 @@ type GetPostBy = {
   orderBy?: Prisma.PostsOrderByWithRelationInput[]
 }
 
+export type GetByKeyword = {
+  keyword: string[]
+}
+
 export const postRepository = {
   getPosts: async (args: GetPostBy) => {
     const posts = await prisma.posts.findMany({
-      where: { ...args.where, OR: [{ isDeleted: false }, { isDeleted: null }] },
+      where: { ...args.where, isDeleted: false },
       orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
       include: {
         _count: {
           select: {
             comments: {
               where: {
-                OR: [{ isDeleted: false }, { isDeleted: null }],
+                isDeleted: false,
               },
             },
             votes: {
@@ -86,12 +90,48 @@ export const postRepository = {
     })
     return posts
   },
+  getPostsByKeyword: async (args: GetByKeyword) => {
+    const keywords = args.keyword.filter((keyword) => !keyword.startsWith('#'))
+    const tags = args.keyword
+      .filter((keyword) => keyword.startsWith('#'))
+      .map((tag) => tag.slice(1))
+    const posts = await postRepository.getPosts({
+      where: {
+        OR: [
+          ...keywords.map((keyword) => ({
+            postTitle: {
+              contains: keyword,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          })),
+          ...keywords.map((keyword) => ({
+            postContent: {
+              contains: keyword,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          })),
+          ...(tags.length > 0
+            ? [
+                {
+                  postTags: {
+                    tags: {
+                      hasSome: tags,
+                    },
+                  },
+                },
+              ]
+            : []),
+        ],
+      },
+    })
+    return posts
+  },
 
   getBySlug: async (args: GetBySlug) => {
     const post = await prisma.posts.findUnique({
       where: {
         slug: args.slug,
-        OR: [{ isDeleted: false }, { isDeleted: null }],
+        isDeleted: false,
       },
       include: {
         _count: {

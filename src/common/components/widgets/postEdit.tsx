@@ -34,7 +34,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
       categoryId: category.id,
       postTags: {
         postId: post?.id,
-        tags: tags.split(' '),
+        tags: tags.split(' ').map((tag) => tag.replace('#', '')),
       },
     }
     let response: UpdatePostResponse
@@ -119,7 +119,11 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <input
             type="text"
             name="tags"
-            defaultValue={formState.data?.postTags?.tags.join(' ') || ''}
+            defaultValue={
+              formState.data?.postTags?.tags
+                .map((tag) => `#${tag}`)
+                .join(' ') || ''
+            }
             className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
           />
         </div>
