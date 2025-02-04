@@ -27,7 +27,7 @@ export default function Header() {
   }
 
   return (
-    <div className="w-full bg-white border-b border-gray-200 px-4 py-3">
+    <div className="w-full border-b border-gray-200 dark:border-gray-800 px-4 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/** left */}
         <div>
@@ -37,10 +37,12 @@ export default function Header() {
         {/** right */}
         <div className="flex items-center gap-4">
           {session && (
-            <div className="text-gray-600">Welcome, {session.user?.name}</div>
+            <div className="text-gray-600 dark:text-white">
+              Welcome, {session.user?.name}
+            </div>
           )}
           <button
-            className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+            className="px-4 py-2 rounded-md bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 dark:hover:bg-blue-500 text-white transition-colors"
             onClick={loginOrLogout}
           >
             {session ? 'Logout' : 'Login'}

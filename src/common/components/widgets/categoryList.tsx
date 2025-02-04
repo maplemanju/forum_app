@@ -10,15 +10,15 @@ export const CategoryList = ({ categories }: Props) => {
     return (
       <div
         key={category.id}
-        className="bg-gray-100 p-4 rounded-lg mb-4 flex flex-column gap-2 justify-between"
+        className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4 flex flex-column gap-2 justify-between"
       >
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
               {category.categoryName}
             </h3>
           </Link>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
             {category.categoryDescription}
           </p>
 
@@ -31,7 +31,7 @@ export const CategoryList = ({ categories }: Props) => {
         <div className="mt-2 text-sm">
           <Link
             href={`/${category.slug}/edit`}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600"
           >
             Edit Category
           </Link>

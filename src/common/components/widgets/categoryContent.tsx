@@ -9,13 +9,15 @@ interface CategoryContentProps {
 
 const CategoryContent: React.FC<CategoryContentProps> = ({ category }) => {
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm p-6 mb-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+    <div className="w-full rounded-lg shadow-sm p-6 mb-6">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
         {category?.categoryName}
       </h1>
 
       <div className="space-y-4">
-        <p className="text-gray-600">{category?.categoryDescription}</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          {category?.categoryDescription}
+        </p>
       </div>
     </div>
   )

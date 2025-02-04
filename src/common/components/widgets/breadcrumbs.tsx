@@ -18,7 +18,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
         <li className="inline-flex items-center">
           <Link
             href="/"
-            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600"
+            className="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
           >
             <svg
               className="w-3 h-3 mr-2.5"
@@ -52,7 +52,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
               </svg>
               <Link
                 href={`/${category.parentCategory.slug}`}
-                className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
+                className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 md:ml-2"
               >
                 {category.parentCategory.categoryName}
               </Link>
@@ -79,7 +79,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
               </svg>
               <Link
                 href={`/${category.slug}`}
-                className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
+                className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 md:ml-2"
               >
                 {category.categoryName}
               </Link>

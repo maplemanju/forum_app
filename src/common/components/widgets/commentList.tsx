@@ -49,7 +49,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
       <div className="mb-4">
         <button
           onClick={() => setOpenAddComments(!openAddComments)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-blue-600 dark:bg-blue-400 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
         >
           Add Comment
         </button>
@@ -62,13 +62,13 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
         />
       )}
       {optimisticComments.length === 0 ? (
-        <div className="text-gray-600">No comments yet</div>
+        <div className="text-gray-600 dark:text-gray-400">No comments yet</div>
       ) : (
         optimisticComments.map((comment) => {
           return (
             <div
               key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
-              className={`bg-white p-4 rounded-lg mb-3 shadow-sm transition-colors duration-300 ${
+              className={` p-4 rounded-lg mb-3 shadow-sm transition-colors duration-300 ${
                 comment.isNewComment ? 'bg-yellow-100' : ''
               }`}
             >

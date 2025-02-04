@@ -64,7 +64,7 @@ export default function CategoryEdit({
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white p-6">
+    <div className="w-full max-w-2xl mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-6">
         {category ? 'Edit Category' : 'Create New Category'}
       </h2>
@@ -94,7 +94,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
           >
             Name
           </label>
@@ -104,7 +104,7 @@ export default function CategoryEdit({
             id="name"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             // required
           />
         </div>
@@ -112,7 +112,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="slug"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
           >
             Slug
           </label>
@@ -121,7 +121,7 @@ export default function CategoryEdit({
             id="slug"
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -129,7 +129,7 @@ export default function CategoryEdit({
         <div className="mb-6">
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
           >
             Description
           </label>
@@ -137,7 +137,7 @@ export default function CategoryEdit({
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
             required
           />
         </div>
@@ -147,7 +147,7 @@ export default function CategoryEdit({
             <button
               type="button"
               onClick={() => handleDeleteCategory()}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-500 border border-gray-300 rounded-md hover:bg-red-600"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 dark:bg-red-400 border border-gray-300 dark:border-gray-800 rounded-md hover:bg-red-600 dark:hover:bg-red-500"
             >
               Delete
             </button>
@@ -155,13 +155,13 @@ export default function CategoryEdit({
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500"
           >
             {category ? 'Update' : 'Create'}
           </button>

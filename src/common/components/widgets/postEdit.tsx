@@ -64,7 +64,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white p-6">
+    <div className="w-full max-w-2xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">
         {post ? 'Edit Post' : 'Create New Post'}
       </h1>
@@ -77,7 +77,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             type="text"
             name="title"
             defaultValue={formState.data?.postTitle || ''}
-            className="w-full px-3 py-2 border rounded-md"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
             required
           />
         </div>
@@ -92,7 +92,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             <input
               type="text"
               name="category"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               defaultValue={category.categoryName}
               readOnly
               disabled
@@ -108,7 +108,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             name="content"
             defaultValue={formState.data?.postContent || ''}
             rows={10}
-            className="w-full px-3 py-2 border rounded-md"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
             required
           />
         </div>
@@ -120,7 +120,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             type="text"
             name="tags"
             defaultValue={formState.data?.postTags?.tags.join(' ') || ''}
-            className="w-full px-3 py-2 border rounded-md"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
           />
         </div>
         <div className="flex justify-end gap-2">
@@ -128,7 +128,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             <button
               type="button"
               onClick={() => handleDeletePost()}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 disabled:bg-red-300"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 dark:bg-red-400 rounded-md hover:bg-red-600 dark:hover:bg-red-500 disabled:bg-red-300"
             >
               Delete
             </button>
@@ -136,14 +136,14 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
+            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isPending}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:bg-blue-300"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500 disabled:bg-blue-300"
           >
             {isPending ? 'Saving...' : 'Save'}
           </button>

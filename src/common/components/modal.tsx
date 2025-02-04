@@ -19,7 +19,7 @@ export default function Modal({ open, onClose, children }: Props) {
         className="fixed inset-0 flex items-center justify-center p-4"
         onClick={handleOverlayClick}
       >
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl p-6">
+        <div className="w-full max-w-lg rounded-lg shadow-xl p-6">
           {children}
         </div>
       </div>

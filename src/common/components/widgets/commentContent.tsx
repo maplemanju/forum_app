@@ -120,11 +120,13 @@ const CommentContent: React.FC<CommentContentProps> = ({
           />
         ) : (
           /* content  */
-          <p className="text-gray-700">{comment.commentContent}</p>
+          <p className="text-gray-700 dark:text-gray-400">
+            {comment.commentContent}
+          </p>
         )}
 
         {/* info bar  */}
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <span>
             Posted by {comment.createdUser?.userInfo?.displayName ?? '-'}
           </span>
@@ -139,7 +141,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
         </div>
 
         {/* action bar  */}
-        <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
+        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
           {optimisticChildComments.length > 0 &&
             comment.parentCommentId === null && (
               <button onClick={onOpenComments}>
@@ -194,7 +196,9 @@ const CommentContent: React.FC<CommentContentProps> = ({
                 `optimistic-child-comment-${crypto.randomUUID()}`
               }
               className={`ml-4 p-4 ${
-                childComment.isNewComment ? 'bg-yellow-100' : ''
+                childComment.isNewComment
+                  ? 'bg-yellow-100 dark:bg-yellow-200'
+                  : ''
               } transition-colors duration-400`}
             >
               {renderComments(childComment)}

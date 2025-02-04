@@ -15,14 +15,14 @@ export const PostContent = ({ post }: PostProps) => {
   }
 
   return (
-    <div className="bg-white p-6">
+    <div className=" p-6">
       {/* title  */}
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
         {post.postTitle}
       </h1>
 
       {/* info bar  */}
-      <div className="flex items-center text-sm text-gray-500 mt-2 gap-2">
+      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <div>
           Posted by <span>{post.createdUser.userInfo?.displayName}</span>
         </div>
@@ -38,22 +38,24 @@ export const PostContent = ({ post }: PostProps) => {
       </div>
 
       {/* content  */}
-      <div className="text-gray-700 whitespace-pre-wrap mt-3">
+      <div className="text-gray-700 dark:text-gray-400 whitespace-pre-wrap mt-3">
         {post.postContent}
       </div>
 
       {/* updated at  */}
       {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
-        <div className="flex flex-column gap-2 mt-4 text-sm text-gray-600">
-          <div className="text-gray-600 mb-2">Updated at</div>
+        <div className="flex flex-column gap-2 mt-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-gray-600 dark:text-gray-400 mb-2">
+            Updated at
+          </div>
           <span>{dayjs(post.updatedAt).format('YYYY/MM/DD HH:mm')}</span>
         </div>
       )}
 
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags?.length > 0 && (
-        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600">
-          <div className="text-gray-600 mb-2">Tags</div>
+        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-gray-600 dark:text-gray-400 mb-2">Tags</div>
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>
       )}

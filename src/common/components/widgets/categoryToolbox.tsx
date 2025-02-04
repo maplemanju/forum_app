@@ -25,7 +25,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
       {category && (
         <button
           onClick={() => router.push(`${category.slug}/edit`)}
-          className="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 flex items-center gap-2"
+          className="px-4 py-2 text-sm font-medium text-white bg-yellow-500 dark:bg-yellow-400 rounded-md hover:bg-yellow-600 dark:hover:bg-yellow-500 flex items-center gap-2"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
 
       <button
         onClick={handleAddCategory}
-        className="px-4 py-2 text-sm ml-2 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 flex items-center gap-2"
+        className="px-4 py-2 text-sm ml-2 font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500 flex items-center gap-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +67,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
       </button>
       <button
         onClick={() => router.push(`/add/post?categorySlug=${category?.slug}`)}
-        className="px-4 py-2 ml-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 flex items-center gap-2"
+        className="px-4 py-2 ml-2 text-sm font-medium text-white bg-green-500 dark:bg-green-400 rounded-md hover:bg-green-600 dark:hover:bg-green-500 flex items-center gap-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
