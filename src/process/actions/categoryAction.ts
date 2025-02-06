@@ -63,29 +63,45 @@ export const getCategory = async (
 
 export const createCategory = async (
   args: CreateCategoryProps
-): Promise<CategoryType | null> => {
+): Promise<UpdateCategoryResponse> => {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) throw new Error('Unauthorized')
 
     const response = await categoryRepository.createCategory(args, session)
     console.log('createCategory')
-    return response
+    return {
+      data: response,
+      success: true,
+    }
   } catch (error) {
     console.error('Error creating category:', error)
-    throw error
+    throw new ApplicationError('Error creating category')
   }
+}
+
+export type UpdateCategoryResponse = {
+  data?: Partial<CategoryType>
+  success?: boolean
 }
 
 export const updateCategory = async (
   args: UpdateCategoryProps
-): Promise<CategoryType> => {
+): Promise<UpdateCategoryResponse> => {
   const session = await getServerSession(authOptions)
   if (!session?.user) throw new Error('Unauthorized')
 
-  const response = await categoryRepository.updateCategory(args, session)
-  console.log('updateCategory')
-  return response
+  try {
+    const response = await categoryRepository.updateCategory(args, session)
+    console.log('updateCategory')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error updating category:', error)
+    throw new ApplicationError('Error updating category')
+  }
 }
 
 export const deleteCategory = async (

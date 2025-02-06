@@ -1,5 +1,6 @@
 import CategoryEdit from '@/common/components/widgets/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
+import { Alert } from '@/common/components/alerts'
 
 export default async function CategoryEditPage({
   params,
@@ -7,11 +8,14 @@ export default async function CategoryEditPage({
   params: Promise<{ categorySlug: string }>
 }) {
   const categorySlug = (await params)?.categorySlug
-  const category = await getCategory({ slug: categorySlug })
+  const categoryResponse = await getCategory({ slug: categorySlug })
   return (
-    <CategoryEdit
-      category={category.data}
-      parentCategory={category.data?.parentCategory}
-    />
+    <>
+      <Alert response={categoryResponse} />
+      <CategoryEdit
+        category={categoryResponse.data}
+        parentCategory={categoryResponse.data?.parentCategory}
+      />
+    </>
   )
 }

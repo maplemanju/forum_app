@@ -13,5 +13,5 @@ export default async function EditPage({
   if (postSlug) {
     post = await getPostBySlug({ slug: postSlug })
   }
-  return <PostEdit post={post} category={post?.category || null} />
+  return <PostEdit post={post} category={post?.category} />
 }

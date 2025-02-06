@@ -9,9 +9,14 @@ export default async function AddCategoryPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const parentCategorySlug = (await searchParams)?.parentCategorySlug
-  const parentCategoryResponse = await getCategory({
-    slug: parentCategorySlug as string,
-  })
+
+  let parentCategoryResponse
+  if (parentCategorySlug) {
+    parentCategoryResponse = await getCategory({
+      slug: parentCategorySlug as string,
+    })
+  }
+
   return (
     <>
       <Content>

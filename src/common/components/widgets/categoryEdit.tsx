@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useActionState } from 'react'
 import { CategoryType } from '@/types/category'
 import { useRouter } from 'next/navigation'
 import {
   createCategory,
   deleteCategory,
   updateCategory,
+  UpdateCategoryResponse,
 } from '@/process/actions/categoryAction'
 
 interface CategoryEditProps {
@@ -20,38 +20,37 @@ export default function CategoryEdit({
   parentCategory,
 }: CategoryEditProps) {
   const router = useRouter()
-  const { data: session } = useSession()
-  const [title, setTitle] = useState(category?.categoryName || '')
-  const [description, setDescription] = useState(
-    category?.categoryDescription || ''
-  )
-  const [slug, setSlug] = useState(category?.slug || '')
 
-  if (!session) {
-    return null
-  }
+  const handleSubmit = async (
+    prevState: UpdateCategoryResponse,
+    formData: FormData
+  ): Promise<UpdateCategoryResponse> => {
+    const args = {
+      categoryName: formData.get('categoryName') as string,
+      slug: formData.get('slug') as string,
+      categoryDescription: formData.get('categoryDescription') as string,
+    }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log(title, description, slug, category?.parentCategoryId)
-
+    let response: UpdateCategoryResponse
     if (category) {
-      await updateCategory({
-        id: category.id,
-        categoryName: title,
-        categoryDescription: description,
-        slug: slug,
-      })
+      response = await updateCategory({ ...args, id: category.id })
     } else {
-      await createCategory({
-        categoryName: title,
-        categoryDescription: description,
-        slug: slug,
+      response = await createCategory({
+        ...args,
         parentCategoryId: parentCategory?.id,
       })
     }
-    router.push(`/${slug}`)
+    router.push(`/${response.data?.slug}`)
+    return response
   }
+
+  const [formState, formAction, isPending] = useActionState(handleSubmit, {
+    data: {
+      categoryName: category?.categoryName || '',
+      slug: category?.slug || '',
+      categoryDescription: category?.categoryDescription || '',
+    },
+  })
 
   const handleDeleteCategory = async () => {
     if (!category) return
@@ -69,7 +68,7 @@ export default function CategoryEdit({
         {category ? 'Edit Category' : 'Create New Category'}
       </h2>
 
-      <form onSubmit={handleSubmit}>
+      <form action={formAction}>
         <div className="mb-4">
           {parentCategory && (
             <div className="mb-4">
@@ -81,8 +80,8 @@ export default function CategoryEdit({
               </label>
               <input
                 type="text"
-                id="name"
-                value={parentCategory.categoryName}
+                id="parentCategory"
+                defaultValue={parentCategory.categoryName}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 // required
                 disabled
@@ -93,7 +92,7 @@ export default function CategoryEdit({
         </div>
         <div className="mb-4">
           <label
-            htmlFor="name"
+            htmlFor="categoryName"
             className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
           >
             Name
@@ -101,9 +100,9 @@ export default function CategoryEdit({
 
           <input
             type="text"
-            id="name"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            id="categoryName"
+            name="categoryName"
+            defaultValue={formState.data?.categoryName}
             className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             // required
           />
@@ -119,8 +118,8 @@ export default function CategoryEdit({
           <input
             type="text"
             id="slug"
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            name="slug"
+            defaultValue={formState.data?.slug}
             className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -128,15 +127,15 @@ export default function CategoryEdit({
 
         <div className="mb-6">
           <label
-            htmlFor="description"
+            htmlFor="categoryDescription"
             className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
           >
             Description
           </label>
           <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="categoryDescription"
+            name="categoryDescription"
+            defaultValue={formState.data?.categoryDescription ?? ''}
             className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
             required
           />
@@ -161,9 +160,10 @@ export default function CategoryEdit({
           </button>
           <button
             type="submit"
+            disabled={isPending}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500"
           >
-            {category ? 'Update' : 'Create'}
+            {isPending ? 'Submitting...' : category ? 'Update' : 'Create'}
           </button>
         </div>
       </form>

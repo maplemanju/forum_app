@@ -17,7 +17,9 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
   }
 
   const handleAddCategory = () => {
-    router.push(`/add/category?parentCategorySlug=${category?.slug}`)
+    router.push(
+      `/add/category${category ? `?parentCategorySlug=${category.slug}` : ''}`
+    )
   }
 
   return (
