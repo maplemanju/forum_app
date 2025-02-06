@@ -14,22 +14,17 @@ export default async function CategoryPage({
 }) {
   const categorySlug = (await params)?.categorySlug
 
-  let category
-  let posts
-  if (categorySlug) {
-    category = await getCategory({ slug: categorySlug })
-    if (category) {
-      posts = await getPostsByCategory({ categoryId: Number(category?.id) })
-    }
-    console.log('posts', posts)
-  }
+  const category = await getCategory({ slug: categorySlug })
+  const posts = await getPostsByCategory({
+    categoryId: Number(category.data?.id),
+  })
   return (
     <>
       <Content>
-        <Breadcrumbs category={category} />
-        <CategoryToolbox category={category} />
-        <CategoryContent category={category} />
-        <CategoryList categories={category?.childCategories} />
+        <Breadcrumbs category={category.data} />
+        <CategoryToolbox category={category.data} />
+        <CategoryContent category={category.data} />
+        <CategoryList categories={category?.data?.childCategories} />
         <PostList posts={posts} />
       </Content>
     </>

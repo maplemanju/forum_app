@@ -69,7 +69,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
             <div
               key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
               className={` p-4 rounded-lg mb-3 shadow-sm transition-colors duration-300 ${
-                comment.isNewComment ? 'bg-yellow-100' : ''
+                comment.isNewComment ? 'bg-yellow-100 dark:bg-green-950' : ''
               }`}
             >
               <CommentContent

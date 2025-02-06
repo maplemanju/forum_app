@@ -5,9 +5,6 @@ import { getPostBySlug } from '@/process/actions/postAction'
 import { PostContent } from '@/common/components/widgets/postContent'
 import CommentList from '@/common/components/widgets/commentList'
 import { getCommentsByPostId } from '@/process/actions/commentAction'
-import { CommentType } from '@/types/comment'
-import { PostType } from '@/types/post'
-import { Category } from '@/types/category'
 import PostToolbox from '@/common/components/widgets/postToolbox'
 
 export default async function PostPage({
@@ -16,26 +13,16 @@ export default async function PostPage({
   params: Promise<{ categorySlug: string; postSlug: string }>
 }) {
   const postSlug = (await params)?.postSlug
-  let post: PostType | null = null
-  let comments: CommentType[] = []
-  if (postSlug) {
-    post = await getPostBySlug({ slug: postSlug })
-    console.log('post', post)
-    if (post) {
-      comments = await getCommentsByPostId({ postId: Number(post?.id) })
-    }
-    console.log('comments', comments)
-  }
+  const post = await getPostBySlug({ slug: postSlug })
+  const comments = await getCommentsByPostId({
+    postId: Number(post?.id),
+  })
   const categorySlug = (await params)?.categorySlug
-  let category: Category | null = null
-  if (categorySlug) {
-    category = await getCategory({ slug: categorySlug })
-    console.log('category', category)
-  }
+  const category = await getCategory({ slug: categorySlug })
   return (
     <>
       <Content>
-        <Breadcrumbs category={category} post={post} />
+        <Breadcrumbs category={category.data} post={post} />
         <PostToolbox post={post} />
         <PostContent post={post} />
         <CommentList comments={comments} postId={post?.id} />

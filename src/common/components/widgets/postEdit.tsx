@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react'
 import { redirect, useRouter } from 'next/navigation'
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
 import {
   createPost,
@@ -13,7 +13,7 @@ import {
 
 interface PostEditProps {
   post: PostType | null
-  category: Category | null
+  category?: CategoryType
 }
 
 export default function PostEdit({ post, category }: PostEditProps) {

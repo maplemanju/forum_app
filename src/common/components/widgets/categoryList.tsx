@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 
 type Props = {
-  categories?: Category[]
+  categories?: CategoryType[]
 }
 export const CategoryList = ({ categories }: Props) => {
-  const renderCategory = (category: Category) => {
+  const renderCategory = (category: CategoryType) => {
     return (
       <div
         key={category.id}

@@ -1,10 +1,10 @@
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 interface CategoryContentProps {
-  category?: Category | null
+  category?: CategoryType | null
 }
 
 const CategoryContent: React.FC<CategoryContentProps> = ({ category }) => {

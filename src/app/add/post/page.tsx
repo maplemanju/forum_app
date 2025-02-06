@@ -1,7 +1,7 @@
 import { Content } from '@/common/components/content'
 import PostEdit from '@/common/components/widgets/postEdit'
 import { getCategory } from '@/process/actions/categoryAction'
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 
 export default async function AddPostPage({
   searchParams,
@@ -9,15 +9,12 @@ export default async function AddPostPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const categorySlug = (await searchParams)?.categorySlug
-  let category: Category | null = null
-  if (categorySlug) {
-    category = await getCategory({ slug: categorySlug as string })
-  }
+  const category = await getCategory({ slug: categorySlug as string })
 
   return (
     <>
       <Content>
-        <PostEdit post={null} category={category} />
+        <PostEdit post={null} category={category.data} />
       </Content>
     </>
   )

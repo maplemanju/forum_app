@@ -1,6 +1,6 @@
 import { Categories } from '@prisma/client'
 
-export type Category = Categories & {
-  childCategories?: Category[]
-  parentCategory?: Category | null
+export type CategoryType = Categories & {
+  childCategories?: Categories[]
+  parentCategory?: Categories | null
 }

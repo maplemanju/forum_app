@@ -1,5 +1,6 @@
 import prisma from '@/utils/prisma'
 import { Session } from 'next-auth'
+import { NotFoundError } from '@/utils/errors'
 
 export type GetCategoryProps = {
   slug: string
@@ -29,7 +30,7 @@ export const categoryRepository = {
     })
   },
   getCategory: async (args: GetCategoryProps) => {
-    return await prisma.categories.findUnique({
+    const category = await prisma.categories.findUnique({
       where: {
         slug: args.slug,
         isDeleted: false,
@@ -43,6 +44,10 @@ export const categoryRepository = {
         parentCategory: true,
       },
     })
+    if (!category) {
+      throw new NotFoundError('Category not found')
+    }
+    return category
   },
   createCategory: async (args: CreateCategoryProps, session: Session) => {
     return await prisma.categories.create({

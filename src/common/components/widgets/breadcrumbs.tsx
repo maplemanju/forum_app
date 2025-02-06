@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
 
 type BreadcrumbsProps = {
-  category?: Category | null
+  category?: CategoryType | null
   post?: PostType | null
 }
 

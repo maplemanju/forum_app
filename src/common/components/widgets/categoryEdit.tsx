@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 import { useRouter } from 'next/navigation'
 import {
   createCategory,
@@ -11,8 +11,8 @@ import {
 } from '@/process/actions/categoryAction'
 
 interface CategoryEditProps {
-  category?: Category | null
-  parentCategory?: Category | null
+  category?: CategoryType | null
+  parentCategory?: CategoryType | null
 }
 
 export default function CategoryEdit({

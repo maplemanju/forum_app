@@ -18,7 +18,7 @@ export default async function Home() {
       <Header />
       <Content>
         <CategoryToolbox />
-        <CategoryList categories={categories} />
+        <CategoryList categories={categories.data} />
         <PostList posts={posts} showCategory={true} />
       </Content>
       <Footer />

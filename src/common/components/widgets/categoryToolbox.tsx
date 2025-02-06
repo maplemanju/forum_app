@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Category } from '@/types/category'
+import { CategoryType } from '@/types/category'
 
 interface CategoryToolboxProps {
-  category?: Category | null
+  category?: CategoryType | null
 }
 
 export default function CategoryToolbox({ category }: CategoryToolboxProps) {

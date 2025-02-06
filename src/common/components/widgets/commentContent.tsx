@@ -197,7 +197,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
               }
               className={`ml-4 p-4 ${
                 childComment.isNewComment
-                  ? 'bg-yellow-100 dark:bg-yellow-200'
+                  ? 'bg-yellow-100 dark:bg-green-950'
                   : ''
               } transition-colors duration-400`}
             >

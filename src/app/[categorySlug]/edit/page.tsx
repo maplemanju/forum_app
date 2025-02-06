@@ -10,8 +10,8 @@ export default async function CategoryEditPage({
   const category = await getCategory({ slug: categorySlug })
   return (
     <CategoryEdit
-      category={category}
-      parentCategory={category?.parentCategory}
+      category={category.data}
+      parentCategory={category.data?.parentCategory}
     />
   )
 }
