@@ -19,8 +19,8 @@ export class ApplicationError extends Error {
   }
 }
 
-export type ErrorResponse<T> = {
-  success: boolean
+export type ResponseType<T> = {
+  success?: boolean
   message?: string
   data?: T
   type?: 'error' | 'success' | 'warning' | 'info'

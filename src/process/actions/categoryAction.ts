@@ -8,11 +8,11 @@ import categoryRepository, {
 } from '../repositories/categoryRepository'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { ErrorResponse, ApplicationError, NotFoundError } from '@/utils/errors'
+import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
 
 export const getAllCategories = async (): Promise<
-  ErrorResponse<CategoryType[]>
+  ResponseType<CategoryType[]>
 > => {
   try {
     const response = await categoryRepository.getAll()
@@ -37,7 +37,7 @@ export const getAllCategories = async (): Promise<
 
 export const getCategory = async (
   args: GetCategoryProps
-): Promise<ErrorResponse<CategoryType>> => {
+): Promise<ResponseType<CategoryType>> => {
   console.log('getCategory', args)
   try {
     const response = await categoryRepository.getCategory(args)
@@ -61,6 +61,8 @@ export const getCategory = async (
   }
 }
 
+export type UpdateCategoryResponse = ResponseType<Partial<CategoryType>>
+
 export const createCategory = async (
   args: CreateCategoryProps
 ): Promise<UpdateCategoryResponse> => {
@@ -78,11 +80,6 @@ export const createCategory = async (
     console.error('Error creating category:', error)
     throw new ApplicationError('Error creating category')
   }
-}
-
-export type UpdateCategoryResponse = {
-  data?: Partial<CategoryType>
-  success?: boolean
 }
 
 export const updateCategory = async (
@@ -106,11 +103,18 @@ export const updateCategory = async (
 
 export const deleteCategory = async (
   args: DeleteCategoryProps
-): Promise<CategoryType> => {
+): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
   if (!session?.user) throw new Error('Unauthorized')
 
-  const response = await categoryRepository.deleteCategory(args, session)
-  console.log('deleteCategory')
-  return response
+  try {
+    await categoryRepository.deleteCategory(args, session)
+    console.log('deleteCategory')
+    return {
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error deleting category:', error)
+    throw new ApplicationError('Error deleting category')
+  }
 }

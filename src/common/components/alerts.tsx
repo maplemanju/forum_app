@@ -1,9 +1,9 @@
 'use client'
 
-import { ErrorResponse } from '@/utils/errors'
+import { ResponseType } from '@/utils/errors'
 
 type AlertProps = {
-  response?: ErrorResponse<unknown>
+  response?: ResponseType<unknown>
 }
 
 export const Alert = ({ response }: AlertProps) => {
