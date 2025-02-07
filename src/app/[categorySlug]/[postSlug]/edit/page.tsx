@@ -1,6 +1,7 @@
 import { getPostBySlug } from '@/process/actions/postAction'
-import { PostType } from '@/types/post'
 import PostEdit from '@/common/components/widgets/postEdit'
+import { Alert } from '@/common/components/alerts'
+import { notFound } from 'next/navigation'
 
 export default async function EditPage({
   params,
@@ -8,10 +9,17 @@ export default async function EditPage({
   params: Promise<{ postSlug: string }>
 }) {
   const postSlug = (await params)?.postSlug
-
-  let post: PostType | null = null
-  if (postSlug) {
-    post = await getPostBySlug({ slug: postSlug })
+  const postResponse = await getPostBySlug({ slug: postSlug })
+  if (!postResponse.success) {
+    return notFound()
   }
-  return <PostEdit post={post} category={post?.category} />
+  return (
+    <>
+      <Alert response={postResponse} />
+      <PostEdit
+        post={postResponse.data}
+        category={postResponse.data?.category}
+      />
+    </>
+  )
 }

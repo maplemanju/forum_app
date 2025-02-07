@@ -4,22 +4,19 @@ import { getAllCategories } from '@/process/actions/categoryAction'
 import { CategoryList } from '@/common/components/widgets/categoryList'
 import CategoryToolbox from '@/common/components/widgets/categoryToolbox'
 import { PostList } from '@/common/components/widgets/postList'
-import {
-  getRecentPosts,
-  getRecentlyUpdatedPosts,
-} from '@/process/actions/postAction'
+import { getRecentlyUpdatedPosts } from '@/process/actions/postAction'
 import Header from './(root)/components/header'
 
 export default async function Home() {
-  const categories = await getAllCategories()
-  const posts = await getRecentlyUpdatedPosts()
+  const categoriesResponse = await getAllCategories()
+  const postsResponse = await getRecentlyUpdatedPosts()
   return (
     <>
       <Header />
       <Content>
         <CategoryToolbox />
-        <CategoryList categories={categories.data} />
-        <PostList posts={posts} showCategory={true} />
+        <CategoryList categories={categoriesResponse.data} />
+        <PostList posts={postsResponse.data} showCategory={true} />
       </Content>
       <Footer />
     </>

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 
-export default function SearchBox({ tags }: { tags: string[] }) {
+export default function SearchBox({ tags }: { tags?: string[] }) {
   const router = useRouter()
 
   const handleSearch = (prev: string, formData: FormData) => {
@@ -29,7 +29,7 @@ export default function SearchBox({ tags }: { tags: string[] }) {
         className="px-4 py-2 border rounded-lg flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
       />
       <datalist id="tag-suggestions">
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <option value={`#${tag}`} key={tag} />
         ))}
       </datalist>

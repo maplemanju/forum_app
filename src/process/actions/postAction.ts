@@ -11,46 +11,97 @@ import postRepository, {
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 
 export type UpdatePostResponse = {
   data?: Partial<PostType>
   success?: boolean
 }
 
-export const getRecentPosts = async (): Promise<PostType[]> => {
-  const response = postRepository.getRecentPosts()
-  console.log('getRecentPosts')
-  return response
+export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
+  try {
+    const response = await postRepository.getRecentPosts()
+    console.log('getRecentPosts')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error getting recent posts:', error)
+    throw new ApplicationError('Error getting recent posts')
+  }
 }
 
-export const getRecentlyUpdatedPosts = async (): Promise<PostType[]> => {
-  const response = postRepository.getRecentlyUpdatedPosts()
-  console.log('getRecentlyUpdatedPosts')
-  return response
+export const getRecentlyUpdatedPosts = async (): Promise<
+  ResponseType<PostType[]>
+> => {
+  try {
+    const response = await postRepository.getRecentlyUpdatedPosts()
+    console.log('getRecentlyUpdatedPosts')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error getting recently updated posts:', error)
+    throw new ApplicationError('Error getting recently updated posts')
+  }
 }
 
 export const getPostsByCategory = async (
   args: GetByCategory
-): Promise<PostType[]> => {
-  const response = postRepository.getByCategory(args)
-  console.log('getPostsByCategory')
-  return response
+): Promise<ResponseType<PostType[]>> => {
+  try {
+    const response = await postRepository.getByCategory(args)
+    console.log('getPostsByCategory')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error getting posts by category:', error)
+    throw new ApplicationError('Error getting posts by category')
+  }
 }
 
 export const getPostsByKeyword = async (
   args: GetByKeyword
-): Promise<PostType[]> => {
-  const response = postRepository.getPostsByKeyword(args)
-  console.log('getPostsByKeyword')
-  return response
+): Promise<ResponseType<PostType[]>> => {
+  try {
+    const response = await postRepository.getPostsByKeyword(args)
+    console.log('getPostsByKeyword')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error getting posts by keyword:', error)
+    throw new ApplicationError('Error getting posts by keyword')
+  }
 }
 
 export const getPostBySlug = async (
   args: GetBySlug
-): Promise<PostType | null> => {
-  const response = postRepository.getBySlug(args)
-  console.log('getPostBySlug')
-  return response
+): Promise<ResponseType<PostType>> => {
+  try {
+    const response = await postRepository.getBySlug(args)
+    console.log('getPostBySlug')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      return {
+        success: false,
+        message: 'Post not found',
+        type: 'error',
+      }
+    } else {
+      console.error('Error getting post by slug:', error)
+      throw new ApplicationError('Error getting post by slug')
+    }
+  }
 }
 
 export const createPost = async (

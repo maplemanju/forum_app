@@ -6,6 +6,8 @@ import { getPostsByCategory } from '@/process/actions/postAction'
 import { PostList } from '@/common/components/widgets/postList'
 import CategoryToolbox from '@/common/components/widgets/categoryToolbox'
 import CategoryContent from '@/common/components/widgets/categoryContent'
+import { Alert } from '@/common/components/alerts'
+import { notFound } from 'next/navigation'
 
 export default async function CategoryPage({
   params,
@@ -13,19 +15,28 @@ export default async function CategoryPage({
   params: Promise<{ categorySlug: string }>
 }) {
   const categorySlug = (await params)?.categorySlug
+  const categoryResponse = await getCategory({ slug: categorySlug })
+  if (!categoryResponse.success) {
+    return notFound()
+  }
+  const categoryId = categoryResponse.data?.id
+    ? Number(categoryResponse.data?.id)
+    : null
+  const postsResponse = categoryId
+    ? await getPostsByCategory({
+        categoryId: categoryId,
+      })
+    : null
 
-  const category = await getCategory({ slug: categorySlug })
-  const posts = await getPostsByCategory({
-    categoryId: Number(category.data?.id),
-  })
   return (
     <>
+      <Alert response={categoryResponse} />
       <Content>
-        <Breadcrumbs category={category.data} />
-        <CategoryToolbox category={category.data} />
-        <CategoryContent category={category.data} />
-        <CategoryList categories={category?.data?.childCategories} />
-        <PostList posts={posts} />
+        <Breadcrumbs category={categoryResponse.data} />
+        <CategoryToolbox category={categoryResponse.data} />
+        <CategoryContent category={categoryResponse.data} />
+        <CategoryList categories={categoryResponse.data?.childCategories} />
+        {postsResponse && <PostList posts={postsResponse.data} />}
       </Content>
     </>
   )

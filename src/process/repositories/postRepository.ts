@@ -2,6 +2,7 @@ import prisma from '@/utils/prisma'
 import { generateSlug } from '@/utils/slugGenerator'
 import { Votes, Prisma } from '@prisma/client'
 import { Session } from 'next-auth'
+import { NotFoundError } from '@/utils/errors'
 
 export type GetByCategory = {
   categoryId: number
@@ -154,7 +155,9 @@ export const postRepository = {
         },
       },
     })
-    if (!post) return null
+    if (!post) {
+      throw new NotFoundError('Post not found')
+    }
     return post
   },
 

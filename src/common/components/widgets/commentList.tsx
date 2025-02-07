@@ -7,7 +7,7 @@ import { CommentEdit } from './commentEdit'
 
 interface CommentsProps {
   comments: CommentType[]
-  postId?: number | null
+  postId?: number
 }
 
 const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {

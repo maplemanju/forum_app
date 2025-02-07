@@ -12,7 +12,7 @@ import {
 } from '@/process/actions/postAction'
 
 interface PostEditProps {
-  post: PostType | null
+  post?: PostType
   category?: CategoryType
 }
 

@@ -10,13 +10,13 @@ export default async function AddPostPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const categorySlug = (await searchParams)?.categorySlug
-  const category = await getCategory({ slug: categorySlug as string })
+  const categoryResponse = await getCategory({ slug: categorySlug as string })
 
   return (
     <>
-      <Alert response={category} />
+      <Alert response={categoryResponse} />
       <Content>
-        <PostEdit post={null} category={category.data} />
+        <PostEdit category={categoryResponse?.data} />
       </Content>
     </>
   )

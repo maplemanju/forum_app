@@ -13,7 +13,7 @@ import { CommentType } from '@/types/comment'
 export const getCommentsByPostId = async (
   args: GetByPostId
 ): Promise<CommentType[]> => {
-  const response = commentRepository.getByPostId(args)
+  const response = await commentRepository.getByPostId(args)
   console.log('getCommentsByPostId')
   return response
 }

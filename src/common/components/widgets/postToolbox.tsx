@@ -6,14 +6,14 @@ import { PostType } from '@/types/post'
 import { deletePost } from '@/process/actions/postAction'
 
 interface PostToolboxProps {
-  post: PostType | null
+  post?: PostType
 }
 
 export default function PostToolbox({ post }: PostToolboxProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  if (!post) return null
+  if (!post) return <></>
 
   const handleEdit = () => {
     router.push(`/${post.category.slug}/${post.slug}/edit`)
