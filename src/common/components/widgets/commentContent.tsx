@@ -40,10 +40,6 @@ const CommentContent: React.FC<CommentContentProps> = ({
     }
   )
 
-  const onVote = (commentId: number) => {
-    console.log('vote', commentId, postId)
-  }
-
   const onReply = (parentCommentId: number) => {
     console.log('reply', parentCommentId, postId)
     setOpenReply(!openReply)
@@ -88,7 +84,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
     editedComment: Partial<CommentType>,
     isOptimistic: boolean
   ) => {
-    setIsEditing(null)
+    // setIsEditing(null)
     if (editedComment.id === comment.id) {
       setCommentState({ ...comment, ...editedComment })
     }

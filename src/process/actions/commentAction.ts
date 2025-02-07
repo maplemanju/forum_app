@@ -9,13 +9,22 @@ import commentRepository, {
   UpdateComment,
 } from '../repositories/commentRepository'
 import { CommentType } from '@/types/comment'
+import { ResponseType, ApplicationError } from '@/utils/errors'
 
 export const getCommentsByPostId = async (
   args: GetByPostId
-): Promise<CommentType[]> => {
-  const response = await commentRepository.getByPostId(args)
-  console.log('getCommentsByPostId')
-  return response
+): Promise<ResponseType<CommentType[]>> => {
+  try {
+    const response = await commentRepository.getByPostId(args)
+    console.log('getCommentsByPostId')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error getting comments by post id', error)
+    throw new ApplicationError('Error getting comments by post id')
+  }
 }
 
 export type CreateCommentResponse = {
@@ -24,7 +33,7 @@ export type CreateCommentResponse = {
 }
 export const createComment = async (
   payload: CreateComment
-): Promise<CreateCommentResponse> => {
+): Promise<ResponseType<Partial<CommentType>>> => {
   console.log('createComment', payload)
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -32,7 +41,6 @@ export const createComment = async (
   }
   try {
     const response = await commentRepository.createComment(payload, session)
-
     console.log('createComment')
     return {
       data: response,
@@ -42,11 +50,15 @@ export const createComment = async (
     console.error('Error creating comment', error)
     return {
       success: false,
+      message: 'Error creating comment',
+      type: 'error',
     }
   }
 }
 
-export const deleteComment = async (args: DeleteComment) => {
+export const deleteComment = async (
+  args: DeleteComment
+): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
@@ -60,11 +72,15 @@ export const deleteComment = async (args: DeleteComment) => {
     console.error('Error deleting comment', error)
     return {
       success: false,
+      message: 'Error deleting comment',
+      type: 'error',
     }
   }
 }
 
-export const updateComment = async (args: UpdateComment) => {
+export const updateComment = async (
+  args: UpdateComment
+): Promise<ResponseType<Partial<CommentType>>> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
@@ -79,6 +95,8 @@ export const updateComment = async (args: UpdateComment) => {
     console.error('Error updating comment', error)
     return {
       success: false,
+      message: 'Error updating comment',
+      type: 'error',
     }
   }
 }

@@ -6,11 +6,11 @@ import { CommentType } from '@/types/comment'
 import { CommentEdit } from './commentEdit'
 
 interface CommentsProps {
-  comments: CommentType[]
+  comments?: CommentType[]
   postId?: number
 }
 
-const CommentList: React.FC<CommentsProps> = ({ comments, postId }) => {
+const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
   const [openAddComments, setOpenAddComments] = useState(false)
   const [commentsState, setCommentsState] =
     useState<Partial<CommentType & { isNewComment: boolean }>[]>(comments)

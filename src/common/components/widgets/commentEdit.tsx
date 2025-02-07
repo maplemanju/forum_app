@@ -5,6 +5,7 @@ import {
   CreateCommentResponse,
 } from '@/process/actions/commentAction'
 import { CommentType } from '@/types/comment'
+import { Alert } from '@/common/components/alerts'
 
 export const CommentEdit = ({
   onCloseEdit,
@@ -46,9 +47,11 @@ export const CommentEdit = ({
     } else {
       response = await createComment(args)
     }
-    onCloseEdit()
+    console.log('response.data', response.data)
+
     if (response.data) {
       submitCallback?.(response.data, false)
+      onCloseEdit()
     }
     return response
   }
@@ -56,6 +59,7 @@ export const CommentEdit = ({
 
   return (
     <div>
+      <Alert response={formState} />
       <form action={formAction} className="space-y-4">
         <input type="hidden" name="postId" value={postId ?? ''} />
         <input
