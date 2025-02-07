@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { CategoryType } from '@/types/category'
 import { useRouter } from 'next/navigation'
 import {
@@ -9,6 +9,8 @@ import {
   updateCategory,
   UpdateCategoryResponse,
 } from '@/process/actions/categoryAction'
+import { ResponseType } from '@/utils/errors'
+import { Alert } from '@/common/components/alerts'
 
 interface CategoryEditProps {
   category?: CategoryType | null
@@ -20,6 +22,7 @@ export default function CategoryEdit({
   parentCategory,
 }: CategoryEditProps) {
   const router = useRouter()
+  const [alert, setAlert] = useState<ResponseType<unknown>>()
 
   const handleSubmit = async (
     prevState: UpdateCategoryResponse,
@@ -40,8 +43,12 @@ export default function CategoryEdit({
         parentCategoryId: parentCategory?.id,
       })
     }
-    router.push(`/${response.data?.slug}`)
-    return response
+    if (response.success) {
+      router.push(`/${response.data?.slug}`)
+      return response
+    }
+    setAlert(response)
+    return prevState
   }
 
   const [formState, formAction, isPending] = useActionState(handleSubmit, {
@@ -54,16 +61,22 @@ export default function CategoryEdit({
 
   const handleDeleteCategory = async () => {
     if (!category) return
-    await deleteCategory({ id: category.id })
-    if (parentCategory) {
-      router.push(`/${parentCategory.slug}`)
+    if (!confirm('Are you sure you want to delete this category?')) return
+    const response = await deleteCategory({ id: category.id })
+    if (response.success) {
+      if (parentCategory) {
+        router.push(`/${parentCategory.slug}`)
+      } else {
+        router.push('/')
+      }
     } else {
-      router.push('/')
+      setAlert(response)
     }
   }
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
+      <Alert response={alert} />
       <h2 className="text-2xl font-semibold mb-6">
         {category ? 'Edit Category' : 'Create New Category'}
       </h2>

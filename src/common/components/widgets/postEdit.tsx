@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { redirect, useRouter } from 'next/navigation'
 import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
@@ -10,6 +10,8 @@ import {
   updatePost,
   UpdatePostResponse,
 } from '@/process/actions/postAction'
+import { Alert } from '@/common/components/alerts'
+import { ResponseType } from '@/utils/errors'
 
 interface PostEditProps {
   post?: PostType
@@ -18,6 +20,7 @@ interface PostEditProps {
 
 export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
+  const [alert, setAlert] = useState<ResponseType<unknown>>()
 
   const handleSubmit = async (
     prevState: UpdatePostResponse,
@@ -43,8 +46,12 @@ export default function PostEdit({ post, category }: PostEditProps) {
     } else {
       response = await createPost({ ...args, categoryId: category.id })
     }
-    router.push(`/${category.slug}/${response.data?.slug}`)
-    return response
+    if (response.success) {
+      router.push(`/${category.slug}/${response.data?.slug}`)
+      return response
+    }
+    setAlert(response)
+    return prevState
   }
 
   const [formState, formAction, isPending] = useActionState(handleSubmit, {
@@ -59,12 +66,17 @@ export default function PostEdit({ post, category }: PostEditProps) {
   const handleDeletePost = async () => {
     if (!post || !category) return
     if (!confirm('Are you sure you want to delete this post?')) return
-    await deletePost({ id: post.id })
-    router.push(`/${category.slug}`)
+    const response = await deletePost({ id: post.id })
+    if (response.success) {
+      router.push(`/${category.slug}`)
+    } else {
+      setAlert(response)
+    }
   }
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
+      <Alert response={alert} />
       <h1 className="text-2xl font-bold mb-4">
         {post ? 'Edit Post' : 'Create New Post'}
       </h1>

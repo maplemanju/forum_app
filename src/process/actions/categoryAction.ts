@@ -66,10 +66,11 @@ export type UpdateCategoryResponse = ResponseType<Partial<CategoryType>>
 export const createCategory = async (
   args: CreateCategoryProps
 ): Promise<UpdateCategoryResponse> => {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user) throw new Error('Unauthorized')
-
     const response = await categoryRepository.createCategory(args, session)
     console.log('createCategory')
     return {
@@ -78,7 +79,11 @@ export const createCategory = async (
     }
   } catch (error) {
     console.error('Error creating category:', error)
-    throw new ApplicationError('Error creating category')
+    return {
+      success: false,
+      message: 'Error creating category',
+      type: 'error',
+    }
   }
 }
 
@@ -97,7 +102,11 @@ export const updateCategory = async (
     }
   } catch (error) {
     console.error('Error updating category:', error)
-    throw new ApplicationError('Error updating category')
+    return {
+      success: false,
+      message: 'Error updating category',
+      type: 'error',
+    }
   }
 }
 
@@ -115,6 +124,10 @@ export const deleteCategory = async (
     }
   } catch (error) {
     console.error('Error deleting category:', error)
-    throw new ApplicationError('Error deleting category')
+    return {
+      success: false,
+      message: 'Error deleting category',
+      type: 'error',
+    }
   }
 }

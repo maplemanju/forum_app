@@ -52,8 +52,9 @@ export const CommentEdit = ({
     if (response.data) {
       submitCallback?.(response.data, false)
       onCloseEdit()
+      return response
     }
-    return response
+    return prevState
   }
   const [formState, formAction, isPending] = useActionState(handleSubmit, {})
 

@@ -13,11 +13,6 @@ import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 
-export type UpdatePostResponse = {
-  data?: Partial<PostType>
-  success?: boolean
-}
-
 export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
   try {
     const response = await postRepository.getRecentPosts()
@@ -104,6 +99,8 @@ export const getPostBySlug = async (
   }
 }
 
+export type UpdatePostResponse = ResponseType<Partial<PostType>>
+
 export const createPost = async (
   args: CreatePost
 ): Promise<UpdatePostResponse> => {
@@ -111,11 +108,20 @@ export const createPost = async (
   if (!session) {
     throw new Error('Unauthorized')
   }
-  const response = await postRepository.createPost(args, session)
-  console.log('createPost')
-  return {
-    data: response,
-    success: true,
+  try {
+    const response = await postRepository.createPost(args, session)
+    console.log('createPost')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error creating post', error)
+    return {
+      success: false,
+      message: 'Error creating post',
+      type: 'error',
+    }
   }
 }
 
@@ -138,16 +144,31 @@ export const updatePost = async (
     console.error('Error updating post', error)
     return {
       success: false,
+      message: 'Error updating post',
+      type: 'error',
     }
   }
 }
 
-export const deletePost = async (args: DeletePostProps) => {
+export const deletePost = async (
+  args: DeletePostProps
+): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
   }
-  const response = postRepository.deletePost(args, session)
-  console.log('deletePost')
-  return response
+  try {
+    await postRepository.deletePost(args, session)
+    console.log('deletePost')
+    return {
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error deleting post', error)
+    return {
+      success: false,
+      message: 'Error deleting post',
+      type: 'error',
+    }
+  }
 }
