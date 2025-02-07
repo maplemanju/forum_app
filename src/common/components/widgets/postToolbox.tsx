@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { PostType } from '@/types/post'
 import { deletePost } from '@/process/actions/postAction'
 
@@ -11,9 +12,10 @@ interface PostToolboxProps {
 
 export default function PostToolbox({ post }: PostToolboxProps) {
   const router = useRouter()
+  const { data: session } = useSession()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  if (!post) return <></>
+  if (!post || !session) return <></>
 
   const handleEdit = () => {
     router.push(`/${post.category.slug}/${post.slug}/edit`)

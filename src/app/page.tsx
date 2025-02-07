@@ -10,6 +10,7 @@ import Header from './(root)/components/header'
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
   const postsResponse = await getRecentlyUpdatedPosts()
+
   return (
     <>
       <Header />

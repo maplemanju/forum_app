@@ -4,6 +4,7 @@ import React, { useState, useEffect, useOptimistic } from 'react'
 import CommentContent from '@/common/components/widgets/commentContent'
 import { CommentType } from '@/types/comment'
 import { CommentEdit } from './commentEdit'
+import { useSession } from 'next-auth/react'
 
 interface CommentsProps {
   comments?: CommentType[]
@@ -11,6 +12,7 @@ interface CommentsProps {
 }
 
 const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
+  const { data: session } = useSession()
   const [openAddComments, setOpenAddComments] = useState(false)
   const [commentsState, setCommentsState] =
     useState<Partial<CommentType & { isNewComment: boolean }>[]>(comments)
@@ -46,14 +48,16 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
 
   return (
     <div className="space-y-4 mt-6">
-      <div className="mb-4">
-        <button
-          onClick={() => setOpenAddComments(!openAddComments)}
-          className="px-4 py-2 bg-blue-600 dark:bg-blue-400 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
-        >
-          Add Comment
-        </button>
-      </div>
+      {session && (
+        <div className="mb-4">
+          <button
+            onClick={() => setOpenAddComments(!openAddComments)}
+            className="px-4 py-2 bg-blue-600 dark:bg-blue-400 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
+          >
+            Add Comment
+          </button>
+        </div>
+      )}
       {openAddComments && (
         <CommentEdit
           onCloseEdit={() => setOpenAddComments(false)}

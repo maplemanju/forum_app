@@ -5,6 +5,7 @@ import { CommentEdit } from './commentEdit'
 import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useSession } from 'next-auth/react'
 import { deleteComment } from '@/process/actions/commentAction'
 dayjs.extend(relativeTime)
 
@@ -19,6 +20,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
   postId,
   deleteCallback,
 }) => {
+  const { data: session } = useSession()
   const [commentState, setCommentState] =
     useState<Partial<CommentType>>(comment)
   const [openComments, setOpenComments] = useState<boolean>(false)
@@ -146,17 +148,17 @@ const CommentContent: React.FC<CommentContentProps> = ({
                   : `Show replies (${optimisticChildComments.length})`}
               </button>
             )}
-          {onReply && comment.parentCommentId === null && (
+          {session && onReply && comment.parentCommentId === null && (
             <button onClick={() => comment.id && onReply(comment.id)}>
               Reply
             </button>
           )}
-          {onEdit && (
+          {session && onEdit && (
             <button onClick={() => comment.id && onEdit(comment.id)}>
               Edit
             </button>
           )}
-          {onDelete && (
+          {session && onDelete && (
             <button onClick={() => comment.id && onDelete(comment.id)}>
               Delete
             </button>
@@ -164,6 +166,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
           <VoteButtons
             commentId={comment.id}
             voteCount={comment._count?.votes || 0}
+            canVote={Boolean(session)}
           />
         </div>
 

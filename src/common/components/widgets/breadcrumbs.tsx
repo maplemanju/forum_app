@@ -10,8 +10,6 @@ type BreadcrumbsProps = {
 }
 
 export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
-  if (!category) return null
-
   return (
     <nav className="flex py-3 text-gray-700" aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -32,7 +30,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
             Home
           </Link>
         </li>
-        {category.parentCategory && (
+        {category?.parentCategory && (
           <li>
             <div className="flex items-center">
               <svg

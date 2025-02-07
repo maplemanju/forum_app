@@ -1,8 +1,11 @@
+'use client'
+
 import { PostType } from '@/types/post'
 import Tooltip from '@/common/components/tooltip'
 import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useSession } from 'next-auth/react'
 dayjs.extend(relativeTime)
 
 type PostProps = {
@@ -10,6 +13,8 @@ type PostProps = {
 }
 
 export const PostContent = ({ post }: PostProps) => {
+  const { data: session } = useSession()
+
   if (!post) {
     return <div>Post not found</div>
   }
@@ -34,7 +39,11 @@ export const PostContent = ({ post }: PostProps) => {
           <span>{dayjs(post.createdAt).fromNow()}</span>
         </Tooltip>
         <span>•</span>
-        <VoteButtons postId={post.id} voteCount={post._count.votes || 0} />
+        <VoteButtons
+          postId={post.id}
+          voteCount={post._count.votes || 0}
+          canVote={Boolean(session)}
+        />
       </div>
 
       {/* content  */}
