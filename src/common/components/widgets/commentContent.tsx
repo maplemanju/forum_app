@@ -37,7 +37,10 @@ const CommentContent: React.FC<CommentContentProps> = ({
 
   const [optimisticChildComments, addOptimisticChildComments] = useOptimistic(
     childComments,
-    (currentState, optimisticValue: Partial<CommentType>) => {
+    (
+      currentState,
+      optimisticValue: Partial<CommentType & { isNewComment: boolean }>
+    ) => {
       return [optimisticValue, ...currentState]
     }
   )
