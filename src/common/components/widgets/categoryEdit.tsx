@@ -87,15 +87,16 @@ export default function CategoryEdit({
             <div className="mb-4">
               <label
                 htmlFor="parentCategory"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-color-subtext mb-1"
               >
                 Parent Category
               </label>
+
               <input
                 type="text"
                 id="parentCategory"
                 defaultValue={parentCategory.categoryName}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
                 // required
                 disabled
                 readOnly
@@ -106,7 +107,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="categoryName"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
+            className="block text-sm font-medium text-color-subtext mb-1"
           >
             Name
           </label>
@@ -116,7 +117,7 @@ export default function CategoryEdit({
             id="categoryName"
             name="categoryName"
             defaultValue={formState.data?.categoryName}
-            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
             // required
           />
         </div>
@@ -124,7 +125,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="slug"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
+            className="block text-sm font-medium text-color-subtext mb-1"
           >
             Slug
           </label>
@@ -133,7 +134,7 @@ export default function CategoryEdit({
             id="slug"
             name="slug"
             defaultValue={formState.data?.slug}
-            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -141,7 +142,7 @@ export default function CategoryEdit({
         <div className="mb-6">
           <label
             htmlFor="categoryDescription"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1"
+            className="block text-sm font-medium text-color-subtext mb-1"
           >
             Description
           </label>
@@ -149,7 +150,7 @@ export default function CategoryEdit({
             id="categoryDescription"
             name="categoryDescription"
             defaultValue={formState.data?.categoryDescription ?? ''}
-            className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500 h-32"
             required
           />
         </div>

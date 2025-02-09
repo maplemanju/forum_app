@@ -14,15 +14,16 @@ export const CategoryList = ({ categories }: Props) => {
     return (
       <div
         key={category.id}
-        className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4 flex flex-column gap-2 justify-between"
+        className="bg-gray-900 p-4 rounded-lg mb-4 flex flex-column gap-2 justify-between"
       >
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+            <h3 className="text-lg font-semibold text-color-foreground">
               {category.categoryName}
             </h3>
           </Link>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
+
+          <p className="text-color-subtext text-sm">
             {category.categoryDescription}
           </p>
 

@@ -66,7 +66,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
         />
       )}
       {optimisticComments.length === 0 ? (
-        <div className="text-gray-600 dark:text-gray-400">No comments yet</div>
+        <div className="text-color-subtext">No comments yet</div>
       ) : (
         optimisticComments.map((comment) => {
           return (

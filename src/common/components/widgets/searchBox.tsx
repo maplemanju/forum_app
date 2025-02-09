@@ -26,7 +26,7 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
         defaultValue={keyword}
         placeholder="Search..."
         list="tag-suggestions"
-        className="px-4 py-2 border rounded-lg flex-grow bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+        className="px-4 py-2 bg-color-background border rounded-lg flex-grow border-color-border focus:ring-color-border focus:ring-2"
       />
       <datalist id="tag-suggestions">
         {tags?.map((tag) => (
@@ -35,7 +35,7 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
       </datalist>
       <button
         type="submit"
-        className="px-6 py-2 bg-blue-500  dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700"
+        className="px-6 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700"
       >
         Search
       </button>

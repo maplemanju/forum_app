@@ -93,7 +93,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             type="text"
             name="title"
             defaultValue={formState.data?.postTitle || ''}
-            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
+            className="w-full px-3 py-2 border border-color-border rounded-md bg-color-background focus:ring-color-border focus:ring-2"
             required
           />
         </div>
@@ -108,7 +108,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             <input
               type="text"
               name="category"
-              className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
               defaultValue={category.categoryName}
               readOnly
               disabled
@@ -120,13 +120,6 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <label htmlFor="content" className="block text-sm font-medium mb-1">
             Content
           </label>
-          {/* <textarea
-            name="content"
-            defaultValue={formState.data?.postContent || ''}
-            rows={10}
-            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
-            required
-          /> */}
           <TextEditor
             markdown={content}
             onChangeCallback={(markdown) => setContent(markdown)}
@@ -147,7 +140,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
                 .map((tag) => `#${tag}`)
                 .join(' ') || ''
             }
-            className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
+            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-color-border focus:ring-2"
           />
         </div>
         <div className="flex justify-end gap-2">

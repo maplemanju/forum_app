@@ -18,37 +18,35 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
   const { data: session } = useSession()
 
   if (!posts || posts.length === 0) {
-    return <div className="text-gray-500 italic">No posts found</div>
+    return <div className="text-color-subtext italic">No posts found</div>
   }
 
   return (
     <div>
       {posts.map((post: PostType) => (
-        <div
-          key={post.id}
-          className="p-6  border-b border-gray-200 dark:border-gray-800"
-        >
+        <div key={post.id} className="p-6  border-b border-color-border">
           {/* category  */}
           {showCategory && (
             <Link
               href={`/${post.category.slug}`}
-              className="text-sm text-gray-500 dark:text-gray-400 mb-2 hover:text-blue-800 dark:hover:text-blue-400"
+              className="text-sm text-color-subtext mb-2 hover:text-blue-800 dark:hover:text-blue-400"
             >
               {post.category.categoryName}
             </Link>
           )}
           {/* title  */}
           <Link href={`/${post.category.slug}/${post.slug}`}>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+            <h3 className="text-xl font-semibold text-color-foreground hover:text-blue-600 dark:hover:text-blue-400">
               {post.postTitle}
             </h3>
           </Link>
 
           {/* info bar  */}
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
+          <div className="flex items-center text-sm text-color-subtext mt-2 gap-2">
             <span>
               Posted by {post.createdUser.userInfo?.displayName || 'Anonymous'}
             </span>
+
             <span>•</span>
             <Tooltip
               text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
@@ -82,7 +80,7 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
           </div>
 
           {/* content  */}
-          <p className="text-gray-600 dark:text-gray-400 mt-3 line-clamp-3">
+          <p className="text-color-subtext mt-3 line-clamp-3">
             {post.postContent}
           </p>
         </div>

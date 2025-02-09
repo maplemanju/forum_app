@@ -23,7 +23,6 @@
   --baseBorderHover: #343a40;
   --baseSolid: #212529;
   --baseSolidHover: #1a1e21;
-
   --baseText: #424242;
   --baseTextContrast: #000000;
   --basePageBg: #ffffff;
@@ -67,7 +66,6 @@
     --baseBorderHover: #666666;
     --baseSolid: #737373;
     --baseSolidHover: #808080;
-
     --baseText: #a5a5a5;
     --baseTextContrast: #ffffff;
     --basePageBg: #272727;
@@ -86,10 +84,10 @@
 }
 
 .content-editable {
-  border: 1px solid var(--baseBorder);
+  border: 1px solid var(--color-border);
   border-radius: 0.25rem;
-  color: var(--baseTextContrast);
-  background-color: var(--baseBg);
+  color: var(--color-foreground);
+  background-color: var(--color-background);
   height: 500px;
   overflow-y: auto;
 }

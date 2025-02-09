@@ -50,7 +50,7 @@ export const PostContent = ({ post, mdxSource }: PostProps) => {
       </div>
 
       {/* content  */}
-      <div className="post-content text-gray-700 dark:text-gray-400 mt-3">
+      <div className="post-content mt-3">
         <MDXRemote {...mdxSource} />
       </div>
 

@@ -121,16 +121,15 @@ const CommentContent: React.FC<CommentContentProps> = ({
           />
         ) : (
           /* content  */
-          <p className="text-gray-700 dark:text-gray-400">
-            {comment.commentContent}
-          </p>
+          <p className="text-color-foreground">{comment.commentContent}</p>
         )}
 
         {/* info bar  */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-color-subtext">
           <span>
             Posted by {comment.createdUser?.userInfo?.displayName ?? '-'}
           </span>
+
           <span>•</span>
           <Tooltip
             text={dayjs(comment.createdAt).format('YYYY/MM/DD HH:mm')}
@@ -142,7 +141,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
         </div>
 
         {/* action bar  */}
-        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
+        <div className="flex items-center text-sm text-color-subtext mt-2 gap-2">
           {optimisticChildComments.length > 0 &&
             comment.parentCommentId === null && (
               <button onClick={onOpenComments}>
