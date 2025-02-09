@@ -2,6 +2,7 @@ import CategoryEdit from '@/common/components/widgets/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { Alert } from '@/common/components/alerts'
 import { notFound } from 'next/navigation'
+import { Content } from '@/common/components/content'
 
 export default async function CategoryEditPage({
   params,
@@ -16,10 +17,12 @@ export default async function CategoryEditPage({
   return (
     <>
       <Alert response={categoryResponse} />
-      <CategoryEdit
-        category={categoryResponse.data}
-        parentCategory={categoryResponse.data?.parentCategory}
-      />
+      <Content>
+        <CategoryEdit
+          category={categoryResponse.data}
+          parentCategory={categoryResponse.data?.parentCategory}
+        />
+      </Content>
     </>
   )
 }

@@ -1,0 +1,81 @@
+/** markdown content styles */
+.post-content {
+  p,
+  ul,
+  ol,
+  blockquote {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.625em;
+  }
+  ol {
+    list-style-type: decimal;
+    padding-left: 1.625em;
+  }
+
+  blockquote {
+    border-left-width: 0.25rem;
+    padding-left: 1em;
+    flex-direction: column;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--foreground);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  h1 {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700;
+    line-height: 1.25;
+    border-bottom: 1px solid theme('colors.neutral.200');
+    padding-bottom: 0.3em;
+  }
+
+  h2 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 600;
+    border-bottom: 1px solid theme('colors.neutral.200');
+    padding-bottom: 0.3em;
+  }
+
+  h3 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+  }
+
+  h5 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+  }
+
+  h6 {
+    font-size: 1rem; /* 16px */
+    font-weight: 600;
+    color: theme('colors.neutral.600');
+  }
+
+  hr {
+    border-top-width: 1px;
+    border-color: theme('colors.neutral.200');
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+}

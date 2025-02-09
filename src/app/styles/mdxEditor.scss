@@ -1,0 +1,114 @@
+/** editor overrides */
+.editor {
+  --accentBase: #f8f9fa;
+  --accentBgSubtle: #e9ecef;
+  --accentBg: #dee2e6;
+  --accentBgHover: #ced4da;
+  --accentBgActive: #adb5bd;
+  --accentLine: #6c757d;
+  --accentBorder: #495057;
+  --accentBorderHover: #343a40;
+  --accentSolid: #212529;
+  --accentSolidHover: #1a1e21;
+  --accentText: #343a40;
+  --accentTextContrast: #212529;
+
+  --baseBase: #f8f9fa;
+  --baseBgSubtle: #e9ecef;
+  --baseBg: #dee2e6;
+  --baseBgHover: #ced4da;
+  --baseBgActive: #adb5bd;
+  --baseLine: #6c757d;
+  --baseBorder: #d1d5db;
+  --baseBorderHover: #343a40;
+  --baseSolid: #212529;
+  --baseSolidHover: #1a1e21;
+
+  --baseText: #424242;
+  --baseTextContrast: #000000;
+  --basePageBg: #ffffff;
+
+  --admonitionTipBg: #fafafa;
+  --admonitionTipBorder: #e0e0e0;
+  --admonitionInfoBg: #fafafa;
+  --admonitionInfoBorder: #e0e0e0;
+  --admonitionCautionBg: #fafafa;
+  --admonitionCautionBorder: #e0e0e0;
+  --admonitionDangerBg: #fafafa;
+  --admonitionDangerBorder: #e0e0e0;
+  --admonitionNoteBg: #fafafa;
+  --admonitionNoteBorder: #e0e0e0;
+
+  color: var(--baseText);
+}
+
+@media (prefers-color-scheme: dark) {
+  .editor {
+    --accentBase: #131313;
+    --accentBgSubtle: #1f1f1f;
+    --accentBg: #2a2a2a;
+    --accentBgHover: #333333;
+    --accentBgActive: #404040;
+    --accentLine: #4d4d4d;
+    --accentBorder: #595959;
+    --accentBorderHover: #666666;
+    --accentSolid: #737373;
+    --accentSolidHover: #808080;
+    --accentText: #999999;
+    --accentTextContrast: #e6e6e6;
+
+    --baseBase: #131313;
+    --baseBgSubtle: #1f1f1f;
+    --baseBg: #2a2a2a;
+    --baseBgHover: #333333;
+    --baseBgActive: #404040;
+    --baseLine: #4d4d4d;
+    --baseBorder: #595959;
+    --baseBorderHover: #666666;
+    --baseSolid: #737373;
+    --baseSolidHover: #808080;
+
+    --baseText: #a5a5a5;
+    --baseTextContrast: #ffffff;
+    --basePageBg: #272727;
+
+    --admonitionTipBg: #1f1f1f;
+    --admonitionTipBorder: #404040;
+    --admonitionInfoBg: #1f1f1f;
+    --admonitionInfoBorder: #404040;
+    --admonitionCautionBg: #1f1f1f;
+    --admonitionCautionBorder: #404040;
+    --admonitionDangerBg: #1f1f1f;
+    --admonitionDangerBorder: #404040;
+    --admonitionNoteBg: #1f1f1f;
+    --admonitionNoteBorder: #404040;
+  }
+}
+
+.content-editable {
+  border: 1px solid var(--baseBorder);
+  border-radius: 0.25rem;
+  color: var(--baseTextContrast);
+  background-color: var(--baseBg);
+  height: 500px;
+  overflow-y: auto;
+}
+
+.editor-toolbar {
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  border-radius: 0.25rem;
+  padding: 5px;
+  align-items: center;
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  background-color: var(--baseBg);
+  width: inherit;
+  /* height: 40px; */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border-radius: 0.25rem;
+}

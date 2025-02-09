@@ -2,6 +2,7 @@ import { getPostBySlug } from '@/process/actions/postAction'
 import PostEdit from '@/common/components/widgets/postEdit'
 import { Alert } from '@/common/components/alerts'
 import { notFound } from 'next/navigation'
+import { Content } from '@/common/components/content'
 
 export default async function EditPage({
   params,
@@ -16,10 +17,12 @@ export default async function EditPage({
   return (
     <>
       <Alert response={postResponse} />
-      <PostEdit
-        post={postResponse.data}
-        category={postResponse.data?.category}
-      />
+      <Content>
+        <PostEdit
+          post={postResponse.data}
+          category={postResponse.data?.category}
+        />
+      </Content>
     </>
   )
 }

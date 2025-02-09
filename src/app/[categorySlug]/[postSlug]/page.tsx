@@ -8,6 +8,7 @@ import { getCommentsByPostId } from '@/process/actions/commentAction'
 import PostToolbox from '@/common/components/widgets/postToolbox'
 import { Alert } from '@/common/components/alerts'
 import { notFound } from 'next/navigation'
+import { mdxSerializer } from '@/utils/mdxSerializer'
 
 export default async function PostPage({
   params,
@@ -19,6 +20,7 @@ export default async function PostPage({
   if (!postResponse.success || !postResponse.data) {
     return notFound()
   }
+  const mdxSource = await mdxSerializer(postResponse.data.postContent)
   const postId = Number(postResponse.data.id)
   const commentsResponse = await getCommentsByPostId({ postId: postId })
 
@@ -33,7 +35,7 @@ export default async function PostPage({
           post={postResponse.data}
         />
         <PostToolbox post={postResponse.data} />
-        <PostContent post={postResponse.data} />
+        <PostContent post={postResponse.data} mdxSource={mdxSource} />
         <CommentList comments={commentsResponse.data} postId={postId} />
       </Content>
     </>

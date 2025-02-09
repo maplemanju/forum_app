@@ -75,7 +75,7 @@ export default function CategoryEdit({
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <Alert response={alert} />
       <h2 className="text-2xl font-semibold mb-6">
         {category ? 'Edit Category' : 'Create New Category'}

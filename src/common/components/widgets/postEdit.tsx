@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useRef, useState } from 'react'
 import { redirect, useRouter } from 'next/navigation'
 import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
@@ -12,6 +12,7 @@ import {
 } from '@/process/actions/postAction'
 import { Alert } from '@/common/components/alerts'
 import { ResponseType } from '@/utils/errors'
+import { TextEditor } from '@/common/components/textEditor'
 
 interface PostEditProps {
   post?: PostType
@@ -21,6 +22,7 @@ interface PostEditProps {
 export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
   const [alert, setAlert] = useState<ResponseType<unknown>>()
+  const [content, setContent] = useState<string>(post?.postContent || '')
 
   const handleSubmit = async (
     prevState: UpdatePostResponse,
@@ -30,11 +32,13 @@ export default function PostEdit({ post, category }: PostEditProps) {
       return { success: false }
     }
     const tags = formData.get('tags') as string
+
     const args = {
       id: post?.id,
       postTitle: formData.get('title') as string,
-      postContent: formData.get('content') as string,
+      postContent: content,
       categoryId: category.id,
+
       postTags: {
         postId: post?.id,
         tags: tags.split(' ').map((tag) => tag.replace('#', '')),
@@ -58,7 +62,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
     data: {
       id: post?.id,
       postTitle: post?.postTitle || '',
-      postContent: post?.postContent || '',
+      postContent: content || '',
       postTags: post?.postTags,
     },
   })
@@ -75,7 +79,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <Alert response={alert} />
       <h1 className="text-2xl font-bold mb-4">
         {post ? 'Edit Post' : 'Create New Post'}
@@ -112,18 +116,25 @@ export default function PostEdit({ post, category }: PostEditProps) {
             />
           </div>
         )}
-        <div>
+        <div className="post-content ">
           <label htmlFor="content" className="block text-sm font-medium mb-1">
             Content
           </label>
-          <textarea
+          {/* <textarea
             name="content"
             defaultValue={formState.data?.postContent || ''}
             rows={10}
             className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-800 rounded-md"
             required
+          /> */}
+          <TextEditor
+            markdown={content}
+            onChangeCallback={(markdown) => setContent(markdown)}
+            isMdxEditor={true}
+            canToggleEditor={true}
           />
         </div>
+
         <div>
           <label htmlFor="tags" className="block text-sm font-medium mb-1">
             Tags

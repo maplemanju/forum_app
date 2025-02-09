@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
 import Wrapper from './(root)/components/wrapper'
+import '@mdxeditor/editor/style.css'
+import './styles/globals.css'
+import './styles/mdxEditor.scss'
+import './styles/content.scss'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

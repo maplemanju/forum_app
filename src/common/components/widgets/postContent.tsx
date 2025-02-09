@@ -7,12 +7,14 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSession } from 'next-auth/react'
 dayjs.extend(relativeTime)
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 
 type PostProps = {
   post?: PostType
+  mdxSource: MDXRemoteSerializeResult
 }
 
-export const PostContent = ({ post }: PostProps) => {
+export const PostContent = ({ post, mdxSource }: PostProps) => {
   const { data: session } = useSession()
 
   if (!post) {
@@ -22,6 +24,7 @@ export const PostContent = ({ post }: PostProps) => {
   return (
     <div className=" p-6">
       {/* title  */}
+
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
         {post.postTitle}
       </h1>
@@ -47,8 +50,8 @@ export const PostContent = ({ post }: PostProps) => {
       </div>
 
       {/* content  */}
-      <div className="text-gray-700 dark:text-gray-400 whitespace-pre-wrap mt-3">
-        {post.postContent}
+      <div className="post-content text-gray-700 dark:text-gray-400 mt-3">
+        <MDXRemote {...mdxSource} />
       </div>
 
       {/* updated at  */}
