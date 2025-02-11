@@ -1,11 +1,11 @@
 import { ButtonHTMLAttributes } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string
+  label?: string
   leftIcon?: string
   rightIcon?: string
   size?: 'small' | 'medium' | 'large'
-  color?: 'primary' | 'gray' | 'danger'
+  color?: 'primary' | 'gray' | 'danger' | 'neutral'
 }
 
 export const Button = ({
@@ -27,6 +27,8 @@ export const Button = ({
     primary: 'bg-color-primary hover:bg-color-primary-hover text-white',
     gray: 'bg-color-gray hover:bg-color-gray-hover text-white',
     danger: 'bg-color-danger hover:bg-color-danger-hover text-white',
+    neutral:
+      'bg-color-neutral hover:bg-color-neutral-hover text-color-foreground',
   }
   const iconSize = {
     small: '16px',
@@ -45,7 +47,7 @@ export const Button = ({
           {leftIcon}
         </span>
       )}
-      {label}
+      {label && <span>{label}</span>}
       {rightIcon && (
         <span className={`material-icons`} style={{ fontSize: iconSize[size] }}>
           {rightIcon}

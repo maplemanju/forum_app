@@ -15,6 +15,8 @@
   --color-gray-hover: theme('colors.gray.600');
   --color-danger: theme('colors.red.500');
   --color-danger-hover: theme('colors.red.700');
+  --color-neutral: theme('colors.neutral.100');
+  --color-neutral-hover: theme('colors.neutral.200');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,6 +33,8 @@
     --color-gray-hover: theme('colors.gray.600');
     --color-danger: theme('colors.red.500');
     --color-danger-hover: theme('colors.red.700');
+    --color-neutral: theme('colors.neutral.900');
+    --color-neutral-hover: theme('colors.neutral.800');
   }
 
   * {

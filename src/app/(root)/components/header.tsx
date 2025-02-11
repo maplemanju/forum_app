@@ -3,9 +3,11 @@
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/common/components/button'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const loginOrLogout = () => {
     if (session) {
@@ -40,7 +42,12 @@ export default function Header() {
 
         {/** right */}
         <div className="flex items-center gap-4">
-          <Link href="/search">Search</Link>
+          <Button
+            color="neutral"
+            size="small"
+            leftIcon="search"
+            onClick={() => router.push('/search')}
+          />
           {session && (
             <div className="text-gray-600 dark:text-white">
               Welcome, {session.user?.name}
