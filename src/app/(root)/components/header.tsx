@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { Button } from '@/common/components/button'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -45,12 +46,13 @@ export default function Header() {
               Welcome, {session.user?.name}
             </div>
           )}
-          <button
-            className="px-4 py-2 rounded-md bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 dark:hover:bg-blue-500 text-white transition-colors"
+          <Button
+            label={session ? 'Logout' : 'Login'}
+            color="primary"
+            size="small"
             onClick={loginOrLogout}
-          >
-            {session ? 'Logout' : 'Login'}
-          </button>
+            leftIcon={session ? 'logout' : 'login'}
+          />
         </div>
       </div>
     </div>

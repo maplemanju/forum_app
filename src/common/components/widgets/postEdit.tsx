@@ -13,6 +13,7 @@ import {
 import { Alert } from '@/common/components/alerts'
 import { ResponseType } from '@/utils/errors'
 import { TextEditor } from '@/common/components/textEditor'
+import { Button } from '@/common/components/button'
 
 interface PostEditProps {
   post?: PostType
@@ -145,28 +146,27 @@ export default function PostEdit({ post, category }: PostEditProps) {
         </div>
         <div className="flex justify-end gap-2">
           {post && (
-            <button
+            <Button
               type="button"
               onClick={() => handleDeletePost()}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-500 dark:bg-red-400 rounded-md hover:bg-red-600 dark:hover:bg-red-500 disabled:bg-red-300"
-            >
-              Delete
-            </button>
+              label="Delete"
+              color="danger"
+              leftIcon="delete"
+            />
           )}
-          <button
+          <Button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
-          >
-            Cancel
-          </button>
-          <button
+            label="Cancel"
+            color="gray"
+            leftIcon="cancel"
+          />
+          <Button
             type="submit"
             disabled={isPending}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500 disabled:bg-blue-300"
-          >
-            {isPending ? 'Saving...' : 'Save'}
-          </button>
+            label={isPending ? 'Saving...' : 'Save'}
+            leftIcon="save"
+          />
         </div>
       </form>
     </div>

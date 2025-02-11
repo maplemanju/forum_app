@@ -6,6 +6,7 @@ import {
 } from '@/process/actions/commentAction'
 import { CommentType } from '@/types/comment'
 import { Alert } from '@/common/components/alerts'
+import { Button } from '@/common/components/button'
 
 export const CommentEdit = ({
   onCloseEdit,
@@ -80,20 +81,21 @@ export const CommentEdit = ({
           />
         </div>
         <div className="flex justify-end gap-2">
-          <button
+          <Button
             type="button"
             onClick={onCloseEdit}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
-          >
-            Cancel
-          </button>
-          <button
+            label="Cancel"
+            color="gray"
+            leftIcon="cancel"
+            size="small"
+          />
+          <Button
             type="submit"
             disabled={isPending}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-400 rounded-md hover:bg-blue-600 dark:hover:bg-blue-500 disabled:bg-blue-300"
-          >
-            {isPending ? 'Submitting...' : 'Submit'}
-          </button>
+            label={isPending ? 'Submitting...' : 'Submit'}
+            leftIcon="save"
+            size="small"
+          />
         </div>
       </form>
     </div>

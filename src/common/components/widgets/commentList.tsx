@@ -5,7 +5,7 @@ import CommentContent from '@/common/components/widgets/commentContent'
 import { CommentType } from '@/types/comment'
 import { CommentEdit } from './commentEdit'
 import { useSession } from 'next-auth/react'
-
+import { Button } from '@/common/components/button'
 interface CommentsProps {
   comments?: CommentType[]
   postId?: number
@@ -23,7 +23,10 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
 
   const [optimisticComments, addOptimisticComments] = useOptimistic(
     commentsState,
-    (currentState, optimisticValue: Partial<CommentType>) => {
+    (
+      currentState,
+      optimisticValue: Partial<CommentType & { isNewComment: boolean }>
+    ) => {
       return [optimisticValue, ...currentState]
     }
   )
@@ -50,12 +53,12 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
     <div className="space-y-4 mt-6">
       {session && (
         <div className="mb-4">
-          <button
+          <Button
             onClick={() => setOpenAddComments(!openAddComments)}
-            className="px-4 py-2 bg-blue-600 dark:bg-blue-400 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
-          >
-            Add Comment
-          </button>
+            label="Add Comment"
+            color="primary"
+            leftIcon="add"
+          />
         </div>
       )}
       {openAddComments && (

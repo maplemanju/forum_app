@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
+import { Button } from '@/common/components/button'
 
 export default function SearchBox({ tags }: { tags?: string[] }) {
   const router = useRouter()
@@ -33,12 +34,7 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
           <option value={`#${tag}`} key={tag} />
         ))}
       </datalist>
-      <button
-        type="submit"
-        className="px-6 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700"
-      >
-        Search
-      </button>
+      <Button type="submit" label="Search" color="primary" leftIcon="search" />
     </form>
   )
 }
