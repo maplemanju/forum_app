@@ -5,6 +5,7 @@ import Tooltip from '@/common/components/tooltip'
 import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { Button } from '@/common/components/button'
 import { useSession } from 'next-auth/react'
 dayjs.extend(relativeTime)
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
@@ -32,7 +33,13 @@ export const PostContent = ({ post, mdxSource }: PostProps) => {
       {/* info bar  */}
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <div>
-          Posted by <span>{post.createdUser.userInfo?.displayName}</span>
+          <Button
+            size="small"
+            color="fade"
+            boxStyle="box"
+            leftIcon="person"
+            label={`${post.createdUser.userInfo?.displayName}`}
+          />
         </div>
         <Tooltip
           text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
@@ -66,8 +73,8 @@ export const PostContent = ({ post, mdxSource }: PostProps) => {
 
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags?.length > 0 && (
-        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600 dark:text-gray-400">
-          <div className="text-gray-600 dark:text-gray-400 mb-2">Tags</div>
+        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600 dark:text-gray-400 items-center">
+          <span className={`material-icons`}>label</span>
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>
       )}

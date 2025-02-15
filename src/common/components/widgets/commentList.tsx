@@ -50,17 +50,20 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
   }
 
   return (
-    <div className="space-y-4 mt-6">
-      {session && (
-        <div className="mb-4">
-          <Button
-            onClick={() => setOpenAddComments(!openAddComments)}
-            label="Add Comment"
-            color="primary"
-            leftIcon="add"
-          />
-        </div>
-      )}
+    <div id="comments" className="space-y-4 mt-6">
+      <div className="mb-4">
+        <Button
+          onClick={() =>
+            session
+              ? setOpenAddComments(!openAddComments)
+              : alert('Please login to add a comment')
+          }
+          label="Add Comment"
+          color="primary"
+          leftIcon="chat"
+        />
+      </div>
+
       {openAddComments && (
         <CommentEdit
           onCloseEdit={() => setOpenAddComments(false)}

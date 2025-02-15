@@ -10,10 +10,13 @@ export const Alert = ({ response }: AlertProps) => {
   if (!response || !response.message) return <></>
 
   const alertStyles = {
-    error: 'bg-red-100 border-red-400 text-red-700',
-    success: 'bg-green-100 border-green-400 text-green-700',
-    warning: 'bg-yellow-100 border-yellow-400 text-yellow-700',
-    info: 'bg-blue-100 border-blue-400 text-blue-700',
+    error:
+      'bg-color-background-secondary border-color-danger text-color-danger',
+    success:
+      'bg-color-background-secondary border-color-success text-color-success',
+    warning:
+      'bg-color-background-secondary border-color-warning text-color-warning',
+    info: 'bg-color-background-secondary border-color-info text-color-info',
   }
 
   return (

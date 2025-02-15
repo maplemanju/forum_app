@@ -1,11 +1,14 @@
 import { ButtonHTMLAttributes } from 'react'
+import Link from 'next/link'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string
   leftIcon?: string
   rightIcon?: string
   size?: 'small' | 'medium' | 'large'
-  color?: 'primary' | 'gray' | 'danger' | 'neutral'
+  color?: 'primary' | 'gray' | 'danger' | 'neutral' | 'fade'
+  linkPath?: string
+  boxStyle?: 'box' | 'rect'
 }
 
 export const Button = ({
@@ -16,12 +19,21 @@ export const Button = ({
   rightIcon,
   size = 'medium',
   color = 'primary',
+  linkPath,
+  boxStyle = 'rect',
   ...props
 }: ButtonProps) => {
   const sizeClass = {
-    small: 'px-2 py-1 text-sm',
-    medium: 'px-4 py-2 text-base',
-    large: 'px-6 py-3 text-lg',
+    box: {
+      small: 'px-[6px] py-[6px]',
+      medium: 'px-[8px] py-[8px]',
+      large: 'px-[12px] py-[12px]',
+    },
+    rect: {
+      small: 'px-2 py-[6px] text-sm',
+      medium: 'px-4 py-[8px] text-base',
+      large: 'px-6 py-[12px] text-lg',
+    },
   }
   const colorClass = {
     primary: 'bg-color-primary hover:bg-color-primary-hover text-white',
@@ -29,17 +41,20 @@ export const Button = ({
     danger: 'bg-color-danger hover:bg-color-danger-hover text-white',
     neutral:
       'bg-color-neutral hover:bg-color-neutral-hover text-color-foreground',
+
+    fade: 'hover:bg-color-neutral-hover text-color-foreground',
   }
   const iconSize = {
     small: '16px',
     medium: '20px',
     large: '24px',
   }
-  return (
+
+  const buttonComponent = () => (
     <button
-      className={`rounded-md  flex items-center gap-2 ${colorClass[color]} ${
-        sizeClass[size]
-      } ${className || ''}`}
+      className={`rounded-md  flex items-center gap-2 leading-none ${
+        colorClass[color]
+      } ${sizeClass[boxStyle][size]} ${className || ''}`}
       {...props}
     >
       {leftIcon && (
@@ -54,5 +69,11 @@ export const Button = ({
         </span>
       )}
     </button>
+  )
+
+  return linkPath ? (
+    <Link href={linkPath}>{buttonComponent()}</Link>
+  ) : (
+    buttonComponent()
   )
 }

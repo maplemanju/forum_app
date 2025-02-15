@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Tooltip from '@/common/components/tooltip'
 import { VoteButtons } from '@/common/components/voteButtons'
 import { useSession } from 'next-auth/react'
+import { Button } from '@/common/components/button'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -44,10 +45,17 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
           {/* info bar  */}
           <div className="flex items-center text-sm text-color-subtext mt-2 gap-2">
             <span>
-              Posted by {post.createdUser.userInfo?.displayName || 'Anonymous'}
+              <Button
+                size="small"
+                color="neutral"
+                boxStyle="box"
+                leftIcon="person"
+                label={`${
+                  post.createdUser.userInfo?.displayName || 'Anonymous'
+                }`}
+              />
             </span>
 
-            <span>•</span>
             <Tooltip
               text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
               width="115px"
@@ -55,28 +63,21 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
             >
               <span>{dayjs(post.createdAt).fromNow()}</span>
             </Tooltip>
-            <span>•</span>
-            <span>{post._count.comments || 0} comments</span>
-            <span>•</span>
+            <span>
+              <Button
+                rightIcon="chat"
+                size="small"
+                color="neutral"
+                boxStyle="box"
+                label={`${post._count.comments || 0}`}
+                linkPath={`/${post.category.slug}/${post.slug}#comments`}
+              />
+            </span>
             <VoteButtons
               postId={post.id}
               voteCount={post._count.votes || 0}
               canVote={Boolean(session)}
             />
-            <span>•</span>
-            {post.postUpdate && (
-              <Tooltip
-                text={dayjs(post.postUpdate?.updatedAt).format(
-                  'YYYY/MM/DD HH:mm'
-                )}
-                width="115px"
-                className="text-center"
-              >
-                <span>
-                  updated at {dayjs(post.postUpdate?.updatedAt).fromNow()}
-                </span>
-              </Tooltip>
-            )}
           </div>
 
           {/* content  */}

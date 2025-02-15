@@ -92,8 +92,8 @@ export const CommentEdit = ({
           <Button
             type="submit"
             disabled={isPending}
-            label={isPending ? 'Submitting...' : 'Submit'}
-            leftIcon="save"
+            label={isPending ? 'Sending...' : 'Send'}
+            leftIcon="send"
             size="small"
           />
         </div>

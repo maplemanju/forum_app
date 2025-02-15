@@ -18,10 +18,6 @@ export default function PostToolbox({ post }: PostToolboxProps) {
 
   if (!post || !session) return <></>
 
-  const handleEdit = () => {
-    router.push(`/${post.category.slug}/${post.slug}/edit`)
-  }
-
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this post?')) return
 
@@ -34,7 +30,7 @@ export default function PostToolbox({ post }: PostToolboxProps) {
   return (
     <div className="flex gap-2 justify-end mt-4">
       <Button
-        onClick={handleEdit}
+        linkPath={`/${post.category.slug}/${post.slug}/edit`}
         label="Edit"
         color="gray"
         leftIcon="edit"
