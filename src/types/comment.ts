@@ -24,5 +24,10 @@ export type CommentType = Prisma.CommentsGetPayload<{
         votes: true
       }
     }
+    votes: {
+      select: {
+        vote: true
+      }
+    }
   }
 }>

@@ -1,8 +1,9 @@
 import prisma from '@/utils/prisma'
 import { Votes } from '@prisma/client'
 import { CommentType } from '@/types/comment'
-import { Session } from 'next-auth'
+import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 export type GetByPostId = {
   postId: number
@@ -24,6 +25,7 @@ export type UpdateComment = {
 }
 export const commentRepository = {
   getByPostId: async (args: GetByPostId) => {
+    const session = await getServerSession(authOptions)
     const comments = await prisma.comments.findMany({
       where: {
         postId: args.postId,
@@ -36,7 +38,6 @@ export const commentRepository = {
             isDeleted: false,
           },
           include: {
-            childComments: true,
             createdUser: {
               include: {
                 userInfo: true,
@@ -51,6 +52,16 @@ export const commentRepository = {
                 },
               },
             },
+            votes: session
+              ? {
+                  where: {
+                    userId: Number(session.user.id),
+                  },
+                  select: {
+                    vote: true,
+                  },
+                }
+              : undefined,
           },
         },
         createdUser: {
@@ -67,6 +78,16 @@ export const commentRepository = {
             },
           },
         },
+        votes: session
+          ? {
+              where: {
+                userId: Number(session.user.id),
+              },
+              select: {
+                vote: true,
+              },
+            }
+          : undefined,
       },
     })
     return comments

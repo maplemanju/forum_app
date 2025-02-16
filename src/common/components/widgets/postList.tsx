@@ -63,20 +63,19 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
             >
               <span>{dayjs(post.createdAt).fromNow()}</span>
             </Tooltip>
-            <span>
-              <Button
-                rightIcon="chat"
-                size="small"
-                color="neutral"
-                boxStyle="box"
-                label={`${post._count.comments || 0}`}
-                linkPath={`/${post.category.slug}/${post.slug}#comments`}
-              />
-            </span>
+            <Button
+              rightIcon="chat"
+              size="small"
+              color="neutral"
+              boxStyle="box"
+              label={`${post._count.comments || 0}`}
+              linkPath={`/${post.category.slug}/${post.slug}#comments`}
+            />
             <VoteButtons
               postId={post.id}
               voteCount={post._count.votes || 0}
               canVote={Boolean(session)}
+              userVotes={post.votes}
             />
           </div>
 

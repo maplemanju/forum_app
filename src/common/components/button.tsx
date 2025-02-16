@@ -52,22 +52,30 @@ export const Button = ({
 
   const buttonComponent = () => (
     <button
-      className={`rounded-md  flex items-center gap-2 leading-none ${
-        colorClass[color]
-      } ${sizeClass[boxStyle][size]} ${className || ''}`}
+      className={`rounded-md ${colorClass[color]} ${sizeClass[boxStyle][size]}`}
       {...props}
     >
-      {leftIcon && (
-        <span className={`material-icons`} style={{ fontSize: iconSize[size] }}>
-          {leftIcon}
-        </span>
-      )}
-      {label && <span>{label}</span>}
-      {rightIcon && (
-        <span className={`material-icons`} style={{ fontSize: iconSize[size] }}>
-          {rightIcon}
-        </span>
-      )}
+      <div
+        className={`flex items-center gap-2 leading-none  ${className || ''}`}
+      >
+        {leftIcon && (
+          <span
+            className={`material-icons`}
+            style={{ fontSize: iconSize[size] }}
+          >
+            {leftIcon}
+          </span>
+        )}
+        {label && <span>{label}</span>}
+        {rightIcon && (
+          <span
+            className={`material-icons`}
+            style={{ fontSize: iconSize[size] }}
+          >
+            {rightIcon}
+          </span>
+        )}
+      </div>
     </button>
   )
 

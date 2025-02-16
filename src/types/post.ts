@@ -16,5 +16,11 @@ export type PostType = Prisma.PostsGetPayload<{
         votes: true
       }
     }
+    votes: {
+      // user session votes
+      select: {
+        vote: true
+      }
+    }
   }
 }>

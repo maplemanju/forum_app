@@ -48,7 +48,14 @@ export const PostContent = ({ post, mdxSource }: PostProps) => {
         >
           <span>{dayjs(post.createdAt).fromNow()}</span>
         </Tooltip>
-        <span>•</span>
+        <Button
+          rightIcon="chat"
+          size="small"
+          color="neutral"
+          boxStyle="box"
+          label={`${post._count.comments || 0}`}
+          linkPath={`#comments`}
+        />
         <VoteButtons
           postId={post.id}
           voteCount={post._count.votes || 0}

@@ -1,8 +1,9 @@
 import prisma from '@/utils/prisma'
 import { generateSlug } from '@/utils/slugGenerator'
 import { Votes, Prisma } from '@prisma/client'
-import { Session } from 'next-auth'
+import { getServerSession, Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 export type GetByCategory = {
   categoryId: number
@@ -41,6 +42,7 @@ export type GetByKeyword = {
 
 export const postRepository = {
   getPosts: async (args: GetPostBy) => {
+    const session = await getServerSession(authOptions)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false },
       orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
@@ -67,6 +69,16 @@ export const postRepository = {
             userInfo: true,
           },
         },
+        votes: session
+          ? {
+              where: {
+                userId: Number(session.user.id),
+              },
+              select: {
+                vote: true,
+              },
+            }
+          : undefined,
       },
     })
     return posts

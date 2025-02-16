@@ -169,6 +169,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
             commentId={comment.id}
             voteCount={comment._count?.votes || 0}
             canVote={Boolean(session)}
+            userVotes={comment.votes}
           />
         </div>
 

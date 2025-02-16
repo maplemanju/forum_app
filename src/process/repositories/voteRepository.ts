@@ -17,10 +17,19 @@ export const voteRepository = {
     })
 
     if (existingVote) {
+      // if the vote is the same, delete the vote
       if (existingVote.vote === args.vote) {
-        throw new Error('User has already voted with the same value')
+        await prisma.votes.delete({
+          where: {
+            id: existingVote.id,
+          },
+        })
+        return {
+          result: 0,
+        }
       }
-      await prisma.votes.update({
+      // if the vote is different, update the vote
+      const updatedVote = await prisma.votes.update({
         where: {
           id: existingVote.id,
         },
@@ -29,19 +38,19 @@ export const voteRepository = {
         },
       })
       return {
-        result: args.vote,
+        result: updatedVote.vote,
       }
     }
+
     // create new vote
-    await prisma.votes.create({
+    const newVote = await prisma.votes.create({
       data: {
         ...args,
         userId: Number(session.user.id),
       },
     })
-    // on create append if upvote only
     return {
-      result: args.vote === 1 ? 1 : 0,
+      result: newVote.vote,
     }
   },
 }
