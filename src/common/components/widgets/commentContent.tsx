@@ -112,21 +112,6 @@ const CommentContent: React.FC<CommentContentProps> = ({
     const isOwner = comment.createdBy == session?.user?.id
     return (
       <div className="space-y-2">
-        {/* edit  */}
-        {isEditing === comment.id ? (
-          <CommentEdit
-            onCloseEdit={() => setIsEditing(null)}
-            postId={postId}
-            parentCommentId={comment.parentCommentId}
-            commentContent={comment.commentContent}
-            commentId={comment.id}
-            submitCallback={editCallback}
-          />
-        ) : (
-          /* content  */
-          <p className="text-color-foreground">{comment.commentContent}</p>
-        )}
-
         {/* info bar  */}
         <div className="flex items-center gap-2 text-[12px] text-color-subtext">
           <Button
@@ -168,6 +153,21 @@ const CommentContent: React.FC<CommentContentProps> = ({
             </Button>
           )}
         </div>
+
+        {/* edit  */}
+        {isEditing === comment.id ? (
+          <CommentEdit
+            onCloseEdit={() => setIsEditing(null)}
+            postId={postId}
+            parentCommentId={comment.parentCommentId}
+            commentContent={comment.commentContent}
+            commentId={comment.id}
+            submitCallback={editCallback}
+          />
+        ) : (
+          /* content  */
+          <p className="text-color-foreground">{comment.commentContent}</p>
+        )}
 
         {/* action bar  */}
         <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
@@ -215,14 +215,14 @@ const CommentContent: React.FC<CommentContentProps> = ({
     <>
       {renderComments(commentState)}
       {openComments && (
-        <div className="space-y-2 border-l-2 border-color-border ">
+        <div className="border-l-2 border-color-border ">
           {optimisticChildComments.map((childComment) => (
             <div
               key={
                 childComment.id ||
                 `optimistic-child-comment-${crypto.randomUUID()}`
               }
-              className={`ml-4 p-4 rounded-lg ${
+              className={`mt-2 ml-4 p-2 rounded-lg ${
                 childComment.isNewComment
                   ? 'mt-2 bg-yellow-100 dark:bg-green-950'
                   : ''

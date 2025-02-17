@@ -50,7 +50,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
   }
 
   return (
-    <div id="comments" className="space-y-4 mt-6">
+    <div id="comments" className="space-y-2 mt-6">
       <div className="mb-4">
         <Button
           onClick={() =>
@@ -78,7 +78,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
           return (
             <div
               key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
-              className={` p-4 rounded-lg mb-3 shadow-sm transition-colors duration-300 ${
+              className={`p-2 rounded-lg shadow-sm transition-colors duration-300 ${
                 comment.isNewComment ? 'bg-yellow-100 dark:bg-green-950' : ''
               }`}
             >
