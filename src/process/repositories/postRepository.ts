@@ -61,7 +61,11 @@ export const postRepository = {
             },
           },
         },
-        category: true,
+        category: {
+          include: {
+            parentCategory: true,
+          },
+        },
         postUpdate: true,
         postTags: true,
         createdUser: {

@@ -5,7 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string
   leftIcon?: string
   rightIcon?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'xsmall'
   color?: 'primary' | 'gray' | 'danger' | 'neutral' | 'fade'
   linkPath?: string
   boxStyle?: 'box' | 'rect'
@@ -25,11 +25,13 @@ export const Button = ({
 }: ButtonProps) => {
   const sizeClass = {
     box: {
-      small: 'px-[6px] py-[6px]',
-      medium: 'px-[8px] py-[8px]',
-      large: 'px-[12px] py-[12px]',
+      xsmall: 'px-[4px] py-[4px] text-[12px]',
+      small: 'px-[6px] py-[6px] text-sm',
+      medium: 'px-[8px] py-[8px] text-base',
+      large: 'px-[12px] py-[12px] text-lg',
     },
     rect: {
+      xsmall: 'px-2 py-[4px] text-[12px]',
       small: 'px-2 py-[6px] text-sm',
       medium: 'px-4 py-[8px] text-base',
       large: 'px-6 py-[12px] text-lg',
@@ -45,6 +47,7 @@ export const Button = ({
     fade: 'hover:bg-color-neutral-hover text-color-foreground',
   }
   const iconSize = {
+    xsmall: '14px',
     small: '16px',
     medium: '20px',
     large: '24px',

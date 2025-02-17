@@ -2,7 +2,11 @@ import { Prisma } from '@prisma/client'
 
 export type PostType = Prisma.PostsGetPayload<{
   include: {
-    category: true
+    category: {
+      include: {
+        parentCategory: true
+      }
+    }
     postUpdate: true
     postTags: true
     createdUser: {

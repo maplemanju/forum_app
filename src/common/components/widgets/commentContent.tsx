@@ -6,7 +6,9 @@ import { VoteButtons } from '@/common/components/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSession } from 'next-auth/react'
+import { fromNowShort } from '@/utils/dateFormatter'
 import { deleteComment } from '@/process/actions/commentAction'
+import { Button } from '../button'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {
@@ -107,6 +109,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
   }
 
   const renderComments = (comment: Partial<CommentType>) => {
+    const isOwner = comment.createdBy == session?.user?.id
     return (
       <div className="space-y-2">
         {/* edit  */}
@@ -125,23 +128,49 @@ const CommentContent: React.FC<CommentContentProps> = ({
         )}
 
         {/* info bar  */}
-        <div className="flex items-center gap-2 text-sm text-color-subtext">
-          <span>
-            Posted by {comment.createdUser?.userInfo?.displayName ?? '-'}
-          </span>
-
-          <span>•</span>
+        <div className="flex items-center gap-2 text-[12px] text-color-subtext">
+          <Button
+            size="xsmall"
+            color="fade"
+            boxStyle="box"
+            leftIcon="person"
+            label={`${comment.createdUser?.userInfo?.displayName}`}
+          />
           <Tooltip
             text={dayjs(comment.createdAt).format('YYYY/MM/DD HH:mm')}
             width="115px"
             className="text-center"
           >
-            <span>{dayjs(comment.createdAt).fromNow()}</span>
+            <span>
+              {comment.createdAt ? fromNowShort(comment.createdAt) : ''}
+            </span>
           </Tooltip>
+          {isOwner && onEdit && (
+            <Button
+              onClick={() => comment.id && onEdit(comment.id)}
+              size="xsmall"
+              color="neutral"
+              boxStyle="box"
+              leftIcon="edit"
+            >
+              Edit
+            </Button>
+          )}
+          {isOwner && onDelete && (
+            <Button
+              onClick={() => comment.id && onDelete(comment.id)}
+              size="xsmall"
+              color="neutral"
+              boxStyle="box"
+              leftIcon="delete"
+            >
+              Delete
+            </Button>
+          )}
         </div>
 
         {/* action bar  */}
-        <div className="flex items-center text-sm text-color-subtext mt-2 gap-2">
+        <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
           {optimisticChildComments.length > 0 &&
             comment.parentCommentId === null && (
               <button onClick={onOpenComments}>
@@ -151,19 +180,15 @@ const CommentContent: React.FC<CommentContentProps> = ({
               </button>
             )}
           {session && onReply && comment.parentCommentId === null && (
-            <button onClick={() => comment.id && onReply(comment.id)}>
+            <Button
+              onClick={() => comment.id && onReply(comment.id)}
+              size="xsmall"
+              color="neutral"
+              boxStyle="box"
+              leftIcon="reply"
+            >
               Reply
-            </button>
-          )}
-          {session && onEdit && (
-            <button onClick={() => comment.id && onEdit(comment.id)}>
-              Edit
-            </button>
-          )}
-          {session && onDelete && (
-            <button onClick={() => comment.id && onDelete(comment.id)}>
-              Delete
-            </button>
+            </Button>
           )}
           <VoteButtons
             commentId={comment.id}
@@ -190,16 +215,16 @@ const CommentContent: React.FC<CommentContentProps> = ({
     <>
       {renderComments(commentState)}
       {openComments && (
-        <div className="space-y-2">
+        <div className="space-y-2 border-l-2 border-color-border ">
           {optimisticChildComments.map((childComment) => (
             <div
               key={
                 childComment.id ||
                 `optimistic-child-comment-${crypto.randomUUID()}`
               }
-              className={`ml-4 p-4 ${
+              className={`ml-4 p-4 rounded-lg ${
                 childComment.isNewComment
-                  ? 'bg-yellow-100 dark:bg-green-950'
+                  ? 'mt-2 bg-yellow-100 dark:bg-green-950'
                   : ''
               } transition-colors duration-400`}
             >

@@ -65,7 +65,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
         <Button
           rightIcon="thumb_up"
           onClick={() => handleVote('upvote')}
-          size="small"
+          size={commentId ? 'xsmall' : 'small'}
           color="neutral"
           boxStyle="box"
           label={voteCountState.toString()}
@@ -74,10 +74,10 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
         <Button
           rightIcon="thumb_down"
           onClick={() => handleVote('downvote')}
-          size="small"
+          size={commentId ? 'xsmall' : 'small'}
           color="neutral"
           boxStyle="box"
-          className={userVoteCount === -1 ? 'text-blue-500' : ''}
+          className={userVoteCount === -1 ? 'text-red-500' : ''}
         />
       </>
     </div>

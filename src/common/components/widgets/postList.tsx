@@ -6,8 +6,11 @@ import Tooltip from '@/common/components/tooltip'
 import { VoteButtons } from '@/common/components/voteButtons'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/common/components/button'
+import { serialize } from 'next-mdx-remote/serialize'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { stripMarkdown } from '@/utils/stripMarkdown'
+import { fromNowShort } from '@/utils/dateFormatter'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
@@ -25,15 +28,30 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
   return (
     <div>
       {posts.map((post: PostType) => (
-        <div key={post.id} className="p-6  border-b border-color-border">
+        <div key={post.id} className="p-3 text-sm">
           {/* category  */}
           {showCategory && (
-            <Link
-              href={`/${post.category.slug}`}
-              className="text-sm text-color-subtext mb-2 hover:text-blue-800 dark:hover:text-blue-400"
-            >
-              {post.category.categoryName}
-            </Link>
+            <div className="flex items-center text-color-subtext mb-2 flex-wrap">
+              {post.category.parentCategory && (
+                <>
+                  <Link
+                    href={`/${post.category.parentCategory.slug}`}
+                    className="hover:text-blue-800 dark:hover:text-blue-400"
+                  >
+                    {post.category.parentCategory.categoryName}
+                  </Link>
+                  <span className={`material-icons`}>
+                    <div className="text-sm">chevron_right</div>
+                  </span>
+                </>
+              )}
+              <Link
+                href={`/${post.category.slug}`}
+                className="hover:text-blue-800 dark:hover:text-blue-400"
+              >
+                {post.category.categoryName}
+              </Link>
+            </div>
           )}
           {/* title  */}
           <Link href={`/${post.category.slug}/${post.slug}`}>
@@ -41,13 +59,11 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
               {post.postTitle}
             </h3>
           </Link>
-
-          {/* info bar  */}
-          <div className="flex items-center text-sm text-color-subtext mt-2 gap-2">
+          <div className="flex items-center text-sm text-color-subtext gap-2 flex-wrap">
             <span>
               <Button
                 size="small"
-                color="neutral"
+                color="fade"
                 boxStyle="box"
                 leftIcon="person"
                 label={`${
@@ -61,8 +77,18 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
               width="115px"
               className="text-center"
             >
-              <span>{dayjs(post.createdAt).fromNow()}</span>
+              <span>{fromNowShort(post.createdAt)}</span>
             </Tooltip>
+          </div>
+
+          {/* content  */}
+          <p className="text-color-subtext line-clamp-3">
+            {stripMarkdown(post.postContent)}
+          </p>
+
+          {/* info bar  */}
+
+          <div className="flex items-center text-sm text-color-subtext mt-2 gap-2 flex-wrap">
             <Button
               rightIcon="chat"
               size="small"
@@ -78,11 +104,6 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
               userVotes={post.votes}
             />
           </div>
-
-          {/* content  */}
-          <p className="text-color-subtext mt-3 line-clamp-3">
-            {post.postContent}
-          </p>
         </div>
       ))}
     </div>

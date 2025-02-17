@@ -15,7 +15,7 @@ export const CategoryList = ({ categories }: Props) => {
     return (
       <div
         key={category.id}
-        className="bg-color-background-tertiary p-4 rounded-lg mb-4 flex flex-column gap-2 justify-between"
+        className="bg-color-background-tertiary p-3 rounded-lg mb-4 flex flex-column gap-2 justify-between"
       >
         <div>
           <Link href={`/${category.slug}`}>
