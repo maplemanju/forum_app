@@ -81,7 +81,7 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
           </div>
 
           {/* content  */}
-          <p className="text-color-subtext line-clamp-3">
+          <p className="text-color-subtext line-clamp-2">
             {stripMarkdown(post.postContent)}
           </p>
 

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { CategoryType } from '@/types/category'
 import { Button } from '@/components/atoms/button'
+import { stripMarkdown } from '@/utils/stripMarkdown'
 
 type Props = {
   categories?: CategoryType[]
@@ -24,8 +25,8 @@ export const CategoryList = ({ categories }: Props) => {
             </h3>
           </Link>
 
-          <p className="text-color-subtext text-sm">
-            {category.categoryDescription}
+          <p className="text-color-subtext text-sm line-clamp-1">
+            {stripMarkdown(category.categoryDescription ?? '', 180)}
           </p>
 
           {category.childCategories && category.childCategories.length > 0 && (

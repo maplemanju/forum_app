@@ -8,6 +8,7 @@ import CategoryToolbox from '@/components/molecules/categoryToolbox'
 import CategoryContent from '@/components/organisms/categoryContent'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
+import { mdxSerializer } from '@/utils/mdxSerializer'
 
 export default async function CategoryPage({
   params,
@@ -28,13 +29,20 @@ export default async function CategoryPage({
       })
     : null
 
+  const mdxSource = await mdxSerializer(
+    categoryResponse.data?.categoryDescription ?? ''
+  )
+
   return (
     <>
       <Alert response={categoryResponse} />
       <Content>
         <Breadcrumbs category={categoryResponse.data} />
         <CategoryToolbox category={categoryResponse.data} />
-        <CategoryContent category={categoryResponse.data} />
+        <CategoryContent
+          category={categoryResponse.data}
+          mdxSource={mdxSource}
+        />
         <CategoryList categories={categoryResponse.data?.childCategories} />
         {postsResponse && <PostList posts={postsResponse.data} />}
       </Content>

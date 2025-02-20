@@ -12,6 +12,7 @@ import {
 import { ResponseType } from '@/utils/errors'
 import { Alert } from '@/components/atoms/alerts'
 import { Button } from '@/components/atoms/button'
+import { TextEditor } from '@/components/molecules/textEditor'
 
 interface CategoryEditProps {
   category?: CategoryType | null
@@ -24,6 +25,9 @@ export default function CategoryEdit({
 }: CategoryEditProps) {
   const router = useRouter()
   const [alert, setAlert] = useState<ResponseType<unknown>>()
+  const [content, setContent] = useState<string>(
+    category?.categoryDescription || ''
+  )
 
   const handleSubmit = async (
     prevState: UpdateCategoryResponse,
@@ -32,7 +36,7 @@ export default function CategoryEdit({
     const args = {
       categoryName: formData.get('categoryName') as string,
       slug: formData.get('slug') as string,
-      categoryDescription: formData.get('categoryDescription') as string,
+      categoryDescription: content,
     }
 
     let response: UpdateCategoryResponse
@@ -56,7 +60,7 @@ export default function CategoryEdit({
     data: {
       categoryName: category?.categoryName || '',
       slug: category?.slug || '',
-      categoryDescription: category?.categoryDescription || '',
+      categoryDescription: content,
     },
   })
 
@@ -147,12 +151,11 @@ export default function CategoryEdit({
           >
             Description
           </label>
-          <textarea
-            id="categoryDescription"
-            name="categoryDescription"
-            defaultValue={formState.data?.categoryDescription ?? ''}
-            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500 h-32"
-            required
+          <TextEditor
+            markdown={content}
+            onChangeCallback={(markdown) => setContent(markdown)}
+            isMdxEditor={true}
+            canToggleEditor={true}
           />
         </div>
 
