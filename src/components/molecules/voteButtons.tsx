@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { executeVote } from '@/process/actions/voteAction'
 import { Button } from '@/components/atoms/button'
+import { useLoginPopup } from '@/hooks/useLoginPopup'
 
 type VoteButtonsProps = {
   postId?: number
@@ -23,6 +24,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
 }) => {
   const [voteCountState, setVoteCountState] = useState(voteCount)
   const [userVoteCount, setUserVoteCount] = useState(0)
+  const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
 
   useEffect(() => {
     if (userVotes && userVotes.length > 0) {
@@ -32,7 +34,9 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (!canVote) {
-      alert('Please login to vote')
+      if (!isLoginPopupOpen) {
+        openLoginPopup()
+      }
       return
     }
     const vote = voteType === 'upvote' ? 1 : -1

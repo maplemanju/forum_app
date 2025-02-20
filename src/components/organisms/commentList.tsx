@@ -6,6 +6,8 @@ import { CommentType } from '@/types/comment'
 import { CommentEdit } from './commentEdit'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/atoms/button'
+import { useLoginPopup } from '@/hooks/useLoginPopup'
+
 interface CommentsProps {
   comments?: CommentType[]
   postId?: number
@@ -13,6 +15,7 @@ interface CommentsProps {
 
 const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
   const { data: session } = useSession()
+  const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
   const [openAddComments, setOpenAddComments] = useState(false)
   const [commentsState, setCommentsState] =
     useState<Partial<CommentType & { isNewComment: boolean }>[]>(comments)
@@ -53,11 +56,13 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
     <div id="comments" className="space-y-2 mt-6">
       <div className="mb-4">
         <Button
-          onClick={() =>
-            session
-              ? setOpenAddComments(!openAddComments)
-              : alert('Please login to add a comment')
-          }
+          onClick={() => {
+            if (session) {
+              setOpenAddComments(!openAddComments)
+            } else if (!isLoginPopupOpen) {
+              openLoginPopup()
+            }
+          }}
           label="Add Comment"
           color="primary"
           leftIcon="chat"
