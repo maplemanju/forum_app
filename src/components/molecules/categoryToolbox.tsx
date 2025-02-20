@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { CategoryType } from '@/types/category'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 interface CategoryToolboxProps {
   category?: CategoryType | null
 }

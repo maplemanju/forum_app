@@ -10,8 +10,8 @@ import {
   UpdateCategoryResponse,
 } from '@/process/actions/categoryAction'
 import { ResponseType } from '@/utils/errors'
-import { Alert } from '@/common/components/alerts'
-import { Button } from '@/common/components/button'
+import { Alert } from '@/components/atoms/alerts'
+import { Button } from '@/components/atoms/button'
 
 interface CategoryEditProps {
   category?: CategoryType | null

@@ -1,4 +1,4 @@
-import Login from '@/common/components/login'
+import Login from '@/components/organisms/login'
 
 export default function LoginPage() {
   return <Login />

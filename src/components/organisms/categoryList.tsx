@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { CategoryType } from '@/types/category'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 
 type Props = {
   categories?: CategoryType[]

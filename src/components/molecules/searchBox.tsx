@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 
 export default function SearchBox({ tags }: { tags?: string[] }) {
   const router = useRouter()

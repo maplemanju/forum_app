@@ -2,10 +2,10 @@
 
 import { PostType } from '@/types/post'
 import Link from 'next/link'
-import Tooltip from '@/common/components/tooltip'
-import { VoteButtons } from '@/common/components/voteButtons'
+import Tooltip from '@/components/atoms/tooltip'
+import { VoteButtons } from '@/components/molecules/voteButtons'
 import { useSession } from 'next-auth/react'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 import { serialize } from 'next-mdx-remote/serialize'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { executeVote } from '@/process/actions/voteAction'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 
 type VoteButtonsProps = {
   postId?: number

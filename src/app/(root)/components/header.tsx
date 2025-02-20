@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 
 export default function Header() {
   const { data: session } = useSession()

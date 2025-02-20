@@ -1,8 +1,8 @@
 import { getPostBySlug } from '@/process/actions/postAction'
-import PostEdit from '@/common/components/widgets/postEdit'
-import { Alert } from '@/common/components/alerts'
+import PostEdit from '@/components/organisms/postEdit'
+import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
-import { Content } from '@/common/components/content'
+import { Content } from '@/components/atoms/content'
 
 export default async function EditPage({
   params,

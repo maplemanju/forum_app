@@ -1,8 +1,8 @@
-import { Content } from '@/common/components/content'
-import PostEdit from '@/common/components/widgets/postEdit'
+import { Content } from '@/components/atoms/content'
+import PostEdit from '@/components/organisms/postEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { CategoryType } from '@/types/category'
-import { Alert } from '@/common/components/alerts'
+import { Alert } from '@/components/atoms/alerts'
 
 export default async function AddPostPage({
   searchParams,

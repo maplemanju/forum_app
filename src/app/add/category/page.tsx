@@ -1,7 +1,7 @@
-import { Content } from '@/common/components/content'
-import CategoryEdit from '@/common/components/widgets/categoryEdit'
+import { Content } from '@/components/atoms/content'
+import CategoryEdit from '@/components/organisms/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
-import { Alert } from '@/common/components/alerts'
+import { Alert } from '@/components/atoms/alerts'
 
 export default async function AddCategoryPage({
   searchParams,

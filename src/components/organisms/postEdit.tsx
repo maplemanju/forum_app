@@ -10,10 +10,10 @@ import {
   updatePost,
   UpdatePostResponse,
 } from '@/process/actions/postAction'
-import { Alert } from '@/common/components/alerts'
+import { Alert } from '@/components/atoms/alerts'
 import { ResponseType } from '@/utils/errors'
-import { TextEditor } from '@/common/components/textEditor'
-import { Button } from '@/common/components/button'
+import { TextEditor } from '@/components/molecules/textEditor'
+import { Button } from '@/components/atoms/button'
 
 interface PostEditProps {
   post?: PostType

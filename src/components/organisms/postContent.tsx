@@ -1,11 +1,11 @@
 'use client'
 
 import { PostType } from '@/types/post'
-import Tooltip from '@/common/components/tooltip'
-import { VoteButtons } from '@/common/components/voteButtons'
+import Tooltip from '@/components/atoms/tooltip'
+import { VoteButtons } from '@/components/molecules/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 import { useSession } from 'next-auth/react'
 import { fromNowShort } from '@/utils/dateFormatter'
 dayjs.extend(relativeTime)

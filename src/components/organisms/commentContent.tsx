@@ -1,14 +1,14 @@
 import { CommentType } from '@/types/comment'
-import Tooltip from '../tooltip'
+import Tooltip from '../atoms/tooltip'
 import { useEffect, useOptimistic, useState } from 'react'
 import { CommentEdit } from './commentEdit'
-import { VoteButtons } from '@/common/components/voteButtons'
+import { VoteButtons } from '@/components/molecules/voteButtons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSession } from 'next-auth/react'
 import { fromNowShort } from '@/utils/dateFormatter'
 import { deleteComment } from '@/process/actions/commentAction'
-import { Button } from '../button'
+import { Button } from '../atoms/button'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {

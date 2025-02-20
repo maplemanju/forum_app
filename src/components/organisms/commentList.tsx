@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState, useEffect, useOptimistic } from 'react'
-import CommentContent from '@/common/components/widgets/commentContent'
+import CommentContent from '@/components/organisms/commentContent'
 import { CommentType } from '@/types/comment'
 import { CommentEdit } from './commentEdit'
 import { useSession } from 'next-auth/react'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 interface CommentsProps {
   comments?: CommentType[]
   postId?: number

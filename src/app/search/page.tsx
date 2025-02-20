@@ -1,10 +1,10 @@
-import { Content } from '@/common/components/content'
-import { PostList } from '@/common/components/widgets/postList'
+import { Content } from '@/components/atoms/content'
+import { PostList } from '@/components/organisms/postList'
 import {
   getRecentlyUpdatedPosts,
   getPostsByKeyword,
 } from '@/process/actions/postAction'
-import SearchBox from '@/common/components/widgets/searchBox'
+import SearchBox from '@/components/molecules/searchBox'
 import { PostType } from '@/types/post'
 import { ResponseType } from '@/utils/errors'
 import { getTags } from '@/process/actions/tagAction'

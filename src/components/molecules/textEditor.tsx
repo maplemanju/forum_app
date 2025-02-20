@@ -5,7 +5,7 @@ import { type MDXEditorMethods, type MDXEditorProps } from '@mdxeditor/editor'
 import { forwardRef, useRef, useState } from 'react'
 
 // This is the only place TextEditor is imported directly.
-const Editor = dynamic(() => import('./textEditorInitialize'), {
+const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
   // Make sure we turn SSR off
   ssr: false,
 })

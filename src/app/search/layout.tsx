@@ -1,5 +1,5 @@
 import Header from '../(root)/components/header'
-import { Footer } from '@/common/components/footer'
+import { Footer } from '@/components/atoms/footer'
 
 export default function SearchLayout({
   children,

@@ -1,8 +1,8 @@
-import CategoryEdit from '@/common/components/widgets/categoryEdit'
+import CategoryEdit from '@/components/organisms/categoryEdit'
 import { getCategory } from '@/process/actions/categoryAction'
-import { Alert } from '@/common/components/alerts'
+import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
-import { Content } from '@/common/components/content'
+import { Content } from '@/components/atoms/content'
 
 export default async function CategoryEditPage({
   params,

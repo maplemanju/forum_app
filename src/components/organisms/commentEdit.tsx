@@ -5,8 +5,8 @@ import {
   CreateCommentResponse,
 } from '@/process/actions/commentAction'
 import { CommentType } from '@/types/comment'
-import { Alert } from '@/common/components/alerts'
-import { Button } from '@/common/components/button'
+import { Alert } from '@/components/atoms/alerts'
+import { Button } from '@/components/atoms/button'
 
 export const CommentEdit = ({
   onCloseEdit,

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { PostType } from '@/types/post'
 import { deletePost } from '@/process/actions/postAction'
-import { Button } from '@/common/components/button'
+import { Button } from '@/components/atoms/button'
 
 interface PostToolboxProps {
   post?: PostType
