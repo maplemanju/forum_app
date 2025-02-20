@@ -2,7 +2,7 @@ import { getPostBySlug } from '@/process/actions/postAction'
 import PostEdit from '@/components/organisms/postEdit'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
-import { Content } from '@/components/atoms/content'
+import { Content } from '@/components/templates/content'
 
 export default async function EditPage({
   params,

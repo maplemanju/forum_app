@@ -1,5 +1,5 @@
-import Header from '../(root)/components/header'
-import { Footer } from '@/components/atoms/footer'
+import Header from '../../components/templates/header'
+import { Footer } from '@/components/templates/footer'
 
 export default function CategoryLayout({
   children,

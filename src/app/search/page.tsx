@@ -1,4 +1,4 @@
-import { Content } from '@/components/atoms/content'
+import { Content } from '@/components/templates/content'
 import { PostList } from '@/components/organisms/postList'
 import {
   getRecentlyUpdatedPosts,

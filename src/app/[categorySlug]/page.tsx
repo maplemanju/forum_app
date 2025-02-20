@@ -1,4 +1,4 @@
-import { Content } from '@/components/atoms/content'
+import { Content } from '@/components/templates/content'
 import { getCategory } from '@/process/actions/categoryAction'
 import { CategoryList } from '@/components/organisms/categoryList'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'

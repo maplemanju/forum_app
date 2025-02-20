@@ -1,4 +1,4 @@
-import { Content } from '@/components/atoms/content'
+import { Content } from '@/components/templates/content'
 import PostEdit from '@/components/organisms/postEdit'
 import { getCategory } from '@/process/actions/categoryAction'
 import { CategoryType } from '@/types/category'

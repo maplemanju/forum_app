@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import Wrapper from './(root)/components/wrapper'
+import Wrapper from '../components/templates/wrapper'
 import '@mdxeditor/editor/style.css'
 import './styles/globals.css'
 import './styles/mdxEditor.scss'
