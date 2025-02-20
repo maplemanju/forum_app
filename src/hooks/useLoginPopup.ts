@@ -22,11 +22,6 @@ export const useLoginPopup = () => {
     )
 
     if (popup) {
-      // Try to add event listener
-      popup.onbeforeunload = () => {
-        setIsOpen(false)
-        setPopupWindow(null)
-      }
       setPopupWindow(popup)
       setIsOpen(true)
     }
