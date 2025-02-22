@@ -35,7 +35,6 @@ export type CreateCommentResponse = {
 export const createComment = async (
   payload: CreateComment
 ): Promise<ResponseType<Partial<CommentType>>> => {
-  console.log('createComment', payload)
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
@@ -67,6 +66,7 @@ export const deleteComment = async (
   }
   try {
     await commentRepository.deleteComment(args, session)
+    console.log('deleteComment')
     return {
       success: true,
     }
@@ -90,6 +90,7 @@ export const updateComment = async (
   }
   try {
     const response = await commentRepository.updateComment(args, session)
+    console.log('updateComment')
     return {
       data: response,
       success: true,

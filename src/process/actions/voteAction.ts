@@ -12,6 +12,7 @@ export const executeVote = async (args: ExecuteVote) => {
   }
   try {
     const result = await voteRepository.executeVote(args, session)
+    console.log('executeVote')
     return { success: true, voteCount: result.result }
   } catch (err) {
     const error = err as Error

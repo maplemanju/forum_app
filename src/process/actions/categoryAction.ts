@@ -11,14 +11,13 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
 import { Prisma } from '@prisma/client'
-import { error } from 'console'
 
 export const getAllCategories = async (): Promise<
   ResponseType<CategoryType[]>
 > => {
   try {
     const response = await categoryRepository.getAll()
-    console.log('getAllCategories', response)
+    console.log('getAllCategories')
     return {
       data: response,
       success: true,
@@ -41,10 +40,9 @@ export const getAllCategories = async (): Promise<
 export const getCategory = async (
   args: GetCategoryProps
 ): Promise<ResponseType<CategoryType>> => {
-  console.log('getCategory', args)
   try {
     const response = await categoryRepository.getCategory(args)
-    console.log('getCategory', response)
+    console.log('getCategory')
     return {
       data: response,
       success: true,
