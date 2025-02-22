@@ -91,6 +91,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             Title
           </label>
           <input
+            id="title"
             type="text"
             name="title"
             defaultValue={formState.data?.postTitle || ''}
@@ -107,6 +108,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
               Category
             </label>
             <input
+              id="category"
               type="text"
               name="category"
               className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
@@ -123,7 +125,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
           </label>
           <TextEditor
             markdown={content}
-            onChangeCallback={(markdown) => setContent(markdown)}
+            onChangeCallback={setContent}
             isMdxEditor={true}
             canToggleEditor={true}
           />
@@ -134,6 +136,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             Tags
           </label>
           <input
+            id="tags"
             type="text"
             name="tags"
             defaultValue={

@@ -8,7 +8,6 @@ import { getCommentsByPostId } from '@/process/actions/commentAction'
 import PostToolbox from '@/components/molecules/postToolbox'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
-import { mdxSerializer } from '@/utils/mdxSerializer'
 
 export default async function PostPage({
   params,
@@ -20,7 +19,6 @@ export default async function PostPage({
   if (!postResponse.success || !postResponse.data) {
     return notFound()
   }
-  const mdxSource = await mdxSerializer(postResponse.data.postContent)
   const postId = Number(postResponse.data.id)
   const commentsResponse = await getCommentsByPostId({ postId: postId })
   console.log('commentsResponse', commentsResponse)
@@ -38,7 +36,7 @@ export default async function PostPage({
           post={postResponse.data}
         />
         <PostToolbox post={postResponse.data} />
-        <PostContent post={postResponse.data} mdxSource={mdxSource} />
+        <PostContent post={postResponse.data} />
         <CommentList comments={commentsResponse.data} postId={postId} />
       </Content>
     </>

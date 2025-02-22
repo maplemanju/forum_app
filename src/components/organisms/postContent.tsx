@@ -9,19 +9,36 @@ import { Button } from '@/components/atoms/button'
 import { useSession } from 'next-auth/react'
 import { fromNowShort } from '@/utils/dateFormatter'
 dayjs.extend(relativeTime)
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXContent } from '@/components/templates/MDXContent'
+import { mdxSerializer } from '@/utils/mdxSerializer'
+import { useEffect, useState } from 'react'
 
 type PostProps = {
   post?: PostType
-  mdxSource: MDXRemoteSerializeResult
 }
 
-export const PostContent = ({ post, mdxSource }: PostProps) => {
+export const PostContent = ({ post }: PostProps) => {
   const { data: session } = useSession()
+  const [serializedContent, setSerializedContent] =
+    useState<MDXRemoteSerializeResult | null>(null)
 
   if (!post) {
     return <div>Post not found</div>
   }
+
+  useEffect(() => {
+    const serializeContent = async () => {
+      try {
+        const mdxSource = await mdxSerializer(post.postContent ?? '')
+        setSerializedContent(mdxSource)
+      } catch (error) {
+        console.error('Failed to serialize MDX:', error)
+      }
+    }
+
+    serializeContent()
+  }, [post])
 
   return (
     <div className=" p-6">
@@ -66,7 +83,7 @@ export const PostContent = ({ post, mdxSource }: PostProps) => {
 
       {/* content  */}
       <div className="post-content mt-3">
-        <MDXRemote {...mdxSource} />
+        {serializedContent && <MDXContent source={serializedContent} />}
       </div>
 
       {/* updated at  */}

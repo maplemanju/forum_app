@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { type MDXEditorMethods, type MDXEditorProps } from '@mdxeditor/editor'
-import { forwardRef, useRef, useState } from 'react'
+import { forwardRef, useRef, useState, useCallback } from 'react'
 
 // This is the only place TextEditor is imported directly.
 const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
@@ -23,10 +23,11 @@ export const TextEditor = (props: TextEditorProps) => {
     props.isMdxEditor || false
   )
   const editorRef = useRef<MDXEditorMethods>(null)
-  const handleChange = (markdown: string) => {
+
+  const handleChange = useCallback((markdown: string) => {
     console.log('markdown', markdown)
     props.onChangeCallback(markdown)
-  }
+  }, [])
 
   const toggleButton = () => {
     return (
@@ -60,6 +61,8 @@ export const TextEditor = (props: TextEditorProps) => {
 
           <div>
             <textarea
+              id="content"
+              name="content"
               className="w-full px-3 py-2 content-editable"
               defaultValue={props.markdown}
               rows={10}
@@ -71,6 +74,3 @@ export const TextEditor = (props: TextEditorProps) => {
     </div>
   )
 }
-
-// TS complains without the following line
-TextEditor.displayName = 'TextEditor'
