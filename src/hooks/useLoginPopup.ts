@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react'
 
 export const useLoginPopup = () => {
-  const [popupWindow, setPopupWindow] = useState<Window | null>(null)
   const [isOpen, setIsOpen] = useState(false)
 
   const openLoginPopup = () => {
-    // Close existing popup if it's still around
-    if (popupWindow) {
-      popupWindow.close()
-    }
-
     const width = 500
     const height = 600
     const left = window.screenX + (window.outerWidth - width) / 2
@@ -17,47 +11,33 @@ export const useLoginPopup = () => {
 
     const popup = window.open(
       '/login',
-      '_blank',
-      `width=${width},height=${height},left=${left},top=${top},popup=yes,resizable=no`
+      'loginPopup',
+      `width=${width},height=${height},left=${left},top=${top},popup=yes`
     )
 
     if (popup) {
-      setPopupWindow(popup)
       setIsOpen(true)
-    }
-  }
 
-  useEffect(() => {
-    if (!popupWindow) return
+      // Check if window exists every 500ms
+      const checkWindow = setInterval(() => {
+        if (!document.hasFocus()) {
+          setIsOpen(false)
+          clearInterval(checkWindow)
+        }
+      }, 500)
 
-    // Fallback check for popup status
-    const checkPopup = setInterval(() => {
-      if (popupWindow.closed) {
-        setIsOpen(false)
-        setPopupWindow(null)
-        clearInterval(checkPopup)
+      // Listen for completion message
+      const handleMessage = (event: MessageEvent) => {
+        if (event.data === 'login_complete') {
+          setIsOpen(false)
+          window.removeEventListener('message', handleMessage)
+          clearInterval(checkWindow)
+        }
       }
-    }, 500)
 
-    return () => {
-      clearInterval(checkPopup)
-      if (popupWindow) {
-        popupWindow.close()
-      }
-    }
-  }, [popupWindow])
-
-  const closePopup = () => {
-    if (popupWindow) {
-      popupWindow.close()
-      setIsOpen(false)
-      setPopupWindow(null)
+      window.addEventListener('message', handleMessage)
     }
   }
 
-  return {
-    openLoginPopup,
-    closePopup,
-    isOpen,
-  }
+  return { openLoginPopup, isOpen }
 }

@@ -22,6 +22,7 @@ export default function Login() {
   useEffect(() => {
     // close popup window if user is logged in
     if (session && isPopupWindow) {
+      window.opener?.postMessage('login_complete', window.location.origin)
       window.close()
     } else if (session) {
       redirect('/')
