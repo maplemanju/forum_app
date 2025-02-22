@@ -12,7 +12,7 @@ export const useLoginPopup = () => {
     const popup = window.open(
       '/login',
       'loginPopup',
-      `width=${width},height=${height},left=${left},top=${top},popup=yes`
+      `width=${width},height=${height},left=${left},top=${top},popup=yes,location=no,toolbar=no,menubar=no,status=no`
     )
 
     if (popup) {
