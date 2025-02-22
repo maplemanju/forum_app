@@ -7,6 +7,7 @@ import {
 import { CommentType } from '@/types/comment'
 import { Alert } from '@/components/atoms/alerts'
 import { Button } from '@/components/atoms/button'
+import { TextEditor } from '@/components/molecules/textEditor'
 
 export const CommentEdit = ({
   onCloseEdit,
@@ -26,6 +27,8 @@ export const CommentEdit = ({
     isOptimistic: boolean
   ) => void
 }) => {
+  const [content, setContent] = useState<string>(commentContent || '')
+
   const handleSubmit = async (
     prevState: CreateCommentResponse,
     formData: FormData
@@ -35,7 +38,7 @@ export const CommentEdit = ({
         ? Number(formData.get('commentId'))
         : undefined,
       postId: Number(formData.get('postId')),
-      commentContent: formData.get('commentContent') as string,
+      commentContent: content,
       parentCommentId: formData.get('parentCommentId')
         ? Number(formData.get('parentCommentId'))
         : null,
@@ -55,29 +58,37 @@ export const CommentEdit = ({
       onCloseEdit()
       return response
     }
-    return prevState
+    return { data: args }
   }
-  const [formState, formAction, isPending] = useActionState(handleSubmit, {})
+  const [formState, formAction, isPending] = useActionState(handleSubmit, {
+    data: {
+      commentContent: content,
+    },
+  })
 
   return (
     <div>
       <Alert response={formState} />
       <form action={formAction} className="space-y-4">
-        <input type="hidden" name="postId" value={postId ?? ''} />
+        <input id="postId" type="hidden" name="postId" value={postId ?? ''} />
         <input
+          id="parentCommentId"
           type="hidden"
           name="parentCommentId"
           value={parentCommentId ?? ''}
         />
-        <input type="hidden" name="commentId" value={commentId ?? ''} />
+        <input
+          id="commentId"
+          type="hidden"
+          name="commentId"
+          value={commentId ?? ''}
+        />
         <div className="mb-4">
-          <textarea
-            id="commentContent"
-            name="commentContent"
-            rows={10}
-            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md"
-            required
-            defaultValue={commentContent ?? ''}
+          <TextEditor
+            markdown={content}
+            onChangeCallback={(markdown) => setContent(markdown)}
+            isMdxEditor={true}
+            canToggleEditor={true}
           />
         </div>
         <div className="flex justify-end gap-2">

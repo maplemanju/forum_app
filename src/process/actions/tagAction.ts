@@ -9,8 +9,9 @@ export const getTags = async (): Promise<ResponseType<string[]>> => {
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting tags:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting tags:', error?.message)
     throw new ApplicationError('Error getting tags')
   }
 }

@@ -56,7 +56,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
       return response
     }
     setAlert(response)
-    return prevState
+    return { data: args } as UpdatePostResponse
   }
 
   const [formState, formAction, isPending] = useActionState(handleSubmit, {

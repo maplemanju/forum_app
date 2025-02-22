@@ -53,7 +53,7 @@ export default function CategoryEdit({
       return response
     }
     setAlert(response)
-    return prevState
+    return { data: args }
   }
 
   const [formState, formAction, isPending] = useActionState(handleSubmit, {

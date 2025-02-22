@@ -21,8 +21,9 @@ export const getCommentsByPostId = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting comments by post id', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting comments by post id', error?.message)
     throw new ApplicationError('Error getting comments by post id')
   }
 }
@@ -46,8 +47,9 @@ export const createComment = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error creating comment', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error creating comment', error?.message)
     return {
       success: false,
       message: 'Error creating comment',
@@ -68,8 +70,9 @@ export const deleteComment = async (
     return {
       success: true,
     }
-  } catch (error) {
-    console.error('Error deleting comment', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error deleting comment', error?.message)
     return {
       success: false,
       message: 'Error deleting comment',
@@ -91,8 +94,9 @@ export const updateComment = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error updating comment', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error updating comment', error?.message)
     return {
       success: false,
       message: 'Error updating comment',

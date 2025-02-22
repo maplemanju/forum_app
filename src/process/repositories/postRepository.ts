@@ -145,6 +145,7 @@ export const postRepository = {
   },
 
   getBySlug: async (args: GetBySlug) => {
+    const session = await getServerSession(authOptions)
     const post = await prisma.posts.findUnique({
       where: {
         slug: args.slug,
@@ -161,7 +162,11 @@ export const postRepository = {
             },
           },
         },
-        category: true,
+        category: {
+          include: {
+            parentCategory: true,
+          },
+        },
         postUpdate: true,
         postTags: true,
         createdUser: {
@@ -169,6 +174,16 @@ export const postRepository = {
             userInfo: true,
           },
         },
+        votes: session
+          ? {
+              where: {
+                userId: Number(session.user.id),
+              },
+              select: {
+                vote: true,
+              },
+            }
+          : undefined,
       },
     })
     if (!post) {

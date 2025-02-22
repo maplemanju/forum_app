@@ -21,8 +21,9 @@ export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting recent posts:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting recent posts:', error?.message)
     throw new ApplicationError('Error getting recent posts')
   }
 }
@@ -37,8 +38,9 @@ export const getRecentlyUpdatedPosts = async (): Promise<
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting recently updated posts:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting recently updated posts:', error?.message)
     throw new ApplicationError('Error getting recently updated posts')
   }
 }
@@ -53,8 +55,9 @@ export const getPostsByCategory = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting posts by category:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting posts by category:', error?.message)
     throw new ApplicationError('Error getting posts by category')
   }
 }
@@ -69,8 +72,9 @@ export const getPostsByKeyword = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error getting posts by keyword:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting posts by keyword:', error?.message)
     throw new ApplicationError('Error getting posts by keyword')
   }
 }
@@ -85,7 +89,9 @@ export const getPostBySlug = async (
       data: response,
       success: true,
     }
-  } catch (error) {
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting post by slug:', error?.message)
     if (error instanceof NotFoundError) {
       return {
         success: false,
@@ -93,7 +99,6 @@ export const getPostBySlug = async (
         type: 'error',
       }
     } else {
-      console.error('Error getting post by slug:', error)
       throw new ApplicationError('Error getting post by slug')
     }
   }
@@ -115,8 +120,9 @@ export const createPost = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error creating post', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error creating post', error?.message)
     return {
       success: false,
       message: 'Error creating post',
@@ -140,8 +146,9 @@ export const updatePost = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error updating post', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error updating post', error?.message)
     return {
       success: false,
       message: 'Error updating post',
@@ -163,8 +170,9 @@ export const deletePost = async (
     return {
       success: true,
     }
-  } catch (error) {
-    console.error('Error deleting post', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error deleting post', error?.message)
     return {
       success: false,
       message: 'Error deleting post',

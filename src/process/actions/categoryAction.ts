@@ -10,6 +10,8 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
+import { Prisma } from '@prisma/client'
+import { error } from 'console'
 
 export const getAllCategories = async (): Promise<
   ResponseType<CategoryType[]>
@@ -21,7 +23,8 @@ export const getAllCategories = async (): Promise<
       data: response,
       success: true,
     }
-  } catch (error) {
+  } catch (err) {
+    const error = err as Error
     if (error instanceof NotFoundError) {
       return {
         success: false,
@@ -29,7 +32,7 @@ export const getAllCategories = async (): Promise<
         type: 'error',
       }
     } else {
-      console.error('Error getting all categories:', error)
+      console.error('Error getting all categories:', error?.message)
       throw new ApplicationError('Error getting all categories')
     }
   }
@@ -46,16 +49,16 @@ export const getCategory = async (
       data: response,
       success: true,
     }
-  } catch (error) {
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting category:', error?.message)
     if (error instanceof NotFoundError) {
-      console.log('getCategory', error)
       return {
         success: false,
         message: 'Category not found',
         type: 'error',
       }
     } else {
-      console.error('Error getting category:', error)
       throw new ApplicationError('Error getting category')
     }
   }
@@ -77,8 +80,20 @@ export const createCategory = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error creating category:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error creating category:', error?.message)
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Unique constraint violation
+      if (error.code === 'P2002') {
+        return {
+          success: false,
+          message: 'Category with this slug already exists',
+          type: 'error',
+        }
+      }
+    }
     return {
       success: false,
       message: 'Error creating category',
@@ -100,8 +115,9 @@ export const updateCategory = async (
       data: response,
       success: true,
     }
-  } catch (error) {
-    console.error('Error updating category:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error updating category:', error?.message)
     return {
       success: false,
       message: 'Error updating category',
@@ -122,8 +138,9 @@ export const deleteCategory = async (
     return {
       success: true,
     }
-  } catch (error) {
-    console.error('Error deleting category:', error)
+  } catch (err) {
+    const error = err as Error
+    console.error('Error deleting category:', error?.message)
     return {
       success: false,
       message: 'Error deleting category',
