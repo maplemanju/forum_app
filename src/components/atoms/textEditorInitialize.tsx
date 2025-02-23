@@ -1,5 +1,5 @@
 'use client'
-// InitializedMDXEditor.tsx
+
 import type { ForwardedRef } from 'react'
 import {
   headingsPlugin,
@@ -35,11 +35,13 @@ export default function TextEditorInitialize({
   editorRef,
   toggleButton,
   setToRawEditor,
+  className,
   ...props
 }: {
   editorRef: ForwardedRef<MDXEditorMethods> | null
   setToRawEditor: () => void
   toggleButton: () => React.ReactNode
+  className?: string
 } & MDXEditorProps) {
   return (
     <MDXEditor
@@ -80,7 +82,7 @@ export default function TextEditorInitialize({
       {...props}
       ref={editorRef}
       className="editor"
-      contentEditableClassName="content-editable"
+      contentEditableClassName={`content-editable ${className}`}
     />
   )
 }

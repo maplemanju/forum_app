@@ -14,14 +14,13 @@ const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
 // to accept other props, including a ref.
 type TextEditorProps = MDXEditorProps & {
   onChangeCallback: (markdown: string) => void
-  isMdxEditor?: boolean
+  isTextAreaOnly?: boolean
   canToggleEditor?: boolean
+  className?: string
 }
 
 export const TextEditor = (props: TextEditorProps) => {
-  const [isMdxEditor, setIsMdxEditor] = useState<boolean>(
-    props.isMdxEditor || false
-  )
+  const [isMdxEditor, setIsMdxEditor] = useState<boolean>(true)
   const editorRef = useRef<MDXEditorMethods>(null)
 
   const handleChange = useCallback((markdown: string) => {
@@ -39,7 +38,7 @@ export const TextEditor = (props: TextEditorProps) => {
 
   return (
     <div>
-      {isMdxEditor ? (
+      {isMdxEditor && !props.isTextAreaOnly ? (
         <Editor
           {...props}
           editorRef={editorRef}
@@ -48,28 +47,32 @@ export const TextEditor = (props: TextEditorProps) => {
           setToRawEditor={() => setIsMdxEditor(false)}
         />
       ) : (
-        <div className="editor">
-          <div className="editor-toolbar">
-            <button
-              type="button"
-              onClick={() => setIsMdxEditor(true)}
-              className="px-1 py-1.5"
-            >
-              {toggleButton()}
-            </button>
-          </div>
+        <>
+          {!props.isTextAreaOnly && (
+            <div className="editor">
+              <div className="editor-toolbar">
+                <button
+                  type="button"
+                  onClick={() => setIsMdxEditor(true)}
+                  className="px-1 py-1.5"
+                >
+                  {toggleButton()}
+                </button>
+              </div>
+            </div>
+          )}
 
           <div>
             <textarea
               id="content"
               name="content"
-              className="w-full px-3 py-2 content-editable"
+              className={`w-full px-3 py-2 content-editable ${props.className}`}
               defaultValue={props.markdown}
               rows={10}
               onChange={(e) => handleChange(e.target.value)}
             />
           </div>
-        </div>
+        </>
       )}
     </div>
   )

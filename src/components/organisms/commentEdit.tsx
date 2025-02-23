@@ -87,8 +87,9 @@ export const CommentEdit = ({
           <TextEditor
             markdown={content}
             onChangeCallback={(markdown) => setContent(markdown)}
-            isMdxEditor={true}
+            isTextAreaOnly={Boolean(parentCommentId)}
             canToggleEditor={true}
+            className="!h-40"
           />
         </div>
         <div className="flex justify-end gap-2">
