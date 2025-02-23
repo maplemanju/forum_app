@@ -1,20 +1,11 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import '@material-symbols/font-400/rounded.css'
 import Wrapper from '../components/templates/wrapper'
 import '@mdxeditor/editor/style.css'
 import './styles/globals.css'
 import './styles/mdxEditor.scss'
 import './styles/content.scss'
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+import { notoSansJP, notoSans } from '@/utils/fonts'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -28,14 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet"
-        />
-      </head>
+      <head></head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${notoSansJP.variable} ${notoSans.variable} font-sans antialiased`}
       >
         <Wrapper>{children}</Wrapper>
       </body>

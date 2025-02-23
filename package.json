@@ -18,6 +18,7 @@
     "schema": "database/schema"
   },
   "dependencies": {
+    "@material-symbols/font-400": "^0.28.2",
     "@mdxeditor/editor": "^3.21.3",
     "@prisma/client": "^6.2.1",
     "@types/dompurify": "^3.2.0",

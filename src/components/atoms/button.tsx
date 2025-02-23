@@ -62,7 +62,7 @@ export const Button = ({
       >
         {leftIcon && (
           <span
-            className={`material-icons`}
+            className={`material-symbols-rounded`}
             style={{ fontSize: iconSize[size] }}
           >
             {leftIcon}
@@ -71,7 +71,7 @@ export const Button = ({
         {label && <span>{label}</span>}
         {rightIcon && (
           <span
-            className={`material-icons`}
+            className={`material-symbols-rounded`}
             style={{ fontSize: iconSize[size] }}
           >
             {rightIcon}

@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-
+import defaultTheme from 'tailwindcss/defaultTheme'
 export default {
   content: [
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -7,6 +7,13 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'var(--font-noto-sans)',
+          'var(--font-noto-sans-jp)',
+          ...defaultTheme.fontFamily.sans,
+        ],
+      },
       colors: {
         'color-background': 'var(--color-background)',
         'color-background-secondary': 'var(--color-background-secondary)',
