@@ -101,7 +101,7 @@ export const PostContent = ({ post }: PostProps) => {
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags.join('') && (
         <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600 dark:text-gray-400 items-center">
-          <span className={`material-icons`}>label</span>
+          <span className={`material-symbols-rounded`}>label</span>
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>
       )}

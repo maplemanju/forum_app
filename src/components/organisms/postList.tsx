@@ -39,7 +39,7 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
                   >
                     {post.category.parentCategory.categoryName}
                   </Link>
-                  <span className={`material-icons`}>
+                  <span className={`material-symbols-rounded`}>
                     <div className="text-sm">chevron_right</div>
                   </span>
                 </>

@@ -18,13 +18,13 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
             href="/"
             className="inline-flex gap-2 items-center text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
           >
-            <span className={`material-icons`}>home</span>
+            <span className={`material-symbols-rounded`}>home</span>
           </Link>
         </li>
         {category?.parentCategory && (
           <li>
             <div className="flex items-center">
-              <span className={`material-icons`}>chevron_right</span>
+              <span className={`material-symbols-rounded`}>chevron_right</span>
               <Link
                 href={`/${category.parentCategory.slug}`}
                 className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 md:ml-2"
@@ -37,7 +37,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
         {category && (
           <li>
             <div className="flex items-center">
-              <span className={`material-icons`}>chevron_right</span>
+              <span className={`material-symbols-rounded`}>chevron_right</span>
               <Link
                 href={`/${category.slug}`}
                 className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 md:ml-2"
@@ -50,7 +50,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
         {post && (
           <li>
             <div className="flex items-center">
-              <span className={`material-icons`}>chevron_right</span>
+              <span className={`material-symbols-rounded`}>chevron_right</span>
               <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
                 {post.postTitle}
               </span>
