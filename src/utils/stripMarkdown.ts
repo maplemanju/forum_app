@@ -3,6 +3,7 @@ export const stripMarkdown = (content: string, limit: number = 300) => {
   const strippedContent = content
     .replace(/<[^>]*>/g, '') // Remove HTML tags
     .replace(/&[^;]+;/g, '') // Remove HTML entities
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '') // Remove images and their alt text
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links but keep text
     .replace(/[#*`_~]/g, '') // Remove markdown symbols
     .replace(/\n+/g, ' ') // Replace newlines with spaces

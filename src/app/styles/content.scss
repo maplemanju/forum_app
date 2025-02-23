@@ -1,11 +1,20 @@
 /** markdown content styles */
 .post-content {
+  word-break: break-word;
+
   p,
   ul,
   ol,
   blockquote {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
+  }
+
+  a {
+    color: var(--color-primary);
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   ul {

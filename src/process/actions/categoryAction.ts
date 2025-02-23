@@ -11,6 +11,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
 import { Prisma } from '@prisma/client'
+import { sanitizeContent } from '@/utils/domPurifier'
 
 export const getAllCategories = async (): Promise<
   ResponseType<CategoryType[]>
@@ -72,7 +73,11 @@ export const createCategory = async (
     throw new Error('Unauthorized')
   }
   try {
-    const response = await categoryRepository.createCategory(args, session)
+    const sanitizedDescription = sanitizeContent(args.categoryDescription)
+    const response = await categoryRepository.createCategory(
+      { ...args, categoryDescription: sanitizedDescription },
+      session
+    )
     console.log('createCategory')
     return {
       data: response,
@@ -107,7 +112,14 @@ export const updateCategory = async (
   if (!session?.user) throw new Error('Unauthorized')
 
   try {
-    const response = await categoryRepository.updateCategory(args, session)
+    const sanitizedDescription = sanitizeContent(args.categoryDescription)
+    const response = await categoryRepository.updateCategory(
+      {
+        ...args,
+        categoryDescription: sanitizedDescription,
+      },
+      session
+    )
     console.log('updateCategory')
     return {
       data: response,

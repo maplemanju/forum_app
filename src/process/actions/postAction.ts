@@ -12,6 +12,7 @@ import postRepository, {
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
+import { sanitizeContent } from '@/utils/domPurifier'
 
 export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
   try {
@@ -114,7 +115,11 @@ export const createPost = async (
     throw new Error('Unauthorized')
   }
   try {
-    const response = await postRepository.createPost(args, session)
+    const sanitizedContent = sanitizeContent(args.postContent)
+    const response = await postRepository.createPost(
+      { ...args, postContent: sanitizedContent },
+      session
+    )
     console.log('createPost')
     return {
       data: response,
@@ -138,9 +143,12 @@ export const updatePost = async (
   if (!session) {
     throw new Error('Unauthorized')
   }
-  console.log('updatePost', args)
   try {
-    const response = await postRepository.updatePost(args, session)
+    const sanitizedContent = sanitizeContent(args.postContent)
+    const response = await postRepository.updatePost(
+      { ...args, postContent: sanitizedContent },
+      session
+    )
     console.log('updatePost')
     return {
       data: response,

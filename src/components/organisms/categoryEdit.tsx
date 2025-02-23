@@ -154,7 +154,6 @@ export default function CategoryEdit({
           <TextEditor
             markdown={content}
             onChangeCallback={(markdown) => setContent(markdown)}
-            isMdxEditor={true}
             canToggleEditor={true}
           />
         </div>

@@ -10,6 +10,7 @@ import commentRepository, {
 } from '../repositories/commentRepository'
 import { CommentType } from '@/types/comment'
 import { ResponseType, ApplicationError } from '@/utils/errors'
+import { sanitizeContent } from '@/utils/domPurifier'
 
 export const getCommentsByPostId = async (
   args: GetByPostId
@@ -40,7 +41,11 @@ export const createComment = async (
     throw new Error('Unauthorized')
   }
   try {
-    const response = await commentRepository.createComment(payload, session)
+    const sanitizedContent = sanitizeContent(payload.commentContent)
+    const response = await commentRepository.createComment(
+      { ...payload, commentContent: sanitizedContent },
+      session
+    )
     console.log('createComment')
     return {
       data: response,
@@ -89,7 +94,11 @@ export const updateComment = async (
     throw new Error('Unauthorized')
   }
   try {
-    const response = await commentRepository.updateComment(args, session)
+    const sanitizedContent = sanitizeContent(args.commentContent)
+    const response = await commentRepository.updateComment(
+      { ...args, commentContent: sanitizedContent },
+      session
+    )
     console.log('updateComment')
     return {
       data: response,

@@ -126,7 +126,6 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <TextEditor
             markdown={content}
             onChangeCallback={setContent}
-            isMdxEditor={true}
             canToggleEditor={true}
           />
         </div>

@@ -10,6 +10,9 @@ import { fromNowShort } from '@/utils/dateFormatter'
 import { deleteComment } from '@/process/actions/commentAction'
 import { Button } from '../atoms/button'
 import { ReplyList } from './replyList'
+import { mdxSerializer } from '@/utils/mdxSerializer'
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXContent } from '../templates/MDXContent'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {
@@ -29,6 +32,8 @@ const CommentContent: React.FC<CommentContentProps> = ({
   const [openReplies, setOpenReplies] = useState<boolean>(false)
   const [openReply, setOpenReply] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [serializedContent, setSerializedContent] =
+    useState<MDXRemoteSerializeResult | null>(null)
 
   useEffect(() => {
     setCommentState(comment)
@@ -68,6 +73,19 @@ const CommentContent: React.FC<CommentContentProps> = ({
       setCommentState({ ...comment, ...editedComment })
     }
   }
+
+  useEffect(() => {
+    const serializeContent = async () => {
+      try {
+        const mdxSource = await mdxSerializer(commentState.commentContent ?? '')
+        setSerializedContent(mdxSource)
+      } catch (error) {
+        console.error('Failed to serialize MDX:', error)
+      }
+    }
+
+    serializeContent()
+  }, [commentState])
 
   const renderComments = (comment: Partial<CommentType>) => {
     const isOwner = comment.createdBy == session?.user?.id
@@ -128,7 +146,9 @@ const CommentContent: React.FC<CommentContentProps> = ({
         ) : (
           <>
             {/* content  */}
-            <p className="text-color-foreground">{comment.commentContent}</p>
+            <div className="post-content mt-3">
+              {serializedContent && <MDXContent source={serializedContent} />}
+            </div>
             {/* action bar  */}
             <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
               {comment.childComments &&
