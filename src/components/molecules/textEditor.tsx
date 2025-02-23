@@ -3,6 +3,8 @@
 import dynamic from 'next/dynamic'
 import { type MDXEditorMethods } from '@mdxeditor/editor'
 import { useRef, useState, useEffect } from 'react'
+import { Button } from '@/components/atoms/button'
+import { EditorSwitchButton } from '@/components/atoms/mdxEditor/editorSwitchButton'
 
 // This is the only place TextEditor is imported directly.
 const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
@@ -44,14 +46,6 @@ export const TextEditor = ({
     onChangeCallback(newContent)
   }
 
-  const toggleButton = () => {
-    return (
-      <div onClick={() => setIsMdxEditor(!isMdxEditor)}>
-        {isMdxEditor ? 'Switch to Textarea' : 'Switch to MDX Editor'}
-      </div>
-    )
-  }
-
   return (
     <div>
       {isMdxEditor && !isTextAreaOnly ? (
@@ -59,33 +53,29 @@ export const TextEditor = ({
           markdown={content}
           editorRef={editorRef}
           onChange={handleChange}
-          toggleButton={toggleButton}
           setToRawEditor={() => setIsMdxEditor(false)}
           className={className}
         />
       ) : (
         <>
-          {!isTextAreaOnly && (
-            <div className="editor">
+          <div className="editor">
+            {!isTextAreaOnly && (
               <div className="editor-toolbar">
-                <button
-                  type="button"
-                  onClick={() => setIsMdxEditor(true)}
-                  className="px-1 py-1.5"
-                >
-                  {toggleButton()}
-                </button>
+                <EditorSwitchButton
+                  toggleEditor={() => setIsMdxEditor(!isMdxEditor)}
+                  isMdxEditor={true}
+                />
               </div>
-            </div>
-          )}
+            )}
 
-          <div>
-            <textarea
-              className={`w-full px-3 py-2 content-editable ${className}`}
-              value={content}
-              rows={10}
-              onChange={(e) => handleChange(e.target.value)}
-            />
+            <div>
+              <textarea
+                className={`w-full px-3 py-2 content-editable ${className}`}
+                value={content}
+                rows={10}
+                onChange={(e) => handleChange(e.target.value)}
+              />
+            </div>
           </div>
         </>
       )}

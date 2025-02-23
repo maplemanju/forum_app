@@ -14,22 +14,23 @@ import {
   type MDXEditorMethods,
   type MDXEditorProps,
   BoldItalicUnderlineToggles,
-
-  //toolbars
-  UndoRedo,
-  InsertThematicBreak,
   StrikeThroughSupSubToggles,
   InsertImage,
   CreateLink,
-  ListsToggle,
   BlockTypeSelect,
   Separator,
   ButtonWithTooltip,
+  Button,
+  UndoRedo,
+  ListsToggle,
 } from '@mdxeditor/editor'
+import { StrikeoutButton } from './mdxEditor/strikeoutButton'
+import { ListsButton } from './mdxEditor/listsButton'
+import { BlockTypesButton } from './mdxEditor/blockTypesButton'
+import { EditorSwitchButton } from './mdxEditor/editorSwitchButton'
 
 export default function TextEditorInitialize({
   editorRef,
-  toggleButton,
   setToRawEditor,
   className,
   markdown,
@@ -37,7 +38,6 @@ export default function TextEditorInitialize({
 }: {
   editorRef: ForwardedRef<MDXEditorMethods> | null
   setToRawEditor: () => void
-  toggleButton: () => React.ReactNode
   className?: string
   markdown: string
 } & MDXEditorProps) {
@@ -48,32 +48,27 @@ export default function TextEditorInitialize({
         headingsPlugin(),
         quotePlugin(),
         linkPlugin(),
-        thematicBreakPlugin(),
         listsPlugin(),
         imagePlugin(),
         linkDialogPlugin(),
+        thematicBreakPlugin(),
         toolbarPlugin({
           toolbarClassName: 'editor-toolbar',
           toolbarContents: () => (
             <>
+              <EditorSwitchButton toggleEditor={setToRawEditor} />
+              <Separator />
               <UndoRedo />
               <Separator />
               <BoldItalicUnderlineToggles />
+              <StrikeoutButton />
               <Separator />
-              <StrikeThroughSupSubToggles />
+              <ListsButton />
               <Separator />
-              <ListsToggle />
+              <BlockTypesButton />
               <Separator />
-              <BlockTypeSelect />
               <CreateLink />
               <InsertImage />
-              <InsertThematicBreak />
-              <ButtonWithTooltip
-                title="Switch to Raw Editor"
-                onClick={setToRawEditor}
-              >
-                {toggleButton()}
-              </ButtonWithTooltip>
             </>
           ),
         }),

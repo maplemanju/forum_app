@@ -10,6 +10,21 @@
     margin-bottom: 1.25em;
   }
 
+  img {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-width: 100%; // Optional: ensures images don't overflow
+    height: auto; // Optional: maintains aspect ratio
+  }
+
+  figure {
+    text-align: center; // Centers both image and caption
+    margin: 1.25em 0;
+  }
+
   a {
     color: var(--color-primary);
     &:hover {
@@ -45,41 +60,40 @@
     margin-bottom: 0.5em;
   }
 
-  h1 {
-    font-size: 2.25rem; /* 36px */
-    font-weight: 700;
-    line-height: 1.25;
-    border-bottom: 1px solid theme('colors.neutral.200');
-    padding-bottom: 0.3em;
-  }
+  // h1 {
+  //   font-size: 2.25rem; /* 36px */
+  //   font-weight: 700;
+  //   line-height: 1.25;
+  //   border-bottom: 1px solid theme('colors.neutral.200');
+  //   padding-bottom: 0.3em;
+  // }
 
   h2 {
-    font-size: 1.875rem; /* 30px */
+    font-size: 1.5rem; /* 24px */
     font-weight: 600;
-    border-bottom: 1px solid theme('colors.neutral.200');
     padding-bottom: 0.3em;
   }
 
   h3 {
-    font-size: 1.5rem; /* 24px */
-    font-weight: 600;
-  }
-
-  h4 {
     font-size: 1.25rem; /* 20px */
     font-weight: 600;
   }
 
-  h5 {
+  h4 {
     font-size: 1.125rem; /* 18px */
     font-weight: 600;
   }
 
-  h6 {
-    font-size: 1rem; /* 16px */
-    font-weight: 600;
-    color: theme('colors.neutral.600');
-  }
+  // h5 {
+  //   font-size: 1.125rem; /* 18px */
+  //   font-weight: 600;
+  // }
+
+  // h6 {
+  //   font-size: 1rem; /* 16px */
+  //   font-weight: 600;
+  //   color: theme('colors.neutral.600');
+  // }
 
   hr {
     border-top-width: 1px;
