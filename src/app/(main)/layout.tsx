@@ -1,4 +1,4 @@
-import Header from '../../components/templates/header'
+import Header from '@/components/templates/header'
 import { Footer } from '@/components/templates/footer'
 
 export default function SearchLayout({
