@@ -23,13 +23,12 @@ export const PostContent = ({ post }: PostProps) => {
   const [serializedContent, setSerializedContent] =
     useState<MDXRemoteSerializeResult | null>(null)
 
-  if (!post) {
-    return <div>Post not found</div>
-  }
-
   useEffect(() => {
     const serializeContent = async () => {
       try {
+        if (!post) {
+          return
+        }
         const mdxSource = await mdxSerializer(post.postContent ?? '')
         setSerializedContent(mdxSource)
       } catch (error) {
@@ -40,6 +39,9 @@ export const PostContent = ({ post }: PostProps) => {
     serializeContent()
   }, [post])
 
+  if (!post) {
+    return <div>Post not found</div>
+  }
   return (
     <div className=" p-6">
       {/* title  */}

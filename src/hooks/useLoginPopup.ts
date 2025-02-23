@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export const useLoginPopup = () => {
   const [isOpen, setIsOpen] = useState(false)

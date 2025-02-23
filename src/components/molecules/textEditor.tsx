@@ -1,8 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { type MDXEditorMethods, type MDXEditorProps } from '@mdxeditor/editor'
-import { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
+import { type MDXEditorMethods } from '@mdxeditor/editor'
+import { useRef, useState, useEffect } from 'react'
 
 // This is the only place TextEditor is imported directly.
 const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
@@ -12,23 +12,28 @@ const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
 
 // This is what is imported by other components. Pre-initialized with plugins, and ready
 // to accept other props, including a ref.
-type TextEditorProps = MDXEditorProps & {
+type TextEditorProps = {
+  markdown: string
   onChangeCallback: (markdown: string) => void
   isTextAreaOnly?: boolean
-  canToggleEditor?: boolean
   className?: string
 }
 
-export const TextEditor = (props: TextEditorProps) => {
+export const TextEditor = ({
+  onChangeCallback,
+  markdown,
+  isTextAreaOnly,
+  className,
+}: TextEditorProps) => {
   const [isMdxEditor, setIsMdxEditor] = useState<boolean>(true)
   const editorRef = useRef<MDXEditorMethods>(null)
-  const [content, setContent] = useState(props.markdown || '')
+  const [content, setContent] = useState(markdown || '')
 
   useEffect(() => {
     if (content) {
-      props.onChangeCallback(content)
+      onChangeCallback(content)
     }
-  }, [content, props.onChangeCallback])
+  }, [content, onChangeCallback])
 
   const handleChange = (markdown: string) => {
     setContent(markdown)
@@ -44,9 +49,8 @@ export const TextEditor = (props: TextEditorProps) => {
 
   return (
     <div>
-      {isMdxEditor && !props.isTextAreaOnly ? (
+      {isMdxEditor && !isTextAreaOnly ? (
         <Editor
-          {...props}
           markdown={content}
           editorRef={editorRef}
           onChange={handleChange}
@@ -55,7 +59,7 @@ export const TextEditor = (props: TextEditorProps) => {
         />
       ) : (
         <>
-          {!props.isTextAreaOnly && (
+          {!isTextAreaOnly && (
             <div className="editor">
               <div className="editor-toolbar">
                 <button
@@ -73,7 +77,7 @@ export const TextEditor = (props: TextEditorProps) => {
             <textarea
               id="content"
               name="content"
-              className={`w-full px-3 py-2 content-editable ${props.className}`}
+              className={`w-full px-3 py-2 content-editable ${className}`}
               value={content}
               rows={10}
               onChange={(e) => handleChange(e.target.value)}

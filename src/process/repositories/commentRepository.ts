@@ -1,6 +1,4 @@
 import prisma from '@/utils/prisma'
-import { Votes } from '@prisma/client'
-import { CommentType } from '@/types/comment'
 import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -164,10 +162,3 @@ export const commentRepository = {
 }
 
 export default commentRepository
-
-// votes with negative downvotes
-const getVoteCounts = (votes: Votes[]) => {
-  const upvotes = votes.filter((vote) => vote.vote === 1).length
-  const downvotes = votes.filter((vote) => vote.vote === -1).length
-  return upvotes - downvotes
-}

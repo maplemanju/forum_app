@@ -1,6 +1,6 @@
 import { CommentType } from '@/types/comment'
 import Tooltip from '../atoms/tooltip'
-import { useEffect, useOptimistic, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommentEdit } from './commentEdit'
 import { VoteButtons } from '@/components/molecules/voteButtons'
 import dayjs from 'dayjs'
@@ -64,10 +64,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
     setOpenReply(false)
   }
 
-  const editCallback = (
-    editedComment: Partial<CommentType>,
-    isOptimistic: boolean
-  ) => {
+  const editCallback = (editedComment: Partial<CommentType>) => {
     // setIsEditing(null)
     if (editedComment.id === comment.id) {
       setCommentState({ ...comment, ...editedComment })

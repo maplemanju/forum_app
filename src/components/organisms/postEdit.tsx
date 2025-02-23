@@ -1,7 +1,7 @@
 'use client'
 
-import { useActionState, useRef, useState } from 'react'
-import { redirect, useRouter } from 'next/navigation'
+import { useActionState, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
 import {
@@ -123,11 +123,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <label htmlFor="content" className="block text-sm font-medium mb-1">
             Content
           </label>
-          <TextEditor
-            markdown={content}
-            onChangeCallback={setContent}
-            canToggleEditor={true}
-          />
+          <TextEditor markdown={content} onChangeCallback={setContent} />
         </div>
 
         <div>

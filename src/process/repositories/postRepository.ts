@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma'
 import { generateSlug } from '@/utils/slugGenerator'
-import { Votes, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { getServerSession, Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -253,10 +253,3 @@ export const postRepository = {
 }
 
 export default postRepository
-
-// votes with negative downvotes
-const getVoteCounts = (votes: Votes[]) => {
-  const upvotes = votes.filter((vote) => vote.vote === 1).length
-  const downvotes = votes.filter((vote) => vote.vote === -1).length
-  return upvotes - downvotes
-}

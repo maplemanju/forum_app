@@ -88,7 +88,6 @@ export const CommentEdit = ({
             markdown={content}
             onChangeCallback={(markdown) => setContent(markdown)}
             isTextAreaOnly={Boolean(parentCommentId)} // textArea only for replies
-            canToggleEditor={true}
             className="!h-40"
           />
         </div>
