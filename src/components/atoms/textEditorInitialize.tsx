@@ -28,6 +28,8 @@ import { StrikeoutButton } from './mdxEditor/strikeoutButton'
 import { ListsButton } from './mdxEditor/listsButton'
 import { BlockTypesButton } from './mdxEditor/blockTypesButton'
 import { EditorSwitchButton } from './mdxEditor/editorSwitchButton'
+import { ImageDialog } from './mdxEditor/imageDialog'
+import { TestDialog } from './mdxEditor/testDialog'
 
 export default function TextEditorInitialize({
   editorRef,
@@ -49,7 +51,10 @@ export default function TextEditorInitialize({
         quotePlugin(),
         linkPlugin(),
         listsPlugin(),
-        imagePlugin(),
+        imagePlugin({
+          disableImageResize: true,
+          ImageDialog: ImageDialog,
+        }),
         linkDialogPlugin(),
         thematicBreakPlugin(),
         toolbarPlugin({

@@ -29,6 +29,7 @@ export default {
         'color-danger-hover': 'var(--color-danger-hover)',
         'color-neutral': 'var(--color-neutral)',
         'color-neutral-hover': 'var(--color-neutral-hover)',
+        'color-overlay': 'var(--color-overlay)',
       },
     },
   },

@@ -98,15 +98,15 @@
   flex-direction: row;
   gap: 0.25rem;
   border-radius: 0.25rem;
-  padding: 5px;
   align-items: center;
   overflow-x: auto;
   position: sticky;
   top: 0;
   background-color: var(--baseBg);
   width: inherit;
-  /* height: 40px; */
   justify-content: flex-start;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   border-radius: 0.25rem;
+  padding: 0 5px;
+  min-height: 44px;
 }

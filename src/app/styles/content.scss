@@ -10,20 +10,20 @@
     margin-bottom: 1.25em;
   }
 
-  img {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    max-width: 100%; // Optional: ensures images don't overflow
-    height: auto; // Optional: maintains aspect ratio
-  }
+  // img {
+  //   margin-top: 1.25em;
+  //   margin-bottom: 1.25em;
+  //   margin-left: auto;
+  //   margin-right: auto;
+  //   display: block;
+  //   max-width: 100%; // Optional: ensures images don't overflow
+  //   height: auto; // Optional: maintains aspect ratio
+  // }
 
-  figure {
-    text-align: center; // Centers both image and caption
-    margin: 1.25em 0;
-  }
+  // figure {
+  //   text-align: center; // Centers both image and caption
+  //   margin: 1.25em 0;
+  // }
 
   a {
     color: var(--color-primary);
