@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
@@ -23,7 +23,17 @@ interface PostEditProps {
 export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
   const [alert, setAlert] = useState<ResponseType<unknown>>()
-  const [content, setContent] = useState<string>(post?.postContent || '')
+  const [content, setContent] = useState<string>('')
+
+  useEffect(() => {
+    if (post?.postContent) {
+      setContent(post.postContent)
+    }
+  }, [post])
+
+  const handleContentChange = useCallback((newContent: string) => {
+    setContent(newContent)
+  }, [])
 
   const handleSubmit = async (
     prevState: UpdatePostResponse,
@@ -123,7 +133,10 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <label htmlFor="content" className="block text-sm font-medium mb-1">
             Content
           </label>
-          <TextEditor markdown={content} onChangeCallback={setContent} />
+          <TextEditor
+            markdown={content}
+            onChangeCallback={handleContentChange}
+          />
         </div>
 
         <div>

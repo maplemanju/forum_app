@@ -1,4 +1,4 @@
-import React, { useActionState, useState } from 'react'
+import React, { useActionState, useCallback, useEffect, useState } from 'react'
 import {
   createComment,
   updateComment,
@@ -28,6 +28,16 @@ export const CommentEdit = ({
   ) => void
 }) => {
   const [content, setContent] = useState<string>(commentContent || '')
+
+  useEffect(() => {
+    if (commentContent) {
+      setContent(commentContent)
+    }
+  }, [commentContent])
+
+  const handleContentChange = useCallback((newContent: string) => {
+    setContent(newContent)
+  }, [])
 
   const handleSubmit = async (
     prevState: CreateCommentResponse,
@@ -86,7 +96,7 @@ export const CommentEdit = ({
         <div className="mb-4">
           <TextEditor
             markdown={content}
-            onChangeCallback={(markdown) => setContent(markdown)}
+            onChangeCallback={handleContentChange}
             isTextAreaOnly={Boolean(parentCommentId)} // textArea only for replies
             className="!h-40"
           />

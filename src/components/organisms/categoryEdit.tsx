@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useCallback, useEffect, useState } from 'react'
 import { CategoryType } from '@/types/category'
 import { useRouter } from 'next/navigation'
 import {
@@ -28,6 +28,16 @@ export default function CategoryEdit({
   const [content, setContent] = useState<string>(
     category?.categoryDescription || ''
   )
+
+  useEffect(() => {
+    if (category?.categoryDescription) {
+      setContent(category.categoryDescription)
+    }
+  }, [category])
+
+  const handleContentChange = useCallback((newContent: string) => {
+    setContent(newContent)
+  }, [])
 
   const handleSubmit = async (
     prevState: UpdateCategoryResponse,
@@ -153,7 +163,7 @@ export default function CategoryEdit({
           </label>
           <TextEditor
             markdown={content}
-            onChangeCallback={(markdown) => setContent(markdown)}
+            onChangeCallback={handleContentChange}
           />
         </div>
 

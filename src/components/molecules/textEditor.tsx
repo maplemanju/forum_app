@@ -27,16 +27,21 @@ export const TextEditor = ({
 }: TextEditorProps) => {
   const [isMdxEditor, setIsMdxEditor] = useState<boolean>(true)
   const editorRef = useRef<MDXEditorMethods>(null)
-  const [content, setContent] = useState(markdown || '')
+  const [content, setContent] = useState<string>(markdown || '')
 
   useEffect(() => {
-    if (content) {
-      onChangeCallback(content)
+    if (markdown !== content) {
+      setContent(markdown || '')
+      // Force update the editor
+      if (editorRef.current) {
+        editorRef.current.setMarkdown(markdown || '')
+      }
     }
-  }, [content, onChangeCallback])
+  }, [markdown])
 
-  const handleChange = (markdown: string) => {
-    setContent(markdown)
+  const handleChange = (newContent: string) => {
+    setContent(newContent)
+    onChangeCallback(newContent)
   }
 
   const toggleButton = () => {
@@ -56,6 +61,7 @@ export const TextEditor = ({
           onChange={handleChange}
           toggleButton={toggleButton}
           setToRawEditor={() => setIsMdxEditor(false)}
+          className={className}
         />
       ) : (
         <>

@@ -32,15 +32,18 @@ export default function TextEditorInitialize({
   toggleButton,
   setToRawEditor,
   className,
+  markdown,
   ...props
 }: {
   editorRef: ForwardedRef<MDXEditorMethods> | null
   setToRawEditor: () => void
   toggleButton: () => React.ReactNode
   className?: string
+  markdown: string
 } & MDXEditorProps) {
   return (
     <MDXEditor
+      markdown={markdown}
       plugins={[
         headingsPlugin(),
         quotePlugin(),
