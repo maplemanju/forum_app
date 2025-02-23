@@ -130,9 +130,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
           </div>
         )}
         <div className="post-content ">
-          <label htmlFor="content" className="block text-sm font-medium mb-1">
-            Content
-          </label>
+          <div className="block text-sm font-medium mb-1">Content</div>
           <TextEditor
             markdown={content}
             onChangeCallback={handleContentChange}

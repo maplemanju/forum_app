@@ -81,8 +81,6 @@ export const TextEditor = ({
 
           <div>
             <textarea
-              id="content"
-              name="content"
               className={`w-full px-3 py-2 content-editable ${className}`}
               value={content}
               rows={10}

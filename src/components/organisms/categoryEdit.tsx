@@ -155,12 +155,9 @@ export default function CategoryEdit({
         </div>
 
         <div className="mb-6">
-          <label
-            htmlFor="categoryDescription"
-            className="block text-sm font-medium text-color-subtext mb-1"
-          >
+          <div className="block text-sm font-medium text-color-subtext mb-1">
             Description
-          </label>
+          </div>
           <TextEditor
             markdown={content}
             onChangeCallback={handleContentChange}
