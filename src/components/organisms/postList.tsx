@@ -15,9 +15,14 @@ dayjs.extend(relativeTime)
 type PostListProps = {
   posts?: PostType[]
   showCategory?: boolean
+  label?: string
 }
 
-export const PostList = ({ posts, showCategory = false }: PostListProps) => {
+export const PostList = ({
+  posts,
+  showCategory = false,
+  label = 'Posts',
+}: PostListProps) => {
   const { data: session } = useSession()
 
   if (!posts || posts.length === 0) {
@@ -25,86 +30,92 @@ export const PostList = ({ posts, showCategory = false }: PostListProps) => {
   }
 
   return (
-    <div>
-      {posts.map((post: PostType) => (
-        <div key={post.id} className="p-3 text-sm">
-          {/* category  */}
-          {showCategory && (
-            <div className="flex items-center text-color-subtext mb-2 flex-wrap">
-              {post.category.parentCategory && (
-                <>
-                  <Link
-                    href={`/${post.category.parentCategory.slug}`}
-                    className="hover:text-blue-800 dark:hover:text-blue-400"
-                  >
-                    {post.category.parentCategory.categoryName}
-                  </Link>
-                  <span className={`material-symbols-rounded`}>
-                    <div className="text-sm">chevron_right</div>
-                  </span>
-                </>
-              )}
-              <Link
-                href={`/${post.category.slug}`}
-                className="hover:text-blue-800 dark:hover:text-blue-400"
+    <>
+      <h2 className="divider-label text-lg font-semibold">{label}</h2>
+      <div className="space-y-4">
+        {posts.map((post: PostType) => (
+          <div
+            key={post.id}
+            className="p-4 text-sm border border-color-border-secondary rounded-lg"
+          >
+            {/* category  */}
+            {showCategory && (
+              <div className="flex items-center text-color-subtext mb-2 flex-wrap">
+                {post.category.parentCategory && (
+                  <>
+                    <Link
+                      href={`/${post.category.parentCategory.slug}`}
+                      className="hover:text-blue-800 dark:hover:text-blue-400"
+                    >
+                      {post.category.parentCategory.categoryName}
+                    </Link>
+                    <span className={`material-symbols-rounded`}>
+                      <div className="text-sm">chevron_right</div>
+                    </span>
+                  </>
+                )}
+                <Link
+                  href={`/${post.category.slug}`}
+                  className="hover:text-blue-800 dark:hover:text-blue-400"
+                >
+                  {post.category.categoryName}
+                </Link>
+              </div>
+            )}
+            {/* title  */}
+            <Link href={`/${post.category.slug}/${post.slug}`}>
+              <h3 className="text-xl font-semibold text-color-foreground hover:text-blue-600 dark:hover:text-blue-400">
+                {post.postTitle}
+              </h3>
+            </Link>
+            <div className="flex items-center text-sm text-color-subtext gap-2 flex-wrap">
+              <span>
+                <Button
+                  size="small"
+                  color="fade"
+                  boxStyle="box"
+                  leftIcon="person"
+                  label={`${
+                    post.createdUser.userInfo?.displayName || 'Anonymous'
+                  }`}
+                />
+              </span>
+
+              <Tooltip
+                text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+                width="115px"
+                className="text-center"
               >
-                {post.category.categoryName}
-              </Link>
+                <span>{fromNowShort(post.createdAt)}</span>
+              </Tooltip>
             </div>
-          )}
-          {/* title  */}
-          <Link href={`/${post.category.slug}/${post.slug}`}>
-            <h3 className="text-xl font-semibold text-color-foreground hover:text-blue-600 dark:hover:text-blue-400">
-              {post.postTitle}
-            </h3>
-          </Link>
-          <div className="flex items-center text-sm text-color-subtext gap-2 flex-wrap">
-            <span>
+
+            {/* content  */}
+            <p className="text-color-subtext line-clamp-2">
+              {stripMarkdown(post.postContent)}
+            </p>
+
+            {/* info bar  */}
+
+            <div className="flex items-center text-sm text-color-subtext mt-2 gap-2 flex-wrap">
               <Button
+                rightIcon="chat"
                 size="small"
-                color="fade"
+                color="neutral"
                 boxStyle="box"
-                leftIcon="person"
-                label={`${
-                  post.createdUser.userInfo?.displayName || 'Anonymous'
-                }`}
+                label={`${post._count.comments || 0}`}
+                linkPath={`/${post.category.slug}/${post.slug}#comments`}
               />
-            </span>
-
-            <Tooltip
-              text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
-              width="115px"
-              className="text-center"
-            >
-              <span>{fromNowShort(post.createdAt)}</span>
-            </Tooltip>
+              <VoteButtons
+                postId={post.id}
+                voteCount={post._count.votes || 0}
+                canVote={Boolean(session)}
+                userVotes={post.votes}
+              />
+            </div>
           </div>
-
-          {/* content  */}
-          <p className="text-color-subtext line-clamp-2">
-            {stripMarkdown(post.postContent)}
-          </p>
-
-          {/* info bar  */}
-
-          <div className="flex items-center text-sm text-color-subtext mt-2 gap-2 flex-wrap">
-            <Button
-              rightIcon="chat"
-              size="small"
-              color="neutral"
-              boxStyle="box"
-              label={`${post._count.comments || 0}`}
-              linkPath={`/${post.category.slug}/${post.slug}#comments`}
-            />
-            <VoteButtons
-              postId={post.id}
-              voteCount={post._count.votes || 0}
-              canVote={Boolean(session)}
-              userVotes={post.votes}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   )
 }

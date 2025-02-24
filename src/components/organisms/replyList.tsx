@@ -49,7 +49,7 @@ export const ReplyList = ({
 
   return (
     <>
-      <div className="border-l-2 border-color-border px-2">
+      <div className="border-l border-color-border-secondary px-2 ml-4">
         {/* reply form */}
         {openReply && (
           <CommentEdit
@@ -62,8 +62,8 @@ export const ReplyList = ({
         {optimisticReplies.map((reply) => (
           <div
             key={reply.id || `optimistic-child-comment-${crypto.randomUUID()}`}
-            className={`mt-2 ml-4 p-2 rounded-lg ${
-              reply.isNewComment ? 'mt-2 bg-yellow-100 dark:bg-green-950' : ''
+            className={`mt-2 p-2 rounded-lg ${
+              reply.isNewComment ? 'mt-2 bg-color-highlight' : ''
             } transition-colors duration-400`}
           >
             <CommentContent

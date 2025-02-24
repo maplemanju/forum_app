@@ -43,8 +43,11 @@ export default async function CategoryPage({
           category={categoryResponse.data}
           mdxSource={mdxSource}
         />
-        <CategoryList categories={categoryResponse.data?.childCategories} />
-        {postsResponse && <PostList posts={postsResponse.data} />}
+        <CategoryList
+          categories={categoryResponse.data?.childCategories}
+          label="Subcategories"
+        />
+        {postsResponse && <PostList posts={postsResponse.data} label="Posts" />}
       </Content>
     </>
   )

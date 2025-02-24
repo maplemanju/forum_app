@@ -87,7 +87,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
   const renderComments = (comment: Partial<CommentType>) => {
     const isOwner = comment.createdBy == session?.user?.id
     return (
-      <div className="space-y-2">
+      <>
         {/* info bar  */}
         <div className="flex items-center gap-2 text-[12px] text-color-subtext">
           <Button
@@ -141,7 +141,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
             submitCallback={editCallback}
           />
         ) : (
-          <>
+          <div className="ml-4">
             {/* content  */}
             <div className="post-content mt-3">
               {serializedContent && <MDXContent source={serializedContent} />}
@@ -175,9 +175,9 @@ const CommentContent: React.FC<CommentContentProps> = ({
                 userVotes={comment.votes}
               />
             </div>
-          </>
+          </div>
         )}
-      </div>
+      </>
     )
   }
 

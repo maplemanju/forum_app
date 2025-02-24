@@ -8,15 +8,16 @@ import { stripMarkdown } from '@/utils/stripMarkdown'
 
 type Props = {
   categories?: CategoryType[]
+  label?: string
 }
-export const CategoryList = ({ categories }: Props) => {
+export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
   const { data: session } = useSession()
 
   const renderCategory = (category: CategoryType) => {
     return (
       <div
         key={category.id}
-        className="bg-color-background-tertiary p-3 rounded-lg mb-4 flex flex-column gap-2 justify-between"
+        className="p-2 flex flex-column gap-2 justify-between border-b border-color-border-secondary"
       >
         <div>
           <Link href={`/${category.slug}`}>
@@ -28,12 +29,6 @@ export const CategoryList = ({ categories }: Props) => {
           <p className="text-color-subtext text-sm line-clamp-1">
             {stripMarkdown(category.categoryDescription ?? '', 180)}
           </p>
-
-          {category.childCategories && category.childCategories.length > 0 && (
-            <div className="ml-4 mt-2">
-              {category.childCategories.map((child) => renderCategory(child))}
-            </div>
-          )}
         </div>
         {session && (
           <div className="mt-2 text-sm">
@@ -51,8 +46,11 @@ export const CategoryList = ({ categories }: Props) => {
   }
 
   return (
-    <div className="space-y-4">
-      {categories?.map((category) => renderCategory(category))}
-    </div>
+    <>
+      <h2 className="divider-label text-lg font-semibold">{label}</h2>
+      <div className="[&>*:last-child]:border-b-0">
+        {categories?.map((category) => renderCategory(category))}
+      </div>
+    </>
   )
 }

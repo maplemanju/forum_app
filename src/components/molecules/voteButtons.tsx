@@ -73,7 +73,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           color="neutral"
           boxStyle="box"
           label={voteCountState.toString()}
-          className={userVoteCount === 1 ? 'text-blue-500' : ''}
+          className={userVoteCount === 1 ? 'text-color-primary' : ''}
         />
         <Button
           rightIcon="thumb_down"
@@ -81,7 +81,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           size={commentId ? 'xsmall' : 'small'}
           color="neutral"
           boxStyle="box"
-          className={userVoteCount === -1 ? 'text-red-500' : ''}
+          className={userVoteCount === -1 ? 'text-color-gray' : ''}
         />
       </>
     </div>

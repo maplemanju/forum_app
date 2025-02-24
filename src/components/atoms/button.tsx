@@ -6,7 +6,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: string
   rightIcon?: string
   size?: 'small' | 'medium' | 'large' | 'xsmall'
-  color?: 'primary' | 'gray' | 'danger' | 'neutral' | 'fade'
+  color?: 'primary' | 'gray' | 'danger' | 'neutral' | 'fade' | 'accent'
   linkPath?: string
   boxStyle?: 'box' | 'rect'
 }
@@ -42,8 +42,8 @@ export const Button = ({
     danger: 'bg-color-danger hover:bg-color-danger-hover text-white',
     neutral:
       'bg-color-neutral hover:bg-color-neutral-hover text-color-foreground',
-
     fade: 'hover:bg-color-neutral-hover text-color-foreground',
+    accent: 'bg-color-accent hover:bg-color-accent-hover text-white',
   }
   const iconSize = {
     xsmall: '14px',
