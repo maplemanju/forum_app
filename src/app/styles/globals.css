@@ -84,5 +84,22 @@ select {
 .divider-label {
   background: var(--color-background-secondary);
   padding: 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.middle-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1rem;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sidebar {
+  @media (max-width: 768px) {
+    display: none;
+  }
 }

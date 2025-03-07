@@ -23,7 +23,11 @@ export default async function SearchPage({
     <>
       <Content>
         <SearchBox tags={tagsResponse.data} />
-        <PostList posts={postsResponse?.data} showCategory={true} />
+        <PostList
+          posts={postsResponse?.data}
+          showCategory={true}
+          label="Featured Posts"
+        />
       </Content>
     </>
   )

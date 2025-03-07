@@ -32,11 +32,11 @@ export const PostList = ({
   return (
     <>
       <h2 className="divider-label text-lg font-semibold">{label}</h2>
-      <div className="space-y-4">
+      <div>
         {posts.map((post: PostType) => (
           <div
             key={post.id}
-            className="p-4 text-sm border border-color-border-secondary rounded-lg"
+            className="px-4 py-8 text-sm border-b border-color-border-secondary"
           >
             {/* category  */}
             {showCategory && (

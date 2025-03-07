@@ -93,7 +93,7 @@ export const CommentEdit = ({
           name="commentId"
           value={commentId ?? ''}
         />
-        <div className="mb-4">
+        <div className="post-content mb-4">
           <TextEditor
             markdown={content}
             onChangeCallback={handleContentChange}

@@ -10,7 +10,7 @@ export default function SearchLayout({
   return (
     <>
       <Header />
-      <div className=" max-w-7xl mx-auto grid grid-cols-[1fr_300px] gap-4">
+      <div className="middle-container">
         <div>{children}</div>
         <Sidebar />
       </div>
