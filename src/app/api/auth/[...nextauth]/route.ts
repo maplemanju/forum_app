@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import { getUserBySnsId, createUser } from '@/process/actions/userActions'
+import { ROLES } from '@/utils/consts'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -27,8 +28,9 @@ export const authOptions: NextAuthOptions = {
           snsId: account.providerAccountId,
           authProvider: account.provider,
         })
-        let userName = existingUser?.userInfo?.displayName || '-'
-        let userId = existingUser?.id || null
+        let userName = existingUser?.userInfo?.displayName
+        let userId = existingUser?.id
+        let roles = existingUser?.userRoles.map((role) => role.roleId) || []
         if (!existingUser) {
           // Create a new user in the database if they don't exist
           const createdUser = await createUser({
@@ -38,18 +40,21 @@ export const authOptions: NextAuthOptions = {
           })
           userName = createdUser?.userInfo?.displayName
           userId = createdUser?.id
+          roles = createdUser?.userRoles.map((role) => role.roleId) || []
         }
 
         // Attach user information to the JWT token
         token.name = userName
         token.userId = userId
+        token.roles = roles
       }
       return token
     },
     async session({ session, token }) {
       if (session?.user) {
         session.user.name = String(token.name)
-        session.user.id = String(token.userId)
+        session.user.id = token.userId ? Number(token.userId) : undefined
+        session.user.roles = token.roles as number[]
       }
       return session
     },

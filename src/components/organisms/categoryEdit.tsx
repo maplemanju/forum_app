@@ -2,7 +2,7 @@
 
 import { useActionState, useCallback, useEffect, useState } from 'react'
 import { CategoryType } from '@/types/category'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import {
   createCategory,
   deleteCategory,
@@ -13,6 +13,8 @@ import { ResponseType } from '@/utils/errors'
 import { Alert } from '@/components/atoms/alerts'
 import { Button } from '@/components/atoms/button'
 import { TextEditor } from '@/components/molecules/textEditor'
+import { ROLES } from '@/utils/consts'
+import { useSession } from 'next-auth/react'
 
 interface CategoryEditProps {
   category?: CategoryType | null
@@ -28,6 +30,15 @@ export default function CategoryEdit({
   const [content, setContent] = useState<string>(
     category?.categoryDescription || ''
   )
+  const { data: session } = useSession()
+
+  // Allow access if user is an admin
+  const canEdit = session && session.user.roles?.includes(ROLES.ADMIN)
+
+  // Return early if user doesn't have permission
+  if (!session || (!canEdit && Boolean(category))) {
+    return notFound()
+  }
 
   useEffect(() => {
     if (category?.categoryDescription) {

@@ -13,6 +13,7 @@ import { ReplyList } from './replyList'
 import { mdxSerializer } from '@/utils/mdxSerializer'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { MDXContent } from '../templates/MDXContent'
+import { ROLES } from '@/utils/consts'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {
@@ -85,7 +86,11 @@ const CommentContent: React.FC<CommentContentProps> = ({
   }, [commentState])
 
   const renderComments = (comment: Partial<CommentType>) => {
-    const isOwner = comment.createdBy == session?.user?.id
+    const canEdit =
+      session &&
+      (session.user.id === comment.createdBy ||
+        session.user.roles?.includes(ROLES.ADMIN))
+
     return (
       <>
         {/* info bar  */}
@@ -106,7 +111,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
               {comment.createdAt ? fromNowShort(comment.createdAt) : ''}
             </span>
           </Tooltip>
-          {isOwner && onEdit && (
+          {canEdit && onEdit && (
             <Button
               onClick={() => onEdit()}
               size="xsmall"
@@ -117,7 +122,7 @@ const CommentContent: React.FC<CommentContentProps> = ({
               Edit
             </Button>
           )}
-          {isOwner && onDelete && (
+          {canEdit && onDelete && (
             <Button
               onClick={() => onDelete()}
               size="xsmall"

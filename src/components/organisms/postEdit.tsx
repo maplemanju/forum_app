@@ -14,6 +14,9 @@ import { Alert } from '@/components/atoms/alerts'
 import { ResponseType } from '@/utils/errors'
 import { TextEditor } from '@/components/molecules/textEditor'
 import { Button } from '@/components/atoms/button'
+import { useSession } from 'next-auth/react'
+import { ROLES } from '@/utils/consts'
+import { notFound } from 'next/navigation'
 
 interface PostEditProps {
   post?: PostType
@@ -24,6 +27,18 @@ export default function PostEdit({ post, category }: PostEditProps) {
   const router = useRouter()
   const [alert, setAlert] = useState<ResponseType<unknown>>()
   const [content, setContent] = useState<string>('')
+  const { data: session } = useSession()
+
+  // Allow access if user is either the post creator OR an admin
+  const canEdit =
+    session &&
+    (session.user.id === post?.createdBy ||
+      session.user.roles?.includes(ROLES.ADMIN))
+
+  // Return early if user doesn't have permission
+  if (!session || !category || (!canEdit && Boolean(post))) {
+    return notFound()
+  }
 
   useEffect(() => {
     if (post?.postContent) {

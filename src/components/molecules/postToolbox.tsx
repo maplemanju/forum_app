@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { PostType } from '@/types/post'
 import { deletePost } from '@/process/actions/postAction'
 import { Button } from '@/components/atoms/button'
+import { ROLES } from '@/utils/consts'
 
 interface PostToolboxProps {
   post?: PostType
@@ -16,7 +17,12 @@ export default function PostToolbox({ post }: PostToolboxProps) {
   const { data: session } = useSession()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  if (!post || !session) return <></>
+  const canEdit =
+    session &&
+    (session.user.id === post?.createdBy ||
+      session.user.roles?.includes(ROLES.ADMIN))
+
+  if (!post || !session || !canEdit) return <></>
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this post?')) return

@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { CategoryType } from '@/types/category'
 import { Button } from '@/components/atoms/button'
 import { stripMarkdown } from '@/utils/stripMarkdown'
+import { ROLES } from '@/utils/consts'
 
 type Props = {
   categories?: CategoryType[]
@@ -12,6 +13,8 @@ type Props = {
 }
 export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
   const { data: session } = useSession()
+
+  const canEdit = session && session.user.roles?.includes(ROLES.ADMIN)
 
   const renderCategory = (category: CategoryType) => {
     return (
@@ -30,7 +33,7 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
             {stripMarkdown(category.categoryDescription ?? '', 180)}
           </p>
         </div>
-        {session && (
+        {canEdit && (
           <div className="mt-2 text-sm">
             <Button
               size="small"
@@ -45,12 +48,15 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
     )
   }
 
-  return (
+  return categories && categories.length > 0 ? (
     <>
       <h2 className="divider-label text-lg font-semibold">{label}</h2>
+
       <div className="[&>*:last-child]:border-b-0">
         {categories?.map((category) => renderCategory(category))}
       </div>
     </>
+  ) : (
+    <></>
   )
 }

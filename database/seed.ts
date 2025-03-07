@@ -1,3 +1,4 @@
+import { ROLES } from '@/utils/consts'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
@@ -23,16 +24,16 @@ async function main() {
   await prisma.roles.createMany({
     data: [
       {
-        id: 1,
+        id: ROLES.ADMIN,
         roleName: 'admin',
       },
       {
-        id: 2,
+        id: ROLES.MODERATOR,
         roleName: 'moderator',
         //TODO: add category
       },
       {
-        id: 3,
+        id: ROLES.USER,
         roleName: 'user',
       },
     ],
@@ -54,7 +55,7 @@ async function main() {
   await prisma.userRoles.create({
     data: {
       userId: admin.id,
-      roleId: 1,
+      roleId: ROLES.ADMIN,
     },
   })
 
