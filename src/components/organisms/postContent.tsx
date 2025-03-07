@@ -13,6 +13,7 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { MDXContent } from '@/components/templates/MDXContent'
 import { mdxSerializer } from '@/utils/mdxSerializer'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 type PostProps = {
   post?: PostType
@@ -84,6 +85,18 @@ export const PostContent = ({ post }: PostProps) => {
       </div>
 
       {/* content  */}
+      {post.heroImage && (
+        <div className="relative max-w-4xl mx-auto my-4">
+          <Image
+            src={post.heroImage}
+            alt={post.postTitle}
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="w-full h-auto rounded-md"
+          />
+        </div>
+      )}
       <div className="post-content mt-3">
         {serializedContent && <MDXContent source={serializedContent} />}
       </div>

@@ -9,6 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: 'primary' | 'gray' | 'danger' | 'neutral' | 'fade' | 'accent'
   linkPath?: string
   boxStyle?: 'box' | 'rect'
+  type?: 'button' | 'submit'
 }
 
 export const Button = ({
@@ -20,6 +21,7 @@ export const Button = ({
   color = 'primary',
   linkPath,
   boxStyle = 'rect',
+  type = 'button',
   ...props
 }: ButtonProps) => {
   const sizeClass = {

@@ -17,6 +17,7 @@ import { Button } from '@/components/atoms/button'
 import { useSession } from 'next-auth/react'
 import { ROLES } from '@/utils/consts'
 import { notFound } from 'next/navigation'
+import { HeroImageUpload } from '@/components/molecules/heroImageUpload'
 
 interface PostEditProps {
   post?: PostType
@@ -28,17 +29,13 @@ export default function PostEdit({ post, category }: PostEditProps) {
   const [alert, setAlert] = useState<ResponseType<unknown>>()
   const [content, setContent] = useState<string>('')
   const { data: session } = useSession()
+  const [heroImage, setHeroImage] = useState(post?.heroImage)
 
   // Allow access if user is either the post creator OR an admin
   const canEdit =
     session &&
     (session.user.id === post?.createdBy ||
       session.user.roles?.includes(ROLES.ADMIN))
-
-  // Return early if user doesn't have permission
-  if (!session || !category || (!canEdit && Boolean(post))) {
-    return notFound()
-  }
 
   useEffect(() => {
     if (post?.postContent) {
@@ -60,11 +57,9 @@ export default function PostEdit({ post, category }: PostEditProps) {
     const tags = formData.get('tags') as string
 
     const args = {
-      id: post?.id,
       postTitle: formData.get('title') as string,
       postContent: content,
-      categoryId: category.id,
-
+      heroImage: heroImage || null,
       postTags: {
         postId: post?.id,
         tags: tags.split(' ').map((tag) => tag.replace('#', '')),
@@ -104,6 +99,14 @@ export default function PostEdit({ post, category }: PostEditProps) {
     }
   }
 
+  const handleImageUpload = (url: string) => {
+    setHeroImage(url)
+  }
+
+  // Return if user doesn't have permission
+  if (!session || !category || (!canEdit && Boolean(post))) {
+    return <></>
+  }
   return (
     <div className="w-full mx-auto p-6">
       <Alert response={alert} />
@@ -144,6 +147,15 @@ export default function PostEdit({ post, category }: PostEditProps) {
             />
           </div>
         )}
+        <div>
+          <label className="block text-sm font-medium mb-1">Hero Image</label>
+          <HeroImageUpload
+            onUpload={handleImageUpload}
+            currentImage={heroImage}
+          />
+          <input type="hidden" name="heroImage" value={heroImage || ''} />
+        </div>
+
         <div className="post-content ">
           <div className="block text-sm font-medium mb-1">Content</div>
           <TextEditor
@@ -168,6 +180,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-color-border focus:ring-2"
           />
         </div>
+
         <div className="flex justify-end gap-2">
           {post && (
             <Button

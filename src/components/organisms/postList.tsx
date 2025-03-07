@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { stripMarkdown } from '@/utils/stripMarkdown'
 import { fromNowShort } from '@/utils/dateFormatter'
+import Image from 'next/image'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
@@ -89,6 +90,20 @@ export const PostList = ({
                 <span>{fromNowShort(post.createdAt)}</span>
               </Tooltip>
             </div>
+
+            {/* hero image  */}
+            {post.heroImage && (
+              <div className="relative max-w-4xl mx-auto my-4">
+                <Image
+                  src={post.heroImage}
+                  alt={post.postTitle}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="w-full max-h-[300px] rounded-md object-cover object-center"
+                />
+              </div>
+            )}
 
             {/* content  */}
             <p className="text-color-subtext line-clamp-2">

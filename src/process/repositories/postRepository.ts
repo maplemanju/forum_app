@@ -15,12 +15,14 @@ export type CreatePost = {
   postTitle: string
   postContent: string
   categoryId: number
+  heroImage?: string | null
   postTags?: Partial<UpsertPostTags>
 }
 export type UpdatePost = {
   id: number
   postTitle: string
   postContent: string
+  heroImage?: string | null
   postTags?: Partial<UpsertPostTags>
 }
 export type DeletePostProps = {
@@ -214,9 +216,9 @@ export const postRepository = {
   },
 
   updatePost: async (args: UpdatePost, session: Session) => {
-    const { postTags, ...rest } = args
+    const { postTags, id, ...rest } = args
     const post = await prisma.posts.update({
-      where: { id: args.id },
+      where: { id },
       data: { ...rest, updatedBy: Number(session.user.id) },
     })
     if (postTags?.tags) {
