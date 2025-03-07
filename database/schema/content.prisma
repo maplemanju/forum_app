@@ -24,6 +24,7 @@ model Posts {
   categoryId  Int      @map("category_id")
   postTitle   String   @map("post_title") @db.VarChar(255)
   postContent String   @map("post_content")
+  heroImage   String?  @map("hero_image") @db.VarChar(255)
   createdBy   Int      @map("created_by")
   updatedBy   Int      @map("updated_by")
   createdAt   DateTime @default(now()) @map("created_at")
