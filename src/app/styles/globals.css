@@ -23,6 +23,7 @@
   --color-overlay: rgba(23, 23, 23, 0.5);
   --color-highlight: theme('colors.yellow.100');
   --color-heart: theme('colors.red.500');
+  --color-link: theme('colors.blue.600');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +48,7 @@
     --color-overlay: rgba(23, 23, 23, 0.5);
     --color-highlight: theme('colors.emerald.950');
     --color-heart: theme('colors.red.500');
+    --color-link: theme('colors.blue.400');
   }
 
   * {
@@ -100,8 +102,8 @@ select {
   }
 }
 
-.sidebar {
+/* .sidebar {
   @media (max-width: 768px) {
     display: none;
   }
-}
+} */

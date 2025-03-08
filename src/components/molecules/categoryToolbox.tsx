@@ -13,7 +13,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
 
   const canEdit = session && session.user.roles?.includes(ROLES.ADMIN)
 
-  if (!canEdit) return <></>
+  if (!session) return <></>
 
   return (
     <div className="flex justify-end gap-2">

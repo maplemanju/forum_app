@@ -12,7 +12,7 @@ type BreadcrumbsProps = {
 export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
   return (
     <nav className="flex py-3 text-gray-700" aria-label="Breadcrumb">
-      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+      <ol className="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
         <li className="inline-flex items-center">
           <Link
             href="/"

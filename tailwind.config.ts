@@ -35,6 +35,7 @@ export default {
         'color-overlay': 'var(--color-overlay)',
         'color-highlight': 'var(--color-highlight)',
         'color-heart': 'var(--color-heart)',
+        'color-link': 'var(--color-link)',
       },
     },
   },

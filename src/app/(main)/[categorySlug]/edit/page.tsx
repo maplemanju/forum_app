@@ -3,6 +3,7 @@ import { getCategory } from '@/process/actions/categoryAction'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
 import { Content } from '@/components/templates/content'
+import { Sidebar } from '@/components/templates/sidebar'
 
 export default async function CategoryEditPage({
   params,
@@ -23,6 +24,7 @@ export default async function CategoryEditPage({
           parentCategory={categoryResponse.data?.parentCategory}
         />
       </Content>
+      <Sidebar />
     </>
   )
 }

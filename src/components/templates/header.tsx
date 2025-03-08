@@ -42,7 +42,7 @@ export default function Header() {
             </div>
           )}
           <Button
-            label={session ? 'Logout' : 'Login'}
+            label={session ? '' : 'Login'}
             color={session ? 'gray' : 'primary'}
             size="small"
             onClick={loginOrLogout}

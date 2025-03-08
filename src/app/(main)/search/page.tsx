@@ -1,10 +1,13 @@
 import { Content } from '@/components/templates/content'
 import { PostList } from '@/components/organisms/postList'
-import { getPostsByKeyword } from '@/process/actions/postAction'
+import { getPostsByKeyword, getRecentPosts } from '@/process/actions/postAction'
 import SearchBox from '@/components/molecules/searchBox'
 import { PostType } from '@/types/post'
 import { ResponseType } from '@/utils/errors'
 import { getTags } from '@/process/actions/tagAction'
+import { getAllCategories } from '@/process/actions/categoryAction'
+import { Suspense } from 'react'
+import { Sidebar } from '@/components/templates/sidebar'
 
 export default async function SearchPage({
   searchParams,
@@ -19,6 +22,9 @@ export default async function SearchPage({
   }
   const tagsResponse = await getTags()
 
+  // for sidebar (suspended)
+  const newPostsResponse = getRecentPosts({ take: 5 })
+  const categoryListPromise = getAllCategories()
   return (
     <>
       <Content>
@@ -29,6 +35,12 @@ export default async function SearchPage({
           label="Featured Posts"
         />
       </Content>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Sidebar
+          postListPromise={newPostsResponse}
+          categoryListPromise={categoryListPromise}
+        />
+      </Suspense>
     </>
   )
 }

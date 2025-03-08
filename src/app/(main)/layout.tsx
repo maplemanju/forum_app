@@ -11,8 +11,7 @@ export default function SearchLayout({
     <>
       <Header />
       <div className="middle-container">
-        <div>{children}</div>
-        <Sidebar />
+        <>{children}</>
       </div>
       <Footer />
     </>

@@ -1,5 +1,5 @@
 import { Content } from '@/components/templates/content'
-import { getCategory } from '@/process/actions/categoryAction'
+import { getCategory, getAllCategories } from '@/process/actions/categoryAction'
 import { CategoryList } from '@/components/organisms/categoryList'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
 import { getPostsByCategory } from '@/process/actions/postAction'
@@ -9,6 +9,9 @@ import CategoryContent from '@/components/organisms/categoryContent'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
 import { mdxSerializer } from '@/utils/mdxSerializer'
+import { Sidebar } from '@/components/templates/sidebar'
+import { getRecentPosts } from '@/process/actions/postAction'
+import { Suspense } from 'react'
 
 export default async function CategoryPage({
   params,
@@ -33,6 +36,10 @@ export default async function CategoryPage({
     categoryResponse.data?.categoryDescription ?? ''
   )
 
+  // for sidebar (suspended)
+  const newPostsResponse = getRecentPosts({ take: 5 })
+  const categoryListPromise = getAllCategories()
+
   return (
     <>
       <Alert response={categoryResponse} />
@@ -49,6 +56,13 @@ export default async function CategoryPage({
         />
         {postsResponse && <PostList posts={postsResponse.data} label="Posts" />}
       </Content>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Sidebar
+          postListPromise={newPostsResponse}
+          categoryListPromise={categoryListPromise}
+          subCategoryListPromise={Promise.resolve(categoryResponse)}
+        />
+      </Suspense>
     </>
   )
 }

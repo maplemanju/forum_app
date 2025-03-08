@@ -14,9 +14,18 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
 
-export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
+/**
+ * Get the most recent posts.
+ * Sorted by createdAt in descending order.
+ * @returns The most recent posts
+ */
+export const getRecentPosts = async ({
+  take = 10,
+}: {
+  take?: number
+}): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getRecentPosts()
+    const response = await postRepository.getRecentPosts({ take })
     console.log('getRecentPosts')
     return {
       data: response,
@@ -29,11 +38,18 @@ export const getRecentPosts = async (): Promise<ResponseType<PostType[]>> => {
   }
 }
 
-export const getRecentlyUpdatedPosts = async (): Promise<
-  ResponseType<PostType[]>
-> => {
+/**
+ * Get the most recently updated posts.
+ * Sorted by comment date in descending order.
+ * @returns The most recently updated posts
+ */
+export const getRecentlyUpdatedPosts = async ({
+  take = 10,
+}: {
+  take?: number
+}): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getRecentlyUpdatedPosts()
+    const response = await postRepository.getRecentlyUpdatedPosts({ take })
     console.log('getRecentlyUpdatedPosts')
     return {
       data: response,
@@ -46,6 +62,12 @@ export const getRecentlyUpdatedPosts = async (): Promise<
   }
 }
 
+/**
+ * Get posts by category.
+ * Sorted by comment date in descending order.
+ * @param args.categoryId The category id
+ * @returns The posts
+ */
 export const getPostsByCategory = async (
   args: GetByCategory
 ): Promise<ResponseType<PostType[]>> => {
@@ -63,6 +85,11 @@ export const getPostsByCategory = async (
   }
 }
 
+/**
+ * Get posts by keywords.
+ * @param args.keyword The keywords
+ * @returns The posts
+ */
 export const getPostsByKeyword = async (
   args: GetByKeyword
 ): Promise<ResponseType<PostType[]>> => {
@@ -80,6 +107,11 @@ export const getPostsByKeyword = async (
   }
 }
 
+/**
+ * Get post by slug.
+ * @param args.slug The slug
+ * @returns The post
+ */
 export const getPostBySlug = async (
   args: GetBySlug
 ): Promise<ResponseType<PostType>> => {

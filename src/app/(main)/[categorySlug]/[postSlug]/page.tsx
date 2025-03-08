@@ -1,13 +1,15 @@
 import { Content } from '@/components/templates/content'
-import { getCategory } from '@/process/actions/categoryAction'
+import { getAllCategories, getCategory } from '@/process/actions/categoryAction'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
-import { getPostBySlug } from '@/process/actions/postAction'
+import { getPostBySlug, getRecentPosts } from '@/process/actions/postAction'
 import { PostContent } from '@/components/organisms/postContent'
 import CommentList from '@/components/organisms/commentList'
 import { getCommentsByPostId } from '@/process/actions/commentAction'
 import PostToolbox from '@/components/molecules/postToolbox'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
+import { Sidebar } from '@/components/templates/sidebar'
+import { Suspense } from 'react'
 
 export default async function PostPage({
   params,
@@ -27,6 +29,9 @@ export default async function PostPage({
   const categorySlug = (await params)?.categorySlug
   const categoryResponse = await getCategory({ slug: categorySlug })
 
+  // for sidebar (suspended)
+  const newPostsResponse = getRecentPosts({ take: 5 })
+  const categoryListPromise = getAllCategories()
   return (
     <>
       <Alert response={postResponse} />
@@ -39,6 +44,13 @@ export default async function PostPage({
         <PostContent post={postResponse.data} />
         <CommentList comments={commentsResponse.data} postId={postId} />
       </Content>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Sidebar
+          postListPromise={newPostsResponse}
+          categoryListPromise={categoryListPromise}
+          subCategoryListPromise={Promise.resolve(categoryResponse)}
+        />
+      </Suspense>
     </>
   )
 }

@@ -13,11 +13,15 @@ import { CategoryType } from '@/types/category'
 import { Prisma } from '@prisma/client'
 import { sanitizeContent } from '@/utils/domPurifier'
 
+/**
+ * Get all top level categories
+ * @returns ResponseType<CategoryType[]>
+ */
 export const getAllCategories = async (): Promise<
   ResponseType<CategoryType[]>
 > => {
   try {
-    const response = await categoryRepository.getAll()
+    const response = await categoryRepository.getAllTopLevelCategories()
     console.log('getAllCategories')
     return {
       data: response,

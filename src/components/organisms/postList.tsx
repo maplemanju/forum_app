@@ -37,7 +37,7 @@ export const PostList = ({
         {posts.map((post: PostType) => (
           <div
             key={post.id}
-            className="px-4 py-8 text-sm border-b border-color-border-secondary"
+            className="px-4 py-8 text-sm border-b border-color-border-secondary last:border-b-0 first:pt-2"
           >
             {/* category  */}
             {showCategory && (
@@ -106,9 +106,7 @@ export const PostList = ({
             )}
 
             {/* content  */}
-            <p className="text-color-subtext line-clamp-2">
-              {stripMarkdown(post.postContent)}
-            </p>
+            <p className="line-clamp-2">{stripMarkdown(post.postContent)}</p>
 
             {/* info bar  */}
 

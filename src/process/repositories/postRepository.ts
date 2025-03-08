@@ -42,12 +42,17 @@ export type GetByKeyword = {
   keyword: string[]
 }
 
+export type PostStats = {
+  take?: number
+}
+
 export const postRepository = {
-  getPosts: async (args: GetPostBy) => {
+  getPosts: async (args: GetPostBy & PostStats) => {
     const session = await getServerSession(authOptions)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false },
       orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
+      take: args.take,
       include: {
         _count: {
           select: {
@@ -90,26 +95,29 @@ export const postRepository = {
     return posts
   },
 
-  getByCategory: async (args: GetByCategory) => {
+  getByCategory: async (args: GetByCategory & PostStats) => {
     const posts = await postRepository.getPosts({
       where: { categoryId: args.categoryId },
       orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
+      take: args.take,
     })
     return posts
   },
-  getRecentPosts: async () => {
+  getRecentPosts: async (args: PostStats) => {
     const posts = await postRepository.getPosts({
       orderBy: [{ createdAt: 'desc' }],
+      take: args.take,
     })
     return posts
   },
-  getRecentlyUpdatedPosts: async () => {
+  getRecentlyUpdatedPosts: async (args: PostStats) => {
     const posts = await postRepository.getPosts({
       orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
+      take: args.take,
     })
     return posts
   },
-  getPostsByKeyword: async (args: GetByKeyword) => {
+  getPostsByKeyword: async (args: GetByKeyword & PostStats) => {
     const keywords = args.keyword.filter((keyword) => !keyword.startsWith('#'))
     const tags = args.keyword
       .filter((keyword) => keyword.startsWith('#'))
@@ -142,6 +150,7 @@ export const postRepository = {
             : []),
         ],
       },
+      take: args.take,
     })
     return posts
   },
