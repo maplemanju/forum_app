@@ -34,6 +34,7 @@ export default {
         'color-accent-hover': 'var(--color-accent-hover)',
         'color-overlay': 'var(--color-overlay)',
         'color-highlight': 'var(--color-highlight)',
+        'color-heart': 'var(--color-heart)',
       },
     },
   },

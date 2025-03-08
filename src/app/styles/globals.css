@@ -22,6 +22,7 @@
   --color-accent-hover: theme('colors.green.600');
   --color-overlay: rgba(23, 23, 23, 0.5);
   --color-highlight: theme('colors.yellow.100');
+  --color-heart: theme('colors.red.500');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +46,7 @@
     --color-accent-hover: theme('colors.green.900');
     --color-overlay: rgba(23, 23, 23, 0.5);
     --color-highlight: theme('colors.emerald.950');
+    --color-heart: theme('colors.red.500');
   }
 
   * {
