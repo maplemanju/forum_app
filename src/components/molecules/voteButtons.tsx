@@ -67,7 +67,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
       {/* <span>{voteCountState}</span> */}
       <>
         <Button
-          rightIcon="thumb_up"
+          rightIcon="favorite"
           onClick={() => handleVote('upvote')}
           size={commentId ? 'xsmall' : 'small'}
           color="neutral"
@@ -76,7 +76,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           className={userVoteCount === 1 ? 'text-color-primary' : ''}
         />
         <Button
-          rightIcon="thumb_down"
+          rightIcon="question_mark"
           onClick={() => handleVote('downvote')}
           size={commentId ? 'xsmall' : 'small'}
           color="neutral"

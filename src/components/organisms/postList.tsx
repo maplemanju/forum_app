@@ -100,7 +100,7 @@ export const PostList = ({
                   width={0}
                   height={0}
                   sizes="100vw"
-                  className="w-full max-h-[300px] rounded-md object-cover object-center"
+                  className="w-full h-[150px] sm:h-[300px] rounded-md object-cover object-center"
                 />
               </div>
             )}

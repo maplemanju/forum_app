@@ -38,7 +38,7 @@ export default function Header() {
           />
           {session && (
             <div className="text-gray-600 dark:text-white">
-              Welcome, {session.user?.name}
+              {session.user?.name}
             </div>
           )}
           <Button
