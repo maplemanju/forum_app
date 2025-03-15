@@ -44,6 +44,7 @@ export type GetByKeyword = {
 
 export type PostStats = {
   take?: number
+  skip?: number
 }
 
 export const postRepository = {
@@ -53,6 +54,7 @@ export const postRepository = {
       where: { ...args.where, isDeleted: false },
       orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
       take: args.take,
+      skip: args.skip,
       include: {
         _count: {
           select: {
@@ -100,6 +102,7 @@ export const postRepository = {
       where: { categoryId: args.categoryId },
       orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
       take: args.take,
+      skip: args.skip,
     })
     return posts
   },
@@ -107,6 +110,7 @@ export const postRepository = {
     const posts = await postRepository.getPosts({
       orderBy: [{ createdAt: 'desc' }],
       take: args.take,
+      skip: args.skip,
     })
     return posts
   },
@@ -114,10 +118,12 @@ export const postRepository = {
     const posts = await postRepository.getPosts({
       orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
       take: args.take,
+      skip: args.skip,
     })
     return posts
   },
   getPostsByKeyword: async (args: GetByKeyword & PostStats) => {
+    console.log('getPostsByKeyword', args)
     const keywords = args.keyword.filter((keyword) => !keyword.startsWith('#'))
     const tags = args.keyword
       .filter((keyword) => keyword.startsWith('#'))
@@ -151,6 +157,7 @@ export const postRepository = {
         ],
       },
       take: args.take,
+      skip: args.skip,
     })
     return posts
   },

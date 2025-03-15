@@ -16,23 +16,26 @@ export default async function SearchPage({
 }) {
   const keyword = (await searchParams)?.q
   let postsResponse: ResponseType<PostType[]> | undefined
+  let keywords: string[] | null = null
   if (keyword) {
-    const keywords = keyword.split(' ')
+    keywords = keyword.split(' ')
     postsResponse = await getPostsByKeyword({ keyword: keywords })
   }
   const tagsResponse = await getTags()
 
   // for sidebar (suspended)
-  const newPostsResponse = getRecentPosts({ take: 5 })
+  const newPostsResponse = getRecentPosts({})
   const categoryListPromise = getAllCategories()
   return (
     <>
       <Content>
         <SearchBox tags={tagsResponse.data} />
         <PostList
-          posts={postsResponse?.data}
+          initialPosts={postsResponse?.data}
           showCategory={true}
           label="Featured Posts"
+          typeOfList="keyword"
+          keywords={keywords}
         />
       </Content>
       <Suspense fallback={<div>Loading...</div>}>

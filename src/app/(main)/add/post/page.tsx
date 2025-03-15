@@ -16,7 +16,7 @@ export default async function AddPostPage({
   const categoryResponse = await getCategory({ slug: categorySlug as string })
 
   // for sidebar (suspended)
-  const newPostsResponse = getRecentPosts({ take: 5 })
+  const newPostsResponse = getRecentPosts({})
   const categoryListPromise = getAllCategories()
 
   return (

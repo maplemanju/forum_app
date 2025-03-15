@@ -1,5 +1,4 @@
 import { Content } from '@/components/templates/content'
-import { Footer } from '@/components/templates/footer'
 import { getAllCategories } from '@/process/actions/categoryAction'
 import { CategoryList } from '@/components/organisms/categoryList'
 import CategoryToolbox from '@/components/molecules/categoryToolbox'
@@ -13,16 +12,23 @@ import { Suspense } from 'react'
 
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
-  const postsResponse = await getRecentlyUpdatedPosts({ take: 10 })
+  const postsResponse = await getRecentlyUpdatedPosts({
+    take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+  })
 
   // for sidebar (suspended)
-  const newPostsResponse = getRecentPosts({ take: 5 })
+  const newPostsResponse = getRecentPosts({})
   return (
     <>
       <Content>
         <CategoryToolbox />
         <CategoryList categories={categoriesResponse.data} />
-        <PostList posts={postsResponse.data} showCategory={true} />
+        <PostList
+          initialPosts={postsResponse.data}
+          showCategory={true}
+          label="Feeds"
+          typeOfList="recent"
+        />
       </Content>
       <Suspense fallback={<div>Loading...</div>}>
         <Sidebar

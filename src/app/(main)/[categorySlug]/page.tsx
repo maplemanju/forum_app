@@ -29,6 +29,7 @@ export default async function CategoryPage({
   const postsResponse = categoryId
     ? await getPostsByCategory({
         categoryId: categoryId,
+        take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
       })
     : null
 
@@ -37,7 +38,7 @@ export default async function CategoryPage({
   )
 
   // for sidebar (suspended)
-  const newPostsResponse = getRecentPosts({ take: 5 })
+  const newPostsResponse = getRecentPosts({})
   const categoryListPromise = getAllCategories()
 
   return (
@@ -54,7 +55,14 @@ export default async function CategoryPage({
           categories={categoryResponse.data?.childCategories}
           label="Subcategories"
         />
-        {postsResponse && <PostList posts={postsResponse.data} label="Posts" />}
+        {postsResponse && (
+          <PostList
+            initialPosts={postsResponse.data}
+            typeOfList="category"
+            categoryId={categoryId}
+            label="Posts"
+          />
+        )}
       </Content>
       <Suspense fallback={<div>Loading...</div>}>
         <Sidebar

@@ -2,12 +2,10 @@
 
 import { getServerSession } from 'next-auth'
 import postRepository, {
-  GetByCategory,
   GetBySlug,
   CreatePost,
   UpdatePost,
   DeletePostProps,
-  GetByKeyword,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -20,12 +18,14 @@ import { sanitizeContent } from '@/utils/domPurifier'
  * @returns The most recent posts
  */
 export const getRecentPosts = async ({
-  take = 10,
+  take = Number(process.env.NEXT_PUBLIC_SIDEBAR_NEW_POST_COUNT),
+  skip = 0,
 }: {
   take?: number
+  skip?: number
 }): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getRecentPosts({ take })
+    const response = await postRepository.getRecentPosts({ take, skip })
     console.log('getRecentPosts')
     return {
       data: response,
@@ -44,12 +44,17 @@ export const getRecentPosts = async ({
  * @returns The most recently updated posts
  */
 export const getRecentlyUpdatedPosts = async ({
-  take = 10,
+  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+  skip = 0,
 }: {
   take?: number
+  skip?: number
 }): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getRecentlyUpdatedPosts({ take })
+    const response = await postRepository.getRecentlyUpdatedPosts({
+      take,
+      skip,
+    })
     console.log('getRecentlyUpdatedPosts')
     return {
       data: response,
@@ -68,11 +73,21 @@ export const getRecentlyUpdatedPosts = async ({
  * @param args.categoryId The category id
  * @returns The posts
  */
-export const getPostsByCategory = async (
-  args: GetByCategory
-): Promise<ResponseType<PostType[]>> => {
+export const getPostsByCategory = async ({
+  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+  skip = 0,
+  categoryId,
+}: {
+  take?: number
+  skip?: number
+  categoryId: number
+}): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getByCategory(args)
+    const response = await postRepository.getByCategory({
+      take,
+      skip,
+      categoryId,
+    })
     console.log('getPostsByCategory')
     return {
       data: response,
@@ -90,11 +105,21 @@ export const getPostsByCategory = async (
  * @param args.keyword The keywords
  * @returns The posts
  */
-export const getPostsByKeyword = async (
-  args: GetByKeyword
-): Promise<ResponseType<PostType[]>> => {
+export const getPostsByKeyword = async ({
+  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+  skip = 0,
+  keyword,
+}: {
+  take?: number
+  skip?: number
+  keyword: string[]
+}): Promise<ResponseType<PostType[]>> => {
   try {
-    const response = await postRepository.getPostsByKeyword(args)
+    const response = await postRepository.getPostsByKeyword({
+      take,
+      skip,
+      keyword,
+    })
     console.log('getPostsByKeyword')
     return {
       data: response,

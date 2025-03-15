@@ -22,7 +22,7 @@ export default async function AddCategoryPage({
   }
 
   // for sidebar (suspended)
-  const newPostsResponse = getRecentPosts({ take: 5 })
+  const newPostsResponse = getRecentPosts({})
   const categoryListPromise = getAllCategories()
 
   return (
