@@ -45,6 +45,7 @@ export type GetByKeyword = {
 export type PostStats = {
   take?: number
   skip?: number
+  sort?: 'recent' | 'popular' | 'rated'
 }
 
 export const postRepository = {
@@ -70,6 +71,7 @@ export const postRepository = {
             },
           },
         },
+
         category: {
           include: {
             parentCategory: true,
@@ -98,9 +100,17 @@ export const postRepository = {
   },
 
   getByCategory: async (args: GetByCategory & PostStats) => {
+    let orderBy: Prisma.PostsOrderByWithRelationInput[] = [
+      { postUpdate: { updatedAt: 'desc' } },
+    ]
+    if (args.sort === 'popular') {
+      orderBy = [{ comments: { _count: 'desc' } }]
+    } else if (args.sort === 'rated') {
+      orderBy = [{ votes: { _count: 'desc' } }]
+    }
     const posts = await postRepository.getPosts({
       where: { categoryId: args.categoryId },
-      orderBy: [{ postUpdate: { updatedAt: 'desc' } }],
+      orderBy: orderBy,
       take: args.take,
       skip: args.skip,
     })
@@ -128,6 +138,14 @@ export const postRepository = {
     const tags = args.keyword
       .filter((keyword) => keyword.startsWith('#'))
       .map((tag) => tag.slice(1))
+    let orderBy: Prisma.PostsOrderByWithRelationInput[] = []
+    if (args.sort === 'recent') {
+      orderBy = [{ postUpdate: { updatedAt: 'desc' } }]
+    } else if (args.sort === 'popular') {
+      orderBy = [{ comments: { _count: 'desc' } }]
+    } else if (args.sort === 'rated') {
+      orderBy = [{ votes: { _count: 'desc' } }]
+    }
     const posts = await postRepository.getPosts({
       where: {
         OR: [
@@ -158,6 +176,7 @@ export const postRepository = {
       },
       take: args.take,
       skip: args.skip,
+      orderBy: [...(orderBy || []), { createdAt: 'desc' }],
     })
     return posts
   },

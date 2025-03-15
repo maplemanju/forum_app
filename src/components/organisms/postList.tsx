@@ -11,19 +11,23 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { stripMarkdown } from '@/utils/stripMarkdown'
 import { fromNowShort } from '@/utils/dateFormatter'
 import Image from 'next/image'
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { useInfinitePostScroll } from '@/hooks/useInfinitePostScroll'
 import { useRef } from 'react'
+import { SortSelect } from '@/components/molecules/sortSelect'
+import { useRouter, useSearchParams } from 'next/navigation'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
   initialPosts?: PostType[]
   showCategory?: boolean
   label?: string
+  showSort?: boolean
 
   // for infinity scroll fetch
   typeOfList?: 'recent' | 'category' | 'keyword'
   categoryId?: number | null
   keywords?: string[] | null
+  sort?: 'recent' | 'popular' | 'rated'
 }
 
 export const PostList = ({
@@ -33,24 +37,38 @@ export const PostList = ({
   typeOfList = 'recent',
   categoryId,
   keywords,
+  showSort,
+  sort,
 }: PostListProps) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const { data: session } = useSession()
   const observerTarget = useRef<HTMLDivElement>(null)
-  const { posts, isLoading } = useInfiniteScroll({
+  const { posts, isLoading } = useInfinitePostScroll({
     initialPosts: initialPosts || [],
     observerTarget: observerTarget,
     typeOfList: typeOfList,
     categoryId: categoryId,
     keywords: keywords,
+    sort: sort,
   })
 
   if (!posts || posts.length === 0) {
     return <div className="text-color-subtext italic">No posts found</div>
   }
 
+  const sortChangeHandler = (value: string) => {
+    const current = new URLSearchParams(searchParams)
+    current.set('sort', value)
+    router.push(`?${current.toString()}`)
+  }
+
   return (
     <>
-      <h2 className="divider-label text-lg font-semibold">{label}</h2>
+      <div className="divider-label flex items-center justify-between">
+        <h2 className="text-lg font-semibold">{label}</h2>
+        {showSort && <SortSelect onChange={sortChangeHandler} />}
+      </div>
       <div>
         {posts.map((post: PostType, index: number) => (
           <div
@@ -64,7 +82,7 @@ export const PostList = ({
                   <>
                     <Link
                       href={`/${post.category.parentCategory.slug}`}
-                      className="hover:text-blue-800 dark:hover:text-blue-400"
+                      className="hover:text-color-link"
                     >
                       {post.category.parentCategory.categoryName}
                     </Link>
@@ -75,7 +93,7 @@ export const PostList = ({
                 )}
                 <Link
                   href={`/${post.category.slug}`}
-                  className="hover:text-blue-800 dark:hover:text-blue-400"
+                  className="hover:text-color-link"
                 >
                   {post.category.categoryName}
                 </Link>
@@ -83,7 +101,7 @@ export const PostList = ({
             )}
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <h3 className="text-xl font-semibold text-color-foreground hover:text-blue-600 dark:hover:text-blue-400">
+              <h3 className="text-xl font-semibold text-color-foreground hover:text-color-link">
                 {post.postTitle}
               </h3>
             </Link>

@@ -27,10 +27,18 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
 
   useEffect(() => {
-    if (userVotes && userVotes.length > 0) {
-      setUserVoteCount(userVotes[0].vote)
+    if (userVotes) {
+      if (userVotes.length > 0) {
+        setUserVoteCount(userVotes[0].vote)
+      } else {
+        setUserVoteCount(0)
+      }
     }
   }, [userVotes])
+
+  useEffect(() => {
+    setVoteCountState(voteCount)
+  }, [voteCount])
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (!canVote) {
@@ -45,7 +53,6 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
       commentId,
       vote,
     })
-    console.log('result', result)
     if (result.success && result.voteCount !== undefined) {
       if (
         result.voteCount === 1 ||

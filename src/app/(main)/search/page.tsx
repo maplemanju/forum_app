@@ -12,14 +12,15 @@ import { Sidebar } from '@/components/templates/sidebar'
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q: string }>
+  searchParams: Promise<{ q: string; sort: string }>
 }) {
   const keyword = (await searchParams)?.q
+  const sort = (await searchParams)?.sort as 'recent' | 'popular' | 'rated'
   let postsResponse: ResponseType<PostType[]> | undefined
   let keywords: string[] | null = null
   if (keyword) {
     keywords = keyword.split(' ')
-    postsResponse = await getPostsByKeyword({ keyword: keywords })
+    postsResponse = await getPostsByKeyword({ keyword: keywords, sort: sort })
   }
   const tagsResponse = await getTags()
 
@@ -36,6 +37,8 @@ export default async function SearchPage({
           label="Featured Posts"
           typeOfList="keyword"
           keywords={keywords}
+          showSort={true}
+          sort={sort}
         />
       </Content>
       <Suspense fallback={<div>Loading...</div>}>

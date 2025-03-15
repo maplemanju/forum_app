@@ -77,16 +77,19 @@ export const getPostsByCategory = async ({
   take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
   skip = 0,
   categoryId,
+  sort,
 }: {
   take?: number
   skip?: number
   categoryId: number
+  sort?: 'recent' | 'popular' | 'rated'
 }): Promise<ResponseType<PostType[]>> => {
   try {
     const response = await postRepository.getByCategory({
       take,
       skip,
       categoryId,
+      sort,
     })
     console.log('getPostsByCategory')
     return {
@@ -109,16 +112,19 @@ export const getPostsByKeyword = async ({
   take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
   skip = 0,
   keyword,
+  sort,
 }: {
   take?: number
   skip?: number
   keyword: string[]
+  sort?: 'recent' | 'popular' | 'rated'
 }): Promise<ResponseType<PostType[]>> => {
   try {
     const response = await postRepository.getPostsByKeyword({
       take,
       skip,
       keyword,
+      sort,
     })
     console.log('getPostsByKeyword')
     return {

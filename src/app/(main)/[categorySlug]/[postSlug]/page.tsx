@@ -23,9 +23,6 @@ export default async function PostPage({
   }
   const postId = Number(postResponse.data.id)
   const commentsResponse = await getCommentsByPostId({ postId: postId })
-  console.log('commentsResponse', commentsResponse)
-  console.log('postResponse', postResponse)
-
   const categorySlug = (await params)?.categorySlug
   const categoryResponse = await getCategory({ slug: categorySlug })
 

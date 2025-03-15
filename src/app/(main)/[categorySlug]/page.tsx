@@ -14,11 +14,14 @@ import { getRecentPosts } from '@/process/actions/postAction'
 import { Suspense } from 'react'
 
 export default async function CategoryPage({
+  searchParams,
   params,
 }: {
+  searchParams: Promise<{ sort: string }>
   params: Promise<{ categorySlug: string }>
 }) {
   const categorySlug = (await params)?.categorySlug
+  const sort = (await searchParams)?.sort as 'recent' | 'popular' | 'rated'
   const categoryResponse = await getCategory({ slug: categorySlug })
   if (!categoryResponse.success) {
     return notFound()
@@ -30,6 +33,7 @@ export default async function CategoryPage({
     ? await getPostsByCategory({
         categoryId: categoryId,
         take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+        sort: sort,
       })
     : null
 
@@ -61,6 +65,8 @@ export default async function CategoryPage({
             typeOfList="category"
             categoryId={categoryId}
             label="Posts"
+            sort={sort}
+            showSort={true}
           />
         )}
       </Content>

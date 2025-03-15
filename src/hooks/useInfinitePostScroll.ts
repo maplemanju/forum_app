@@ -9,18 +9,20 @@ import { ResponseType } from '@/utils/errors'
 
 const POSTS_PER_PAGE = 5
 
-export const useInfiniteScroll = ({
+export const useInfinitePostScroll = ({
   initialPosts,
   observerTarget,
   typeOfList,
   categoryId,
   keywords,
+  sort,
 }: {
   initialPosts: PostType[]
   observerTarget: React.RefObject<HTMLDivElement | null>
   typeOfList: 'recent' | 'category' | 'keyword'
   categoryId?: number | null
   keywords?: string[] | null
+  sort?: 'recent' | 'popular' | 'rated'
 }) => {
   const [posts, setPosts] = useState<PostType[]>(initialPosts)
   const [isLoading, setIsLoading] = useState(false)
