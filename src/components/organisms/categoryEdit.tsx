@@ -2,7 +2,7 @@
 
 import { useActionState, useCallback, useEffect, useState } from 'react'
 import { CategoryType } from '@/types/category'
-import { notFound, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   createCategory,
   deleteCategory,
@@ -34,11 +34,6 @@ export default function CategoryEdit({
 
   // Allow access if user is an admin
   const canEdit = session && session.user.roles?.includes(ROLES.ADMIN)
-
-  // Return early if user doesn't have permission
-  if (!session || (!canEdit && Boolean(category))) {
-    return notFound()
-  }
 
   useEffect(() => {
     if (category?.categoryDescription) {
@@ -98,6 +93,11 @@ export default function CategoryEdit({
     } else {
       setAlert(response)
     }
+  }
+
+  // Return if user doesn't have permission
+  if (!session || !category || (!canEdit && Boolean(category))) {
+    return <></>
   }
 
   return (

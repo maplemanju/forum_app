@@ -16,7 +16,6 @@ import { TextEditor } from '@/components/molecules/textEditor'
 import { Button } from '@/components/atoms/button'
 import { useSession } from 'next-auth/react'
 import { ROLES } from '@/utils/consts'
-import { notFound } from 'next/navigation'
 import { HeroImageUpload } from '@/components/molecules/heroImageUpload'
 
 interface PostEditProps {
