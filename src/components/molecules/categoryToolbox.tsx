@@ -16,7 +16,7 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
   if (!session) return <></>
 
   return (
-    <div className="flex justify-end gap-2">
+    <div className="flex justify-end gap-2 px-4">
       {category && canEdit && (
         <>
           <Button

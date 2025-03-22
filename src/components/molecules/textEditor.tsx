@@ -3,13 +3,16 @@
 import dynamic from 'next/dynamic'
 import { type MDXEditorMethods } from '@mdxeditor/editor'
 import { useRef, useState, useEffect } from 'react'
-import { Button } from '@/components/atoms/button'
 import { EditorSwitchButton } from '@/components/atoms/mdxEditor/editorSwitchButton'
+import { EditorSkeleton } from '@/components/molecules/skeletons/editorSkeleton'
 
 // This is the only place TextEditor is imported directly.
 const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
   // Make sure we turn SSR off
   ssr: false,
+  loading: () => {
+    return <EditorSkeleton />
+  },
 })
 
 // This is what is imported by other components. Pre-initialized with plugins, and ready

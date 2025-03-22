@@ -12,6 +12,7 @@ import { mdxSerializer } from '@/utils/mdxSerializer'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { MDXContent } from '../templates/MDXContent'
 import { ROLES } from '@/utils/consts'
+import { CommentSkeleton } from '../molecules/skeletons/commentSkeleton'
 
 dayjs.extend(relativeTime)
 
@@ -140,7 +141,11 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
 
               {/* content  */}
               <div className="post-content">
-                {serializedContent && <MDXContent source={serializedContent} />}
+                {serializedContent ? (
+                  <MDXContent source={serializedContent} />
+                ) : (
+                  <CommentSkeleton />
+                )}
               </div>
 
               {/* action bar  */}

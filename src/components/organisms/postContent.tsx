@@ -14,6 +14,7 @@ import { MDXContent } from '@/components/templates/MDXContent'
 import { mdxSerializer } from '@/utils/mdxSerializer'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
 
 type PostProps = {
   post?: PostType
@@ -63,11 +64,14 @@ export const PostContent = ({ post }: PostProps) => {
           />
         </div>
         <Tooltip
-          text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+          text={`Posted at ${dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}`}
           width="115px"
           className="text-center"
         >
-          <span>{fromNowShort(post.createdAt)}</span>
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-rounded text-sm">today</span>
+            <span>{fromNowShort(post.createdAt)}</span>
+          </div>
         </Tooltip>
         <Button
           rightIcon="chat"
@@ -98,17 +102,25 @@ export const PostContent = ({ post }: PostProps) => {
         </div>
       )}
       <div className="post-content mt-3">
-        {serializedContent && <MDXContent source={serializedContent} />}
+        {serializedContent ? (
+          <MDXContent source={serializedContent} />
+        ) : (
+          <PostSkeleton />
+        )}
       </div>
 
       {/* updated at  */}
       {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
-        <div className="flex flex-column gap-2 mt-4 text-sm text-gray-600 dark:text-gray-400">
-          <div className="text-gray-600 dark:text-gray-400 mb-2">
-            Updated at
+        <Tooltip
+          text={`Edited at ${dayjs(post.updatedAt).format('YYYY/MM/DD HH:mm')}`}
+          width="115px"
+          className="text-center"
+        >
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <span className="material-symbols-rounded text-sm">update</span>
+            <span>{fromNowShort(post.updatedAt)}</span>
           </div>
-          <span>{dayjs(post.updatedAt).format('YYYY/MM/DD HH:mm')}</span>
-        </div>
+        </Tooltip>
       )}
 
       {/* tags  */}

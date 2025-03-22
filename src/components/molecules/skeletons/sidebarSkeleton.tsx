@@ -4,7 +4,7 @@ export const SidebarSkeleton = () => {
       <div className="p-6 h-full rounded-lg">
         <div className="animate-pulse">
           {/* Label skeleton */}
-          <div className="h-6 w-24 bg-color-border rounded mb-4" />
+          <div className="h-6 w-full bg-color-border rounded mb-4" />
 
           {/* Posts skeleton */}
           {[1, 2, 3].map((i) => (

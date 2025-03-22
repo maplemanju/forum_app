@@ -88,7 +88,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           size={commentId ? 'xsmall' : 'small'}
           color="neutral"
           boxStyle="box"
-          className={userVoteCount === -1 ? 'text-color-gray' : ''}
+          className={userVoteCount === -1 ? 'text-color-heart' : ''}
         />
       </>
     </div>

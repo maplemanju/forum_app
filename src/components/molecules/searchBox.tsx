@@ -21,7 +21,7 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
   const [keyword, formAction] = useActionState(handleSearch, '')
 
   return (
-    <form action={formAction} className="flex gap-2">
+    <form action={formAction} className="flex gap-2 p-4">
       <input
         name="query"
         defaultValue={keyword}

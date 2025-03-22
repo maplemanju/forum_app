@@ -42,13 +42,13 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
   const currentPage = paths[paths.length - 1]
 
   return (
-    <nav className="py-3" aria-label="Breadcrumb">
+    <nav className="py-3 px-4" aria-label="Breadcrumb">
       <div className="flex items-center gap-2">
         {previousPage && (
           <>
             <Link
               href={previousPage.href || '/'}
-              className="flex items-center text-color-subtext hover:text-color-primary"
+              className="flex items-center text-color-subtext hover:text-color-link"
             >
               <span className="material-symbols-rounded">
                 {previousPage.icon || 'arrow_back'}

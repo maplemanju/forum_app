@@ -54,7 +54,7 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <div className="text-color-subtext italic">No posts found</div>
+    return <div className="text-color-subtext italic px-4">No posts found</div>
   }
 
   const sortChangeHandler = (value: string) => {
@@ -119,11 +119,18 @@ export const PostList = ({
               </span>
 
               <Tooltip
-                text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+                text={`Posted at ${dayjs(post.createdAt).format(
+                  'YYYY/MM/DD HH:mm'
+                )}`}
                 width="115px"
                 className="text-center"
               >
-                <span>{fromNowShort(post.createdAt)}</span>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-rounded text-sm">
+                    today
+                  </span>
+                  <span>{fromNowShort(post.createdAt)}</span>
+                </div>
               </Tooltip>
             </div>
 
