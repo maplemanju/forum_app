@@ -46,15 +46,9 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
     }
   }
 
-  const deleteCallback = (commentId: number) => {
-    setCommentsState(
-      commentsState.filter((comment) => comment.id !== commentId)
-    )
-  }
-
   return (
     <div id="comments" className="mt-6">
-      <div className="mb-4">
+      <div className="p-4 mb-4">
         <Button
           onClick={() => {
             if (session) {
@@ -77,7 +71,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
         />
       )}
       {optimisticComments.length === 0 ? (
-        <div className="text-color-subtext">No comments yet</div>
+        <div className="p-4 text-color-subtext">No comments yet</div>
       ) : (
         optimisticComments.map((comment) => {
           return (
@@ -87,11 +81,7 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
                 comment.isNewComment ? 'bg-color-highlight' : ''
               }`}
             >
-              <CommentContent
-                comment={comment}
-                postId={postId}
-                deleteCallback={deleteCallback}
-              />
+              <CommentContent comment={comment} postId={postId} />
             </div>
           )
         })

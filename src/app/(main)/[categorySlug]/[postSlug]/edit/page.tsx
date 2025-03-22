@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
 import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function EditPage({
   params,
@@ -32,7 +33,7 @@ export default async function EditPage({
           category={postResponse.data?.category}
         />
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={categoryListPromise}

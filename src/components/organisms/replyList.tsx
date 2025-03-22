@@ -4,6 +4,7 @@ import { CommentType } from '@/types/comment'
 import { useOptimistic, useState } from 'react'
 import CommentContent from './commentContent'
 import CommentEdit from './commentEdit'
+import ReplyContent from './replyContent'
 
 export const ReplyList = ({
   replies,
@@ -43,10 +44,6 @@ export const ReplyList = ({
     }
   }
 
-  const deleteCallback = (commentId: number) => {
-    setRepliesState(repliesState.filter((reply) => reply.id !== commentId))
-  }
-
   return (
     <>
       <div className="border-l border-color-border-secondary px-2 ml-4">
@@ -66,11 +63,7 @@ export const ReplyList = ({
               reply.isNewComment ? 'mt-2 bg-color-highlight' : ''
             } transition-colors duration-400`}
           >
-            <CommentContent
-              comment={reply}
-              postId={parentPostId}
-              deleteCallback={deleteCallback}
-            />
+            <ReplyContent comment={reply} postId={parentPostId} />
           </div>
         ))}
       </div>

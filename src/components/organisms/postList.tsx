@@ -130,14 +130,16 @@ export const PostList = ({
             {/* hero image  */}
             {post.heroImage && (
               <div className="relative max-w-4xl mx-auto my-4">
-                <Image
-                  src={post.heroImage}
-                  alt={post.postTitle}
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="w-full h-[150px] sm:h-[300px] rounded-md object-cover object-center"
-                />
+                <Link href={`/${post.category.slug}/${post.slug}`}>
+                  <Image
+                    src={post.heroImage}
+                    alt={post.postTitle}
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full h-[150px] sm:h-[300px] rounded-md object-cover object-center"
+                  />
+                </Link>
               </div>
             )}
 

@@ -8,6 +8,7 @@ import { getTags } from '@/process/actions/tagAction'
 import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
 import { Sidebar } from '@/components/templates/sidebar'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function SearchPage({
   searchParams,
@@ -41,7 +42,7 @@ export default async function SearchPage({
           sort={sort}
         />
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={categoryListPromise}

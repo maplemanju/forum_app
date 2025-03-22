@@ -9,6 +9,7 @@ import {
 } from '@/process/actions/postAction'
 import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
@@ -30,7 +31,7 @@ export default async function Home() {
           typeOfList="recent"
         />
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={Promise.resolve(categoriesResponse)}

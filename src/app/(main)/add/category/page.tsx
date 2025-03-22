@@ -6,6 +6,7 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
 import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function AddCategoryPage({
   searchParams,
@@ -34,7 +35,7 @@ export default async function AddCategoryPage({
           parentCategory={parentCategoryResponse?.data}
         />
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={categoryListPromise}

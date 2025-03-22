@@ -14,19 +14,16 @@ import { mdxSerializer } from '@/utils/mdxSerializer'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { MDXContent } from '../templates/MDXContent'
 import { ROLES } from '@/utils/consts'
+import { UserInfoCard } from '@/components/molecules/userInfoCard'
+import Image from 'next/image'
 dayjs.extend(relativeTime)
 
 interface CommentContentProps {
   comment: Partial<CommentType>
   postId?: number | null
-  deleteCallback?: (commentId: number) => void
 }
 
-const CommentContent: React.FC<CommentContentProps> = ({
-  comment,
-  postId,
-  deleteCallback,
-}) => {
+const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
   const { data: session } = useSession()
   const [commentState, setCommentState] =
     useState<Partial<CommentType>>(comment)
@@ -50,14 +47,6 @@ const CommentContent: React.FC<CommentContentProps> = ({
 
   const onEdit = () => {
     setIsEditing(!isEditing)
-  }
-
-  const onDelete = async () => {
-    if (!comment.id) return
-    const response = await deleteComment({ id: comment.id })
-    if (response.success) {
-      deleteCallback?.(comment.id)
-    }
   }
 
   const openRepliesLink = () => {
@@ -92,114 +81,142 @@ const CommentContent: React.FC<CommentContentProps> = ({
         session.user.roles?.includes(ROLES.ADMIN))
 
     return (
-      <>
-        {/* info bar  */}
-        <div className="flex items-center gap-2 text-[12px] text-color-subtext">
-          <Button
-            size="xsmall"
-            color="fade"
-            boxStyle="box"
-            leftIcon="person"
-            label={`${comment.createdUser?.userInfo?.displayName}`}
-          />
-          <Tooltip
-            text={dayjs(comment.createdAt).format('YYYY/MM/DD HH:mm')}
-            width="115px"
-            className="text-center"
-          >
-            <span>
-              {comment.createdAt ? fromNowShort(comment.createdAt) : ''}
-            </span>
-          </Tooltip>
-          {canEdit && onEdit && (
-            <Button
-              onClick={() => onEdit()}
-              size="xsmall"
-              color="neutral"
-              boxStyle="box"
-              leftIcon="edit"
-            >
-              Edit
-            </Button>
-          )}
-          {canEdit && onDelete && (
-            <Button
-              onClick={() => onDelete()}
-              size="xsmall"
-              color="neutral"
-              boxStyle="box"
-              leftIcon="delete"
-            >
-              Delete
-            </Button>
-          )}
-        </div>
-
-        {/* edit  */}
-        {isEditing ? (
-          <CommentEdit
-            onCloseEdit={() => setIsEditing(false)}
-            postId={postId}
-            parentCommentId={comment.parentCommentId}
-            commentContent={comment.commentContent}
-            commentId={comment.id}
-            submitCallback={editCallback}
-          />
-        ) : (
-          <div className="ml-4">
-            {/* content  */}
-            <div className="post-content mt-3">
-              {serializedContent && <MDXContent source={serializedContent} />}
-            </div>
-            {/* action bar  */}
-            <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
-              {comment.childComments &&
-                comment.childComments.length > 0 &&
-                comment.parentCommentId === null && (
-                  <button onClick={openRepliesLink}>
-                    {openReplies
-                      ? 'Hide replies'
-                      : `Show replies (${comment.childComments?.length})`}
-                  </button>
-                )}
-              {session && onReply && comment.parentCommentId === null && (
-                <Button
-                  onClick={() => comment.id && onReply(comment.id)}
-                  size="xsmall"
-                  color="neutral"
-                  boxStyle="box"
-                  leftIcon="reply"
-                >
-                  Reply
-                </Button>
-              )}
-              <VoteButtons
-                commentId={comment.id}
-                voteCount={comment._count?.votes || 0}
-                canVote={Boolean(session)}
-                userVotes={comment.votes}
-              />
-            </div>
+      <div className="w-full">
+        <div className="md:flex gap-4">
+          {/* User Info - Full card for main comments */}
+          <div>
+            <UserInfoCard user={comment.createdUser} />
           </div>
-        )}
-      </>
+
+          {/* Comment Content */}
+          <div className="flex-1">
+            {isEditing ? (
+              <CommentEdit
+                onCloseEdit={() => setIsEditing(false)}
+                postId={postId}
+                parentCommentId={comment.parentCommentId}
+                commentContent={comment.commentContent}
+                commentId={comment.id}
+                submitCallback={editCallback}
+              />
+            ) : (
+              <div className="ml-4">
+                {/* content  */}
+                <div className="post-content mt-3">
+                  {serializedContent && (
+                    <MDXContent source={serializedContent} />
+                  )}
+                </div>
+
+                {/* info bar  */}
+                <div className="flex items-center gap-2 text-[12px] text-color-subtext mt-2">
+                  {/* Show user info button only on mobile */}
+                  <Tooltip
+                    text={`Posted at ${dayjs(comment.createdAt).format(
+                      'YYYY/MM/DD HH:mm'
+                    )}`}
+                    width="115px"
+                    className="text-center"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-rounded text-sm">
+                        today
+                      </span>
+                      <span>
+                        {comment.createdAt
+                          ? fromNowShort(comment.createdAt)
+                          : ''}
+                      </span>
+                    </div>
+                  </Tooltip>
+                  {/* updated at  */}
+                  {!dayjs(comment.updatedAt).isSame(
+                    dayjs(comment.createdAt)
+                  ) && (
+                    <Tooltip
+                      text={`Edited at ${dayjs(comment.updatedAt).format(
+                        'YYYY/MM/DD HH:mm'
+                      )}`}
+                      width="115px"
+                      className="text-center"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-rounded text-sm">
+                          update
+                        </span>
+                        <span>
+                          {comment.updatedAt
+                            ? fromNowShort(comment.updatedAt)
+                            : ''}
+                        </span>
+                      </div>
+                    </Tooltip>
+                  )}
+                  {canEdit && onEdit && (
+                    <div>
+                      <Button
+                        onClick={() => onEdit()}
+                        size="xsmall"
+                        color="neutral"
+                        boxStyle="box"
+                        leftIcon="edit"
+                      >
+                        Edit
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                {/* action bar  */}
+                <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
+                  {comment.childComments &&
+                    comment.childComments.length > 0 && (
+                      <button onClick={openRepliesLink}>
+                        {openReplies
+                          ? 'Hide replies'
+                          : `Show replies (${comment.childComments?.length})`}
+                      </button>
+                    )}
+                  {session && onReply && (
+                    <Button
+                      onClick={() => comment.id && onReply(comment.id)}
+                      size="xsmall"
+                      color="neutral"
+                      boxStyle="box"
+                      leftIcon="reply"
+                    >
+                      Reply
+                    </Button>
+                  )}
+                  <VoteButtons
+                    commentId={comment.id}
+                    voteCount={comment._count?.votes || 0}
+                    canVote={Boolean(session)}
+                    userVotes={comment.votes}
+                  />
+                </div>
+
+                {/* Replies - Moved inside the comment content area */}
+                {openReplies && postId && comment.id && (
+                  <div className="mt-4 pl-4">
+                    <ReplyList
+                      replies={comment.childComments ?? []}
+                      openReply={openReply}
+                      setOpenReply={setOpenReply}
+                      parentPostId={postId}
+                      parentCommentId={comment.id}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     )
   }
 
-  return (
-    <>
-      {renderComments(commentState)}
-      {openReplies && postId && comment.id && (
-        <ReplyList
-          replies={comment.childComments ?? []}
-          openReply={openReply}
-          setOpenReply={setOpenReply}
-          parentPostId={postId}
-          parentCommentId={comment.id}
-        />
-      )}
-    </>
-  )
+  return renderComments(commentState)
 }
 
 export default CommentContent

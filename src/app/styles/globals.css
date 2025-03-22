@@ -4,8 +4,8 @@
 
 :root {
   --color-background: theme('colors.neutral.50');
-  --color-background-secondary: theme('colors.neutral.200');
-  --color-background-tertiary: theme('colors.neutral.300');
+  --color-background-secondary: theme('colors.neutral.100');
+  --color-background-tertiary: theme('colors.neutral.200');
   --color-foreground: theme('colors.neutral.900');
   --color-subtext: theme('colors.neutral.600');
   --color-border: theme('colors.neutral.200');
@@ -16,8 +16,8 @@
   --color-gray-hover: theme('colors.gray.600');
   --color-danger: theme('colors.red.500');
   --color-danger-hover: theme('colors.red.700');
-  --color-neutral: theme('colors.neutral.300');
-  --color-neutral-hover: theme('colors.neutral.400');
+  --color-neutral: theme('colors.neutral.200');
+  --color-neutral-hover: theme('colors.neutral.300');
   --color-accent: theme('colors.green.500');
   --color-accent-hover: theme('colors.green.600');
   --color-overlay: rgba(23, 23, 23, 0.5);

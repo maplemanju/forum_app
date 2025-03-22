@@ -12,6 +12,7 @@ import { mdxSerializer } from '@/utils/mdxSerializer'
 import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
 import { Suspense } from 'react'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function CategoryPage({
   searchParams,
@@ -70,7 +71,7 @@ export default async function CategoryPage({
           />
         )}
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={categoryListPromise}

@@ -10,6 +10,7 @@ import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
 import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
+import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function PostPage({
   params,
@@ -41,7 +42,7 @@ export default async function PostPage({
         <PostContent post={postResponse.data} />
         <CommentList comments={commentsResponse.data} postId={postId} />
       </Content>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar
           postListPromise={newPostsResponse}
           categoryListPromise={categoryListPromise}
