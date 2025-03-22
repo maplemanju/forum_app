@@ -61,15 +61,14 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
           color="primary"
           leftIcon="chat"
         />
+        {openAddComments && (
+          <CommentEdit
+            onCloseEdit={() => setOpenAddComments(false)}
+            postId={postId}
+            submitCallback={submitCallback}
+          />
+        )}
       </div>
-
-      {openAddComments && (
-        <CommentEdit
-          onCloseEdit={() => setOpenAddComments(false)}
-          postId={postId}
-          submitCallback={submitCallback}
-        />
-      )}
       {optimisticComments.length === 0 ? (
         <div className="p-4 text-color-subtext">No comments yet</div>
       ) : (

@@ -24,7 +24,7 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
       >
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-lg font-semibold text-color-foreground">
+            <h3 className="text-lg font-semibold text-color-foreground hover:text-color-link">
               {category.categoryName}
             </h3>
           </Link>

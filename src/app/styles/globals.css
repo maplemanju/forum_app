@@ -20,10 +20,11 @@
   --color-neutral-hover: theme('colors.neutral.300');
   --color-accent: theme('colors.green.500');
   --color-accent-hover: theme('colors.green.600');
+  --color-accent-light: theme('colors.green.50');
   --color-overlay: rgba(23, 23, 23, 0.5);
   --color-highlight: theme('colors.yellow.100');
   --color-heart: theme('colors.red.500');
-  --color-link: theme('colors.blue.600');
+  --color-link: theme('colors.green.700');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,14 +42,15 @@
     --color-gray-hover: theme('colors.gray.600');
     --color-danger: theme('colors.red.500');
     --color-danger-hover: theme('colors.red.700');
-    --color-neutral: theme('colors.neutral.900');
-    --color-neutral-hover: theme('colors.neutral.800');
+    --color-neutral: theme('colors.neutral.800');
+    --color-neutral-hover: theme('colors.neutral.700');
     --color-accent: theme('colors.green.950');
     --color-accent-hover: theme('colors.green.900');
+    --color-accent-light: rgba(6, 24, 20, 0.5);
     --color-overlay: rgba(23, 23, 23, 0.5);
     --color-highlight: theme('colors.emerald.950');
     --color-heart: theme('colors.red.500');
-    --color-link: theme('colors.blue.400');
+    --color-link: theme('colors.green.400');
   }
 
   * {

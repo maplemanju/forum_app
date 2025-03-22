@@ -32,6 +32,7 @@ export default {
         'color-neutral-hover': 'var(--color-neutral-hover)',
         'color-accent': 'var(--color-accent)',
         'color-accent-hover': 'var(--color-accent-hover)',
+        'color-accent-light': 'var(--color-accent-light)',
         'color-overlay': 'var(--color-overlay)',
         'color-highlight': 'var(--color-highlight)',
         'color-heart': 'var(--color-heart)',

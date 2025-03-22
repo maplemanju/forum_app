@@ -26,7 +26,7 @@ type UserInfoCardProps = {
 export const UserInfoCard = ({ user }: UserInfoCardProps) => {
   return (
     <div
-      className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-color-background-secondary rounded-md
+      className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-color-accent-light rounded-md
     md:flex-col md:w-[200px]`}
     >
       {/* Avatar */}
