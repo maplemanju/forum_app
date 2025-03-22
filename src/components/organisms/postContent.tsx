@@ -15,6 +15,7 @@ import { mdxSerializer } from '@/utils/mdxSerializer'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
+import { UserInfoCard } from '../molecules/userInfoCard'
 
 type PostProps = {
   post?: PostType
@@ -52,7 +53,7 @@ export const PostContent = ({ post }: PostProps) => {
         {post.postTitle}
       </h1>
 
-      {/* info bar  */}
+      {/* info bar top  */}
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <div>
           <Button
@@ -73,19 +74,6 @@ export const PostContent = ({ post }: PostProps) => {
             <span>{fromNowShort(post.createdAt)}</span>
           </div>
         </Tooltip>
-        <Button
-          rightIcon="chat"
-          size="small"
-          color="neutral"
-          boxStyle="box"
-          label={`${post._count.comments || 0}`}
-          linkPath={`#comments`}
-        />
-        <VoteButtons
-          postId={post.id}
-          voteCount={post._count.votes || 0}
-          canVote={Boolean(session)}
-        />
       </div>
 
       {/* content  */}
@@ -109,19 +97,48 @@ export const PostContent = ({ post }: PostProps) => {
         )}
       </div>
 
-      {/* updated at  */}
-      {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
+      {/* info bar bottom  */}
+      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <Tooltip
-          text={`Edited at ${dayjs(post.updatedAt).format('YYYY/MM/DD HH:mm')}`}
+          text={`Posted at ${dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}`}
           width="115px"
           className="text-center"
         >
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <span className="material-symbols-rounded text-sm">update</span>
-            <span>{fromNowShort(post.updatedAt)}</span>
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-rounded text-sm">today</span>
+            <span>{fromNowShort(post.createdAt)}</span>
           </div>
         </Tooltip>
-      )}
+        {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
+          <Tooltip
+            text={`Edited at ${dayjs(post.updatedAt).format(
+              'YYYY/MM/DD HH:mm'
+            )}`}
+            width="115px"
+            className="text-center"
+          >
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <span className="material-symbols-rounded text-sm">update</span>
+              <span>{fromNowShort(post.updatedAt)}</span>
+            </div>
+          </Tooltip>
+        )}
+      </div>
+      <div className="flex items-center gap-2 mt-4">
+        <Button
+          rightIcon="chat"
+          size="small"
+          color="neutral"
+          boxStyle="box"
+          label={`${post._count.comments || 0}`}
+          linkPath={`#comments`}
+        />
+        <VoteButtons
+          postId={post.id}
+          voteCount={post._count.votes || 0}
+          canVote={Boolean(session)}
+        />
+      </div>
 
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags.join('') && (
@@ -130,6 +147,11 @@ export const PostContent = ({ post }: PostProps) => {
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>
       )}
+
+      {/* User Info - Full card for main comments */}
+      <div className="mt-4">
+        <UserInfoCard user={post.createdUser} fullWidth={true} />
+      </div>
     </div>
   )
 }

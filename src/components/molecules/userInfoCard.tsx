@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Tooltip from '../atoms/tooltip'
 
 type UserInfoCardProps = {
@@ -21,13 +21,18 @@ type UserInfoCardProps = {
       receivedLikes: number
     }
   }
+  fullWidth?: boolean
 }
 
-export const UserInfoCard = ({ user }: UserInfoCardProps) => {
+export const UserInfoCard = ({
+  user,
+  fullWidth = false,
+}: UserInfoCardProps) => {
   return (
     <div
       className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-color-accent-light rounded-md
     md:flex-col md:w-[200px]`}
+      style={{ width: fullWidth ? '100%' : undefined }}
     >
       {/* Avatar */}
       <div className="w-16 h-16 rounded-full bg-color-border-secondary overflow-hidden">
