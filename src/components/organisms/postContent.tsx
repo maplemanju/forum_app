@@ -46,7 +46,7 @@ export const PostContent = ({ post }: PostProps) => {
     return <div>Post not found</div>
   }
   return (
-    <div className="p-6 rounded-lg bg-color-background-secondary">
+    <div className="p-6 rounded-lg bg-background-secondary">
       {/* title  */}
 
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">

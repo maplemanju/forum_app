@@ -113,7 +113,7 @@ export default function CategoryEdit({
             <div className="mb-4">
               <label
                 htmlFor="parentCategory"
-                className="block text-sm font-medium text-color-subtext mb-1"
+                className="block text-sm font-medium text-subtext mb-1"
               >
                 Parent Category
               </label>
@@ -122,7 +122,7 @@ export default function CategoryEdit({
                 type="text"
                 id="parentCategory"
                 defaultValue={parentCategory.categoryName}
-                className="w-full px-3 py-2 border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-md focus:ring-2 focus:ring-blue-500"
                 // required
                 disabled
                 readOnly
@@ -133,7 +133,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="categoryName"
-            className="block text-sm font-medium text-color-subtext mb-1"
+            className="block text-sm font-medium text-subtext mb-1"
           >
             Name
           </label>
@@ -143,7 +143,7 @@ export default function CategoryEdit({
             id="categoryName"
             name="categoryName"
             defaultValue={formState.data?.categoryName}
-            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-2 focus:ring-blue-500"
             // required
           />
         </div>
@@ -151,7 +151,7 @@ export default function CategoryEdit({
         <div className="mb-4">
           <label
             htmlFor="slug"
-            className="block text-sm font-medium text-color-subtext mb-1"
+            className="block text-sm font-medium text-subtext mb-1"
           >
             Slug
           </label>
@@ -160,13 +160,13 @@ export default function CategoryEdit({
             id="slug"
             name="slug"
             defaultValue={formState.data?.slug}
-            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
         <div className="mb-6">
-          <div className="block text-sm font-medium text-color-subtext mb-1">
+          <div className="block text-sm font-medium text-subtext mb-1">
             Description
           </div>
           <TextEditor

@@ -13,13 +13,10 @@ export const CategoryListMinimal = ({
 }: Props) => {
   const renderCategory = (category: CategoryType) => {
     return (
-      <div
-        key={category.id}
-        className="p-2 border-b border-color-border-secondary"
-      >
+      <div key={category.id} className="p-2 border-b border-border-secondary">
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-color-foreground">{category.categoryName}</h3>
+            <h3 className="text-foreground">{category.categoryName}</h3>
           </Link>
         </div>
       </div>

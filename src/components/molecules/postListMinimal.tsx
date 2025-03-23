@@ -22,7 +22,7 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
   const { data: session } = useSession()
 
   if (!posts || posts.length === 0) {
-    return <div className="text-color-subtext italic">No posts found</div>
+    return <div className="text-subtext italic">No posts found</div>
   }
 
   return (
@@ -32,19 +32,19 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
         {posts.map((post: PostType) => (
           <li
             key={post.id}
-            className="p-2 text-sm border-b border-color-border-secondary last:border-b-0"
+            className="p-2 text-sm border-b border-border-secondary last:border-b-0"
           >
             {/* category  */}
-            <div className="text-color-subtext text-xs">
+            <div className="text-subtext text-xs">
               {post.category.categoryName}
             </div>
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <div className="text-color-foreground hover:text-color-link">
+              <div className="text-foreground hover:text-link">
                 {post.postTitle}
               </div>
             </Link>
-            <div className="flex items-center text-sm text-color-subtext gap-2 flex-wrap text-xs">
+            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap text-xs">
               <Button
                 size="xsmall"
                 color="fade"

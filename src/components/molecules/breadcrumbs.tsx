@@ -48,7 +48,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
           <>
             <Link
               href={previousPage.href || '/'}
-              className="flex items-center text-color-subtext hover:text-color-link"
+              className="flex items-center text-subtext hover:text-link"
             >
               <span className="material-symbols-rounded">
                 {previousPage.icon || 'arrow_back'}
@@ -57,12 +57,12 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
                 <span className="ml-1 text-sm">{previousPage.name}</span>
               )}
             </Link>
-            <span className="material-symbols-rounded text-color-subtext">
+            <span className="material-symbols-rounded text-subtext">
               chevron_right
             </span>
           </>
         )}
-        <span className="text-sm text-color-foreground font-medium">
+        <span className="text-sm text-foreground font-medium">
           {currentPage.name}
         </span>
       </div>

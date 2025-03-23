@@ -99,14 +99,14 @@ const CommentList: React.FC<CommentsProps> = ({
         )}
       </div>
       {optimisticComments.length === 0 ? (
-        <div className="p-4 text-color-subtext">No comments yet</div>
+        <div className="p-4 text-subtext">No comments yet</div>
       ) : (
         optimisticComments.map((comment) => {
           return (
             <div
               key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
-              className={`p-4 shadow-sm transition-colors duration-300 border-b border-color-border-secondary ${
-                comment.isNewComment ? 'bg-color-highlight' : ''
+              className={`p-4 shadow-sm transition-colors duration-300 border-b border-border-secondary ${
+                comment.isNewComment ? 'bg-highlight' : ''
               }`}
             >
               <CommentContent comment={comment} postId={postId} />

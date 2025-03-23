@@ -19,13 +19,13 @@ export default function Modal({ open, onClose, children }: Props) {
   return createPortal(
     <div className="fixed inset-0 z-10" role="dialog" aria-modal="true">
       {/** overlay */}
-      <div className="fixed inset-0 bg-color-overlay" aria-hidden="true"></div>
+      <div className="fixed inset-0 bg-overlay" aria-hidden="true"></div>
       {/** modal */}
       <div
         className="fixed inset-0 flex items-center justify-center"
         onClick={handleOverlayClick}
       >
-        <div className="w-full max-w-lg rounded-lg shadow-lg p-6 bg-color-background-tertiary">
+        <div className="w-full max-w-lg rounded-lg shadow-lg p-6 bg-background-tertiary">
           {children}
         </div>
       </div>

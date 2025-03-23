@@ -74,8 +74,8 @@ export const ReplyList = ({
           <div
             key={reply.id || `optimistic-child-comment-${crypto.randomUUID()}`}
             className={`mt-2 p-2 ${
-              reply.isNewComment ? 'mt-2 bg-color-highlight rounded-lg' : ''
-            } transition-colors duration-400 border-b border-color-border-secondary last:border-b-0`}
+              reply.isNewComment ? 'mt-2 bg-highlight rounded-lg' : ''
+            } transition-colors duration-400 border-b border-border-secondary last:border-b-0`}
           >
             <ReplyContent comment={reply} postId={parentPostId} />
           </div>

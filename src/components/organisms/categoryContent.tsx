@@ -16,7 +16,7 @@ const CategoryContent: React.FC<CategoryContentProps> = ({
   mdxSource,
 }) => {
   return (
-    <div className="w-full shadow-sm p-6 mb-6 bg-color-background-secondary">
+    <div className="w-full shadow-sm p-6 mb-6 bg-background-secondary">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
         {category?.categoryName}
       </h1>

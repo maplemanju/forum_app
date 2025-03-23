@@ -128,7 +128,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                 </div>
 
                 {/* info bar  */}
-                <div className="flex items-center gap-2 text-[12px] text-color-subtext mt-2">
+                <div className="flex items-center gap-2 text-[12px] text-subtext mt-2">
                   {/* Show user info button only on mobile */}
                   <Tooltip
                     text={`Posted at ${dayjs(commentState.createdAt).format(
@@ -187,7 +187,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                 </div>
 
                 {/* action bar  */}
-                <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
+                <div className="flex items-center text-[12px] text-subtext mt-2 gap-2">
                   {commentState._count?.childComments != null &&
                     commentState._count?.childComments > 0 && (
                       <button onClick={openRepliesLink}>

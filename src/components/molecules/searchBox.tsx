@@ -26,7 +26,7 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
         defaultValue={keyword}
         placeholder="Search..."
         list="tag-suggestions"
-        className="px-4 py-2 bg-color-background border rounded-lg flex-grow border-color-border focus:ring-color-border focus:ring-2"
+        className="px-4 py-2 bg-background border rounded-lg flex-grow border-border focus:ring-border focus:ring-2"
       />
       <datalist id="tag-suggestions">
         {tags?.map((tag) => (

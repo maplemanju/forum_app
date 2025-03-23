@@ -20,16 +20,16 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
     return (
       <div
         key={category.id}
-        className="p-2 flex flex-column gap-2 justify-between border-b border-color-border-secondary"
+        className="p-2 flex flex-column gap-2 justify-between border-b border-border-secondary"
       >
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-lg font-semibold text-color-foreground hover:text-color-link">
+            <h3 className="text-lg font-semibold text-foreground hover:text-link">
               {category.categoryName}
             </h3>
           </Link>
 
-          <p className="text-color-subtext text-sm line-clamp-1">
+          <p className="text-subtext text-sm line-clamp-1">
             {stripMarkdown(category.categoryDescription ?? '', 180)}
           </p>
         </div>

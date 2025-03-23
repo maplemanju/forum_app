@@ -30,12 +30,12 @@ export const UserInfoCard = ({
 }: UserInfoCardProps) => {
   return (
     <div
-      className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-color-accent-light rounded-md
+      className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-accent-light rounded-md
     md:flex-col md:w-[200px]`}
       style={{ width: fullWidth ? '100%' : undefined }}
     >
       {/* Avatar */}
-      <div className="w-16 h-16 rounded-full bg-color-border-secondary overflow-hidden">
+      <div className="w-16 h-16 rounded-full bg-border-secondary overflow-hidden">
         {/* <Image
           src={user.userInfo.avatar}
           alt={user.userInfo?.displayName || 'User'}
@@ -43,24 +43,24 @@ export const UserInfoCard = ({
           height={64}
           className="w-full h-full object-cover"
         /> */}
-        <div className="w-full h-full flex items-center justify-center text-color-subtext">
+        <div className="w-full h-full flex items-center justify-center text-subtext">
           <span className="material-symbols-rounded !text-4xl">person</span>
         </div>
       </div>
 
       <div className="flex flex-col md:items-center gap-1">
         {/* User Name */}
-        <div className="font-medium text-color-foreground md:mb-1">
+        <div className="font-medium text-foreground md:mb-1">
           {user?.userInfo?.displayName || 'Unknown User'}
         </div>
 
         {/* Join Date */}
-        <div className="text-xs text-color-subtext md:mb-2">
+        <div className="text-xs text-subtext md:mb-2">
           Joined {dayjs(user?.createdAt).format('MMM YYYY')}
         </div>
 
         {/* Stats */}
-        <div className="flex gap-4 text-xs text-color-subtext">
+        <div className="flex gap-4 text-xs text-subtext">
           <div>
             <div className="font-medium flex items-center gap-1">
               <Tooltip
@@ -105,7 +105,7 @@ export const UserInfoCard = ({
 
         {/* Bio */}
         {/* {user?.userInfo?.bio && (
-        <div className="mt-2 text-xs text-color-subtext text-center line-clamp-2">
+        <div className="mt-2 text-xs text-subtext text-center line-clamp-2">
           {user.userInfo.bio}
         </div>
       )} */}

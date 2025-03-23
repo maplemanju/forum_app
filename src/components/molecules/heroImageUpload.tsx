@@ -68,7 +68,7 @@ export const HeroImageUpload = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {error && <div className="text-color-danger text-sm">{error}</div>}
+      {error && <div className="text-danger text-sm">{error}</div>}
       {preview ? (
         <div className="relative">
           <div className="relative max-w-4xl mx-auto">
@@ -83,7 +83,7 @@ export const HeroImageUpload = ({
           </div>
           <div className="absolute top-2 right-2 flex gap-2">
             <div
-              className="material-symbols-rounded cursor-pointer bg-color-danger rounded-md p-1"
+              className="material-symbols-rounded cursor-pointer bg-danger rounded-md p-1"
               onClick={handleRemove}
             >
               delete
@@ -91,7 +91,7 @@ export const HeroImageUpload = ({
           </div>
         </div>
       ) : (
-        <div className="border-2 border-dashed border-color-border rounded-md p-8 text-center">
+        <div className="border-2 border-dashed border-border rounded-md p-8 text-center">
           <label className="cursor-pointer block">
             <input
               id="heroImage"
@@ -105,7 +105,7 @@ export const HeroImageUpload = ({
               <div className="text-lg font-medium">
                 {isUploading ? 'Uploading...' : 'Upload Hero Image'}
               </div>
-              <div className="text-sm text-color-subtext">
+              <div className="text-sm text-subtext">
                 Drop an image here or click to upload
               </div>
             </div>

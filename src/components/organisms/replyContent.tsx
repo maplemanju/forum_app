@@ -78,7 +78,7 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
           ) : (
             <div className="ml-4">
               {/* info bar  */}
-              <div className="flex items-center gap-2 text-[12px] text-color-subtext">
+              <div className="flex items-center gap-2 text-[12px] text-subtext">
                 <Button
                   size="xsmall"
                   color="fade"
@@ -148,7 +148,7 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
               </div>
 
               {/* action bar  */}
-              <div className="flex items-center text-[12px] text-color-subtext gap-2">
+              <div className="flex items-center text-[12px] text-subtext gap-2">
                 <VoteButtons
                   commentId={comment.id}
                   voteCount={comment._count?.votes || 0}

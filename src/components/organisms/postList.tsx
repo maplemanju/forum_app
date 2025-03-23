@@ -54,7 +54,7 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <div className="text-color-subtext italic px-4">No posts found</div>
+    return <div className="text-subtext italic px-4">No posts found</div>
   }
 
   const sortChangeHandler = (value: string) => {
@@ -73,16 +73,16 @@ export const PostList = ({
         {posts.map((post: PostType, index: number) => (
           <div
             key={`feed-${index}`}
-            className="px-4 py-8 text-sm border-b border-color-border-secondary last:border-b-0 first:pt-2"
+            className="px-4 py-8 text-sm border-b border-border-secondary last:border-b-0 first:pt-2"
           >
             {/* category  */}
             {showCategory && (
-              <div className="flex items-center text-color-subtext mb-2 flex-wrap">
+              <div className="flex items-center text-subtext mb-2 flex-wrap">
                 {post.category.parentCategory && (
                   <>
                     <Link
                       href={`/${post.category.parentCategory.slug}`}
-                      className="hover:text-color-link"
+                      className="hover:text-link"
                     >
                       {post.category.parentCategory.categoryName}
                     </Link>
@@ -93,7 +93,7 @@ export const PostList = ({
                 )}
                 <Link
                   href={`/${post.category.slug}`}
-                  className="hover:text-color-link"
+                  className="hover:text-link"
                 >
                   {post.category.categoryName}
                 </Link>
@@ -101,11 +101,11 @@ export const PostList = ({
             )}
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <h3 className="text-xl font-semibold text-color-foreground hover:text-color-link">
+              <h3 className="text-xl font-semibold text-foreground hover:text-link">
                 {post.postTitle}
               </h3>
             </Link>
-            <div className="flex items-center text-sm text-color-subtext gap-2 flex-wrap">
+            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap">
               <span>
                 <Button
                   size="small"
@@ -155,7 +155,7 @@ export const PostList = ({
 
             {/* info bar  */}
 
-            <div className="flex items-center text-sm text-color-subtext mt-2 gap-2 flex-wrap">
+            <div className="flex items-center text-sm text-subtext mt-2 gap-2 flex-wrap">
               <Button
                 rightIcon="chat"
                 size="small"
@@ -180,8 +180,8 @@ export const PostList = ({
           className="h-[80px] flex items-center justify-center"
         >
           {isLoading && (
-            <div className="flex items-center gap-2 text-color-subtext">
-              <div className="w-5 h-5 border-2 border-color-subtext border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex items-center gap-2 text-subtext">
+              <div className="w-5 h-5 border-2 border-subtext border-t-transparent rounded-full animate-spin"></div>
               <span>Loading more posts</span>
             </div>
           )}

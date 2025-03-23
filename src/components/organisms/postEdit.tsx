@@ -122,7 +122,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             type="text"
             name="title"
             defaultValue={formState.data?.postTitle || ''}
-            className="w-full px-3 py-2 border border-color-border rounded-md bg-color-background focus:ring-color-border focus:ring-2"
+            className="w-full px-3 py-2 border border-border rounded-md bg-background focus:ring-border focus:ring-2"
             required
           />
         </div>
@@ -138,7 +138,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
               id="category"
               type="text"
               name="category"
-              className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-2 focus:ring-blue-500"
               defaultValue={category.categoryName}
               readOnly
               disabled
@@ -176,7 +176,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
                 .map((tag) => `#${tag}`)
                 .join(' ') || ''
             }
-            className="w-full px-3 py-2 bg-color-background border border-color-border rounded-md focus:ring-color-border focus:ring-2"
+            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-border focus:ring-2"
           />
         </div>
 

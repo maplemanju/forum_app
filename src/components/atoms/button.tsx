@@ -41,13 +41,12 @@ export const Button = ({
     },
   }
   const colorClass = {
-    primary: 'bg-color-primary hover:bg-color-primary-hover text-white',
-    gray: 'bg-color-gray hover:bg-color-gray-hover text-white',
-    danger: 'bg-color-danger hover:bg-color-danger-hover text-white',
-    neutral:
-      'bg-color-neutral hover:bg-color-neutral-hover text-color-foreground',
-    fade: 'hover:bg-color-neutral-hover text-color-foreground hover:disabled:bg-transparent',
-    accent: 'bg-color-accent hover:bg-color-accent-hover text-white',
+    primary: 'bg-primary hover:bg-primary-hover text-white',
+    gray: 'bg-gray hover:bg-gray-hover text-white',
+    danger: 'bg-danger hover:bg-danger-hover text-white',
+    neutral: 'bg-neutral hover:bg-neutral-hover text-foreground',
+    fade: 'hover:bg-neutral-hover text-foreground hover:disabled:bg-transparent',
+    accent: 'bg-accent hover:bg-accent-hover text-white',
   }
   const iconSize = {
     xsmall: '14px',
@@ -65,7 +64,7 @@ export const Button = ({
         <div
           className={`flex items-center gap-2 leading-none  ${className || ''}`}
         >
-          <div className="w-5 h-5 border-2 border-color-subtext border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-5 h-5 border-2 border-subtext border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div
