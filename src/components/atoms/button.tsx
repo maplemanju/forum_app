@@ -10,6 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   linkPath?: string
   boxStyle?: 'box' | 'rect'
   type?: 'button' | 'submit'
+  isLoading?: boolean
 }
 
 export const Button = ({
@@ -22,6 +23,7 @@ export const Button = ({
   linkPath,
   boxStyle = 'rect',
   type = 'button',
+  isLoading = false,
   ...props
 }: ButtonProps) => {
   const sizeClass = {
@@ -44,7 +46,7 @@ export const Button = ({
     danger: 'bg-color-danger hover:bg-color-danger-hover text-white',
     neutral:
       'bg-color-neutral hover:bg-color-neutral-hover text-color-foreground',
-    fade: 'hover:bg-color-neutral-hover text-color-foreground',
+    fade: 'hover:bg-color-neutral-hover text-color-foreground hover:disabled:bg-transparent',
     accent: 'bg-color-accent hover:bg-color-accent-hover text-white',
   }
   const iconSize = {
@@ -59,27 +61,35 @@ export const Button = ({
       className={`rounded-md ${colorClass[color]} ${sizeClass[boxStyle][size]}`}
       {...props}
     >
-      <div
-        className={`flex items-center gap-2 leading-none  ${className || ''}`}
-      >
-        {leftIcon && (
-          <span
-            className={`material-symbols-rounded`}
-            style={{ fontSize: iconSize[size] }}
-          >
-            {leftIcon}
-          </span>
-        )}
-        {label && <span>{label}</span>}
-        {rightIcon && (
-          <span
-            className={`material-symbols-rounded`}
-            style={{ fontSize: iconSize[size] }}
-          >
-            {rightIcon}
-          </span>
-        )}
-      </div>
+      {isLoading ? (
+        <div
+          className={`flex items-center gap-2 leading-none  ${className || ''}`}
+        >
+          <div className="w-5 h-5 border-2 border-color-subtext border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <div
+          className={`flex items-center gap-2 leading-none  ${className || ''}`}
+        >
+          {leftIcon && (
+            <span
+              className={`material-symbols-rounded`}
+              style={{ fontSize: iconSize[size] }}
+            >
+              {leftIcon}
+            </span>
+          )}
+          {label && <span>{label}</span>}
+          {rightIcon && (
+            <span
+              className={`material-symbols-rounded`}
+              style={{ fontSize: iconSize[size] }}
+            >
+              {rightIcon}
+            </span>
+          )}
+        </div>
+      )}
     </button>
   )
 

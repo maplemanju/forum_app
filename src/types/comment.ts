@@ -13,7 +13,28 @@ export type CommentType = Prisma.CommentsGetPayload<{
     isDeleted: true
   }
   include: {
-    childComments: true
+    // childComments: true
+    createdUser: {
+      include: {
+        userInfo: true
+      }
+    }
+    _count: {
+      select: {
+        votes: true
+        childComments: true
+      }
+    }
+    votes: {
+      select: {
+        vote: true
+      }
+    }
+  }
+}>
+
+export type ReplyType = Prisma.CommentsGetPayload<{
+  include: {
     createdUser: {
       include: {
         userInfo: true

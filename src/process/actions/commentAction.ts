@@ -7,13 +7,16 @@ import commentRepository, {
   CreateComment,
   DeleteComment,
   UpdateComment,
+  CommentStats,
+  GetById,
+  GetByCommentId,
 } from '../repositories/commentRepository'
-import { CommentType } from '@/types/comment'
+import { CommentType, ReplyType } from '@/types/comment'
 import { ResponseType, ApplicationError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
 
 export const getCommentsByPostId = async (
-  args: GetByPostId
+  args: GetByPostId & CommentStats
 ): Promise<ResponseType<CommentType[]>> => {
   try {
     const response = await commentRepository.getByPostId(args)
@@ -26,6 +29,23 @@ export const getCommentsByPostId = async (
     const error = err as Error
     console.error('Error getting comments by post id', error?.message)
     throw new ApplicationError('Error getting comments by post id')
+  }
+}
+
+export const getRepliesByCommentId = async (
+  args: GetByCommentId & CommentStats
+): Promise<ResponseType<ReplyType[]>> => {
+  try {
+    const response = await commentRepository.getRepliesByCommentId(args)
+    console.log('getRepliesByCommentId')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting replies by comment id', error?.message)
+    throw new ApplicationError('Error getting replies by comment id')
   }
 }
 

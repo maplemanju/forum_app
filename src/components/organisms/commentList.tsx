@@ -7,18 +7,29 @@ import { CommentEdit } from './commentEdit'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
+import { useCommentsPaging } from '@/hooks/useCommentsPaging'
 
 interface CommentsProps {
   comments?: CommentType[]
   postId?: number
+  commentCount: number
 }
 
-const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
+const CommentList: React.FC<CommentsProps> = ({
+  comments,
+  postId,
+  commentCount,
+}) => {
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
   const [openAddComments, setOpenAddComments] = useState(false)
-  const [commentsState, setCommentsState] =
-    useState<Partial<CommentType & { isNewComment: boolean }>[]>(comments)
+  const [commentsState, setCommentsState] = useState<
+    Partial<CommentType & { isNewComment: boolean }>[]
+  >(comments ?? [])
+
+  const { hasMoreOld, hasMoreNew, handleLoadMore } = useCommentsPaging({
+    commentCount: commentCount,
+  })
 
   useEffect(() => {
     setCommentsState(comments ?? [])
@@ -85,6 +96,46 @@ const CommentList: React.FC<CommentsProps> = ({ comments = [], postId }) => {
           )
         })
       )}
+
+      <div className="flex items-center justify-between gap-4 mt-4">
+        {/* Jump to Oldest + Previous */}
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => handleLoadMore('oldest')}
+            color="fade"
+            leftIcon="first_page"
+            disabled={!hasMoreOld}
+            aria-label="Jump to oldest comments"
+            // className="!p-2"
+          />
+          <Button
+            onClick={() => handleLoadMore('previous')}
+            label="Previous"
+            color="fade"
+            leftIcon="arrow_back_ios"
+            disabled={!hasMoreOld}
+          />
+        </div>
+
+        {/* Next + Jump to Latest */}
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => handleLoadMore('next')}
+            label="Next"
+            color="fade"
+            rightIcon="arrow_forward_ios"
+            disabled={!hasMoreNew}
+          />
+          <Button
+            onClick={() => handleLoadMore('latest')}
+            color="fade"
+            rightIcon="last_page"
+            disabled={!hasMoreNew}
+            aria-label="Jump to latest comments"
+            // className="!p-2"
+          />
+        </div>
+      </div>
     </div>
   )
 }

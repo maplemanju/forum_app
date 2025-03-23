@@ -172,12 +172,12 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
 
                 {/* action bar  */}
                 <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
-                  {comment.childComments &&
-                    comment.childComments.length > 0 && (
+                  {comment._count?.childComments != null &&
+                    comment._count?.childComments > 0 && (
                       <button onClick={openRepliesLink}>
                         {openReplies
                           ? 'Hide replies'
-                          : `Show replies (${comment.childComments?.length})`}
+                          : `Show replies (${comment._count?.childComments})`}
                       </button>
                     )}
                   {session && onReply && (
@@ -201,15 +201,13 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
 
                 {/* Replies - Moved inside the comment content area */}
                 {openReplies && postId && comment.id && (
-                  <div className="mt-4 pl-4">
-                    <ReplyList
-                      replies={comment.childComments ?? []}
-                      openReply={openReply}
-                      setOpenReply={setOpenReply}
-                      parentPostId={postId}
-                      parentCommentId={comment.id}
-                    />
-                  </div>
+                  <ReplyList
+                    openReply={openReply}
+                    setOpenReply={setOpenReply}
+                    parentPostId={postId}
+                    parentCommentId={comment.id}
+                    closeReplies={() => setOpenReplies(false)}
+                  />
                 )}
               </div>
             )}

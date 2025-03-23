@@ -1,4 +1,4 @@
-import { CommentType } from '@/types/comment'
+import { CommentType, ReplyType } from '@/types/comment'
 import Tooltip from '../atoms/tooltip'
 import { useEffect, useState } from 'react'
 import { CommentEdit } from './commentEdit'
@@ -17,14 +17,13 @@ import { CommentSkeleton } from '../molecules/skeletons/commentSkeleton'
 dayjs.extend(relativeTime)
 
 interface ReplyContentProps {
-  comment: Partial<CommentType>
+  comment: Partial<ReplyType>
   postId?: number | null
 }
 
 const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
   const { data: session } = useSession()
-  const [commentState, setCommentState] =
-    useState<Partial<CommentType>>(comment)
+  const [commentState, setCommentState] = useState<Partial<ReplyType>>(comment)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [serializedContent, setSerializedContent] =
     useState<MDXRemoteSerializeResult | null>(null)
@@ -37,7 +36,7 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
     setIsEditing(!isEditing)
   }
 
-  const editCallback = (editedComment: Partial<CommentType>) => {
+  const editCallback = (editedComment: Partial<ReplyType>) => {
     // setIsEditing(null)
     if (editedComment.id === comment.id) {
       setCommentState({ ...comment, ...editedComment })
@@ -57,7 +56,7 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ comment, postId }) => {
     serializeContent()
   }, [commentState])
 
-  const renderReply = (comment: Partial<CommentType>) => {
+  const renderReply = (comment: Partial<ReplyType>) => {
     const canEdit =
       session &&
       (session.user.id === comment.createdBy ||

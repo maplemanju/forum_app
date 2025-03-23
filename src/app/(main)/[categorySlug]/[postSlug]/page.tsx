@@ -13,8 +13,10 @@ import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 
 export default async function PostPage({
+  searchParams,
   params,
 }: {
+  searchParams: Promise<{ page: string }>
   params: Promise<{ categorySlug: string; postSlug: string }>
 }) {
   const postSlug = (await params)?.postSlug
@@ -23,7 +25,12 @@ export default async function PostPage({
     return notFound()
   }
   const postId = Number(postResponse.data.id)
-  const commentsResponse = await getCommentsByPostId({ postId: postId })
+  const page = (await searchParams)?.page ?? '0'
+  const commentsResponse = await getCommentsByPostId({
+    postId: postId,
+    take: Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE),
+    skip: Number(page) * Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE),
+  })
   const categorySlug = (await params)?.categorySlug
   const categoryResponse = await getCategory({ slug: categorySlug })
 
@@ -40,7 +47,11 @@ export default async function PostPage({
         />
         <PostToolbox post={postResponse.data} />
         <PostContent post={postResponse.data} />
-        <CommentList comments={commentsResponse.data} postId={postId} />
+        <CommentList
+          comments={commentsResponse.data}
+          postId={postId}
+          commentCount={postResponse.data._count.comments}
+        />
       </Content>
       <Suspense fallback={<SidebarSkeleton />}>
         <Sidebar

@@ -6,6 +6,9 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 export type GetByPostId = {
   postId: number
 }
+export type GetByCommentId = {
+  commentId: number
+}
 export type GetById = {
   id: number
 }
@@ -21,8 +24,14 @@ export type UpdateComment = {
   id: number
   commentContent: string
 }
+export type CommentStats = {
+  take?: number
+  skip?: number
+  // sort?: 'recent' | 'popular' | 'rated'
+}
+
 export const commentRepository = {
-  getByPostId: async (args: GetByPostId) => {
+  getByPostId: async (args: GetByPostId & CommentStats) => {
     const session = await getServerSession(authOptions)
     const comments = await prisma.comments.findMany({
       where: {
@@ -31,37 +40,6 @@ export const commentRepository = {
         isDeleted: false,
       },
       include: {
-        childComments: {
-          where: {
-            isDeleted: false,
-          },
-          include: {
-            createdUser: {
-              include: {
-                userInfo: true,
-              },
-            },
-            _count: {
-              select: {
-                votes: {
-                  where: {
-                    vote: 1,
-                  },
-                },
-              },
-            },
-            votes: session
-              ? {
-                  where: {
-                    userId: Number(session.user.id),
-                  },
-                  select: {
-                    vote: true,
-                  },
-                }
-              : undefined,
-          },
-        },
         createdUser: {
           include: {
             userInfo: true,
@@ -72,6 +50,11 @@ export const commentRepository = {
             votes: {
               where: {
                 vote: 1,
+              },
+            },
+            childComments: {
+              where: {
+                isDeleted: false,
               },
             },
           },
@@ -87,6 +70,11 @@ export const commentRepository = {
             }
           : undefined,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: args.take,
+      skip: args.skip,
     })
     return comments
   },
@@ -158,6 +146,48 @@ export const commentRepository = {
       },
     })
     return comment
+  },
+
+  getRepliesByCommentId: async (args: GetByCommentId & CommentStats) => {
+    const session = await getServerSession(authOptions)
+    const comments = await prisma.comments.findMany({
+      where: {
+        parentCommentId: args.commentId,
+        isDeleted: false,
+      },
+      include: {
+        createdUser: {
+          include: {
+            userInfo: true,
+          },
+        },
+        _count: {
+          select: {
+            votes: {
+              where: {
+                vote: 1,
+              },
+            },
+          },
+        },
+        votes: session
+          ? {
+              where: {
+                userId: Number(session.user.id),
+              },
+              select: {
+                vote: true,
+              },
+            }
+          : undefined,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: args.take,
+      skip: args.skip,
+    })
+    return comments
   },
 }
 

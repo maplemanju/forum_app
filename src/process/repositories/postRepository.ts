@@ -191,7 +191,12 @@ export const postRepository = {
       include: {
         _count: {
           select: {
-            comments: true,
+            comments: {
+              where: {
+                isDeleted: false,
+                parentCommentId: null,
+              },
+            },
             votes: {
               where: {
                 vote: 1,
