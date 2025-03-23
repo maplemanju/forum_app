@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body
-        className={`${notoSansJP.variable} ${notoSans.variable} font-sans antialiased`}
+        className={`${notoSansJP.variable} ${notoSans.variable} font-noto antialiased`}
       >
         <Wrapper>{children}</Wrapper>
       </body>

@@ -138,7 +138,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                     className="text-center"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-rounded text-sm">
+                      <span className="material-symbols-rounded !text-sm">
                         today
                       </span>
                       <span>
@@ -160,7 +160,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                       className="text-center"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="material-symbols-rounded text-sm">
+                        <span className="material-symbols-rounded !text-sm">
                           update
                         </span>
                         <span>

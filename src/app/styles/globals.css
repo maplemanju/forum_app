@@ -1,56 +1,86 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  /* Tailwind config custom variables */
+  --color-color-background: var(--color-background);
+  --color-color-background-secondary: var(--color-background-secondary);
+  --color-color-background-tertiary: var(--color-background-tertiary);
+  --color-color-foreground: var(--color-foreground);
+  --color-color-subtext: var(--color-subtext);
+  --color-color-border: var(--color-border);
+  --color-color-border-secondary: var(--color-border-secondary);
+  --color-color-primary: var(--color-primary);
+  --color-color-primary-hover: var(--color-primary-hover);
+  --color-color-gray: var(--color-gray);
+  --color-color-gray-hover: var(--color-gray-hover);
+  --color-color-danger: var(--color-danger);
+  --color-color-danger-hover: var(--color-danger-hover);
+  --color-color-neutral: var(--color-neutral);
+  --color-color-neutral-hover: var(--color-neutral-hover);
+  --color-color-accent: var(--color-accent);
+  --color-color-accent-hover: var(--color-accent-hover);
+  --color-color-accent-light: var(--color-accent-light);
+  --color-color-overlay: var(--color-overlay);
+  --color-color-highlight: var(--color-highlight);
+  --color-color-heart: var(--color-heart);
+  --color-color-link: var(--color-link);
+
+  --font-noto: 'Noto Sans', 'Noto Sans Fallback', 'Noto Sans JP',
+    'Noto Sans JP Fallback', sans-serif;
+}
 
 :root {
-  --color-background: theme('colors.neutral.50');
-  --color-background-secondary: theme('colors.neutral.100');
-  --color-background-tertiary: theme('colors.neutral.200');
-  --color-foreground: theme('colors.neutral.900');
-  --color-subtext: theme('colors.neutral.600');
-  --color-border: theme('colors.neutral.200');
+  /* Theme variables */
+  --color-background: var(--color-neutral-50);
+  --color-background-secondary: var(--color-neutral-100);
+  --color-background-tertiary: var(--color-neutral-200);
+  --color-foreground: var(--color-neutral-900);
+  --color-subtext: var(--color-neutral-600);
+  --color-border: var(--color-neutral-200);
   --color-border-secondary: rgba(0, 0, 0, 0.1);
-  --color-primary: theme('colors.emerald.600');
-  --color-primary-hover: theme('colors.emerald.700');
-  --color-gray: theme('colors.gray.500');
-  --color-gray-hover: theme('colors.gray.600');
-  --color-danger: theme('colors.red.500');
-  --color-danger-hover: theme('colors.red.700');
-  --color-neutral: theme('colors.neutral.200');
-  --color-neutral-hover: theme('colors.neutral.300');
-  --color-accent: theme('colors.green.500');
-  --color-accent-hover: theme('colors.green.600');
-  --color-accent-light: theme('colors.green.50');
+  --color-primary: var(--color-emerald-600);
+  --color-primary-hover: var(--color-emerald-700);
+  --color-gray: var(--color-gray-500);
+  --color-gray-hover: var(--color-gray-600);
+  --color-danger: var(--color-red-500);
+  --color-danger-hover: var(--color-red-700);
+  --color-neutral: var(--color-neutral-200);
+  --color-neutral-hover: var(--color-neutral-300);
+  --color-accent: var(--color-green-500);
+  --color-accent-hover: var(--color-green-600);
+  --color-accent-light: var(--color-green-50);
   --color-overlay: rgba(23, 23, 23, 0.5);
-  --color-highlight: theme('colors.yellow.100');
-  --color-heart: theme('colors.red.500');
-  --color-link: theme('colors.green.700');
+  --color-highlight: var(--color-yellow-100);
+  --color-heart: var(--color-red-500);
+  --color-link: var(--color-green-700);
+
+  --font-display: var(--font-noto-sans), var(--font-noto-sans-jp);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: theme('colors.neutral.950');
-    --color-background-secondary: theme('colors.neutral.900');
-    --color-background-tertiary: theme('colors.neutral.800');
-    --color-foreground: theme('colors.neutral.50');
-    --color-subtext: theme('colors.neutral.400');
-    --color-border: theme('colors.neutral.800');
+    --color-background: var(--color-neutral-950);
+    --color-background-secondary: var(--color-neutral-900);
+    --color-background-tertiary: var(--color-neutral-800);
+    --color-foreground: var(--color-neutral-50);
+    --color-subtext: var(--color-neutral-400);
+    --color-border: var(--color-neutral-800);
     --color-border-secondary: rgba(255, 255, 255, 0.1);
-    --color-primary: theme('colors.emerald.800');
-    --color-primary-hover: theme('colors.emerald.700');
-    --color-gray: theme('colors.gray.500');
-    --color-gray-hover: theme('colors.gray.600');
-    --color-danger: theme('colors.red.500');
-    --color-danger-hover: theme('colors.red.700');
-    --color-neutral: theme('colors.neutral.800');
-    --color-neutral-hover: theme('colors.neutral.700');
-    --color-accent: theme('colors.green.950');
-    --color-accent-hover: theme('colors.green.900');
+    --color-primary: var(--color-emerald-800);
+    --color-primary-hover: var(--color-emerald-700);
+    --color-gray: var(--color-gray-500);
+    --color-gray-hover: var(--color-gray-600);
+    --color-danger: var(--color-red-500);
+    --color-danger-hover: var(--color-red-700);
+    --color-neutral: var(--color-neutral-800);
+    --color-neutral-hover: var(--color-neutral-700);
+    --color-accent: var(--color-green-950);
+    --color-accent-hover: var(--color-green-900);
     --color-accent-light: rgba(6, 24, 20, 0.5);
     --color-overlay: rgba(23, 23, 23, 0.5);
-    --color-highlight: theme('colors.emerald.950');
-    --color-heart: theme('colors.red.500');
-    --color-link: theme('colors.green.400');
+    --color-highlight: var(--color-emerald-950);
+    --color-heart: var(--color-red-500);
+    --color-link: var(--color-green-400);
   }
 
   * {
@@ -70,7 +100,6 @@
 body {
   color: var(--color-foreground);
   background: var(--color-background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 input,

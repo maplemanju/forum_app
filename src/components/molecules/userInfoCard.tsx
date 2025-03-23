@@ -43,9 +43,9 @@ export const UserInfoCard = ({
           height={64}
           className="w-full h-full object-cover"
         /> */}
-        <span className="material-symbols-rounded text-4xl w-full h-full flex items-center justify-center text-color-subtext">
-          person
-        </span>
+        <div className="w-full h-full flex items-center justify-center text-color-subtext">
+          <span className="material-symbols-rounded !text-4xl">person</span>
+        </div>
       </div>
 
       <div className="flex flex-col md:items-center gap-1">
@@ -62,13 +62,13 @@ export const UserInfoCard = ({
         {/* Stats */}
         <div className="flex gap-4 text-xs text-color-subtext">
           <div>
-            <div className="font-mediu   flex items-center gap-1">
+            <div className="font-medium flex items-center gap-1">
               <Tooltip
                 text={`Post count`}
                 width="115px"
                 className="text-center"
               >
-                <span className="material-symbols-rounded text-sm">
+                <span className="material-symbols-rounded !text-sm">
                   newsmode
                 </span>
               </Tooltip>
@@ -82,7 +82,7 @@ export const UserInfoCard = ({
                 width="115px"
                 className="text-center"
               >
-                <span className="material-symbols-rounded text-sm">chat</span>
+                <span className="material-symbols-rounded !text-sm">chat</span>
               </Tooltip>
               {user?._count?.comments || 0}
             </div>
@@ -94,7 +94,7 @@ export const UserInfoCard = ({
                 width="115px"
                 className="text-center"
               >
-                <span className="material-symbols-rounded text-sm">
+                <span className="material-symbols-rounded !text-sm">
                   favorite
                 </span>
               </Tooltip>
