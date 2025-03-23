@@ -91,6 +91,9 @@
   height: 500px;
   overflow-y: auto;
 }
+textarea.content-editable {
+  background-color: var(--color-background);
+}
 
 .editor-toolbar {
   z-index: 2;

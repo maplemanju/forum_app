@@ -1,6 +1,6 @@
 'use client'
 
-import { CommentType, ReplyType } from '@/types/comment'
+import { ReplyType } from '@/types/comment'
 import { useEffect, useOptimistic, useState } from 'react'
 import CommentEdit from './commentEdit'
 import ReplyContent from './replyContent'
@@ -14,6 +14,7 @@ export const ReplyList = ({
   parentPostId,
   parentCommentId,
   closeReplies,
+  updateRepliesCount,
 }: {
   // replies: Partial<CommentType>[]
   openReply: boolean
@@ -21,14 +22,11 @@ export const ReplyList = ({
   parentPostId: number
   parentCommentId: number
   closeReplies: () => void
+  updateRepliesCount: () => void
 }) => {
   const { replies, isLoading, hasMore, handleLoadMore } = useReplyLoadMore({
     commentId: parentCommentId,
   })
-
-  // useEffect(() => {
-  //   console.log('test')
-  // }, [])
 
   useEffect(() => {
     // console.log('replies', replies)
@@ -58,6 +56,7 @@ export const ReplyList = ({
     } else {
       setRepliesState([newComment, ...repliesState])
     }
+    updateRepliesCount()
   }
 
   return (
@@ -82,26 +81,28 @@ export const ReplyList = ({
             <ReplyContent comment={reply} postId={parentPostId} />
           </div>
         ))}
-        <div className="flex justify-center mt-2">
-          <Button
-            onClick={closeReplies}
-            label="Hide replies"
-            size="small"
-            color="fade"
-            boxStyle="box"
-            leftIcon="expand_less"
-          />
-          <Button
-            onClick={handleLoadMore}
-            label="Load more"
-            size="small"
-            color="fade"
-            boxStyle="box"
-            leftIcon="expand_more"
-            isLoading={isLoading}
-            disabled={!hasMore}
-          />
-        </div>
+        {optimisticReplies.length > 0 && (
+          <div className="flex justify-center mt-2">
+            <Button
+              onClick={closeReplies}
+              label="Hide replies"
+              size="small"
+              color="fade"
+              boxStyle="box"
+              leftIcon="expand_less"
+            />
+            <Button
+              onClick={handleLoadMore}
+              label="Load more"
+              size="small"
+              color="fade"
+              boxStyle="box"
+              leftIcon="expand_more"
+              isLoading={isLoading}
+              disabled={!hasMore}
+            />
+          </div>
+        )}
       </div>
     </>
   )

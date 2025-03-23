@@ -3,15 +3,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const COMMENTS_PER_PAGE = Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE)
 
-type NavigationType = 'previous' | 'next' | 'oldest' | 'latest'
+type NavigationType = 'previous' | 'next' | 'first' | 'last'
 
 export const useCommentsPaging = ({
   commentCount,
 }: {
   commentCount: number
 }) => {
-  const [hasMoreOld, setHasMoreOld] = useState(false)
-  const [hasMoreNew, setHasMoreNew] = useState(false)
+  const [hasMorePrevious, setHasMorePrevious] = useState(false)
+  const [hasMoreNext, setHasMoreNext] = useState(false)
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -21,27 +21,27 @@ export const useCommentsPaging = ({
 
   useEffect(() => {
     // Check if there are older comments
-    setHasMoreOld(currentPage < totalPages - 1)
+    setHasMorePrevious(currentPage > 0)
     // Check if there are newer comments
-    setHasMoreNew(currentPage > 0)
+    setHasMoreNext(currentPage < totalPages - 1)
   }, [totalPages, currentPage])
 
   const handleLoadMore = async (type: NavigationType) => {
     let newPage: number
 
     switch (type) {
-      case 'previous':
-        if (!hasMoreOld) return
+      case 'next':
+        if (!hasMoreNext) return
         newPage = currentPage + 1
         break
-      case 'next':
-        if (!hasMoreNew) return
+      case 'previous':
+        if (!hasMorePrevious) return
         newPage = currentPage - 1
         break
-      case 'oldest':
+      case 'last':
         newPage = totalPages - 1
         break
-      case 'latest':
+      case 'first':
         newPage = 0
         break
       default:
@@ -55,8 +55,8 @@ export const useCommentsPaging = ({
   }
 
   return {
-    hasMoreOld,
-    hasMoreNew,
+    hasMorePrevious,
+    hasMoreNext,
     handleLoadMore,
     currentPage,
     totalPages,

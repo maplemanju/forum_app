@@ -8,18 +8,23 @@ import { useSession } from 'next-auth/react'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import { useCommentsPaging } from '@/hooks/useCommentsPaging'
-
+import { SortSelect } from '../molecules/sortSelect'
+import { useRouter, useSearchParams } from 'next/navigation'
 interface CommentsProps {
   comments?: CommentType[]
   postId?: number
   commentCount: number
+  sort?: 'oldest' | 'newest' | 'popular' | 'rated'
 }
 
 const CommentList: React.FC<CommentsProps> = ({
   comments,
   postId,
   commentCount,
+  sort,
 }) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
   const [openAddComments, setOpenAddComments] = useState(false)
@@ -27,7 +32,7 @@ const CommentList: React.FC<CommentsProps> = ({
     Partial<CommentType & { isNewComment: boolean }>[]
   >(comments ?? [])
 
-  const { hasMoreOld, hasMoreNew, handleLoadMore } = useCommentsPaging({
+  const { hasMorePrevious, hasMoreNext, handleLoadMore } = useCommentsPaging({
     commentCount: commentCount,
   })
 
@@ -57,21 +62,34 @@ const CommentList: React.FC<CommentsProps> = ({
     }
   }
 
+  const sortChangeHandler = (value: string) => {
+    const current = new URLSearchParams(searchParams)
+    current.set('sort', value)
+    router.push(`?${current.toString()}`, { scroll: false })
+  }
   return (
     <div id="comments" className="mt-6">
       <div className="p-4 mb-4">
-        <Button
-          onClick={() => {
-            if (session) {
-              setOpenAddComments(!openAddComments)
-            } else if (!isLoginPopupOpen) {
-              openLoginPopup()
-            }
-          }}
-          label="Add Comment"
-          color="primary"
-          leftIcon="chat"
-        />
+        <div className="divider-label flex items-center justify-between">
+          <Button
+            onClick={() => {
+              if (session) {
+                setOpenAddComments(!openAddComments)
+              } else if (!isLoginPopupOpen) {
+                openLoginPopup()
+              }
+            }}
+            label="Add Comment"
+            color="primary"
+            leftIcon="chat"
+          />
+          <SortSelect
+            onChange={sortChangeHandler}
+            contentType="comment"
+            defaultValue={sort}
+          />
+        </div>
+
         {openAddComments && (
           <CommentEdit
             onCloseEdit={() => setOpenAddComments(false)}
@@ -101,11 +119,11 @@ const CommentList: React.FC<CommentsProps> = ({
         {/* Jump to Oldest + Previous */}
         <div className="flex items-center gap-2">
           <Button
-            onClick={() => handleLoadMore('oldest')}
+            onClick={() => handleLoadMore('first')}
             color="fade"
             leftIcon="first_page"
-            disabled={!hasMoreOld}
-            aria-label="Jump to oldest comments"
+            disabled={!hasMorePrevious}
+            aria-label="Jump to first comments"
             // className="!p-2"
           />
           <Button
@@ -113,7 +131,7 @@ const CommentList: React.FC<CommentsProps> = ({
             label="Previous"
             color="fade"
             leftIcon="arrow_back_ios"
-            disabled={!hasMoreOld}
+            disabled={!hasMorePrevious}
           />
         </div>
 
@@ -124,14 +142,14 @@ const CommentList: React.FC<CommentsProps> = ({
             label="Next"
             color="fade"
             rightIcon="arrow_forward_ios"
-            disabled={!hasMoreNew}
+            disabled={!hasMoreNext}
           />
           <Button
-            onClick={() => handleLoadMore('latest')}
+            onClick={() => handleLoadMore('last')}
             color="fade"
             rightIcon="last_page"
-            disabled={!hasMoreNew}
-            aria-label="Jump to latest comments"
+            disabled={!hasMoreNext}
+            aria-label="Jump to last comments"
             // className="!p-2"
           />
         </div>

@@ -57,8 +57,8 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
 
   const editCallback = (editedComment: Partial<CommentType>) => {
     // setIsEditing(null)
-    if (editedComment.id === comment.id) {
-      setCommentState({ ...comment, ...editedComment })
+    if (editedComment.id === commentState.id) {
+      setCommentState({ ...commentState, ...editedComment })
     }
   }
 
@@ -75,6 +75,23 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
     serializeContent()
   }, [commentState])
 
+  const updateRepliesCount = () => {
+    let counts = structuredClone(commentState._count)
+    if (counts) {
+      counts.childComments = counts.childComments + 1
+    } else {
+      // if new and count is null
+      counts = {
+        childComments: 1,
+        votes: 0,
+      }
+    }
+    setCommentState({
+      ...commentState,
+      _count: counts,
+    })
+  }
+
   const renderComments = (comment: Partial<CommentType>) => {
     const canEdit =
       session &&
@@ -86,7 +103,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
         <div className="md:flex gap-4">
           {/* User Info - Full card for main comments */}
           <div>
-            <UserInfoCard user={comment.createdUser} />
+            <UserInfoCard user={commentState.createdUser} />
           </div>
 
           {/* Comment Content */}
@@ -95,9 +112,9 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
               <CommentEdit
                 onCloseEdit={() => setIsEditing(false)}
                 postId={postId}
-                parentCommentId={comment.parentCommentId}
-                commentContent={comment.commentContent}
-                commentId={comment.id}
+                parentCommentId={commentState.parentCommentId}
+                commentContent={commentState.commentContent}
+                commentId={commentState.id}
                 submitCallback={editCallback}
               />
             ) : (
@@ -115,7 +132,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                 <div className="flex items-center gap-2 text-[12px] text-color-subtext mt-2">
                   {/* Show user info button only on mobile */}
                   <Tooltip
-                    text={`Posted at ${dayjs(comment.createdAt).format(
+                    text={`Posted at ${dayjs(commentState.createdAt).format(
                       'YYYY/MM/DD HH:mm'
                     )}`}
                     width="115px"
@@ -126,18 +143,18 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                         today
                       </span>
                       <span>
-                        {comment.createdAt
-                          ? fromNowShort(comment.createdAt)
+                        {commentState.createdAt
+                          ? fromNowShort(commentState.createdAt)
                           : ''}
                       </span>
                     </div>
                   </Tooltip>
                   {/* updated at  */}
-                  {!dayjs(comment.updatedAt).isSame(
-                    dayjs(comment.createdAt)
+                  {!dayjs(commentState.updatedAt).isSame(
+                    dayjs(commentState.createdAt)
                   ) && (
                     <Tooltip
-                      text={`Edited at ${dayjs(comment.updatedAt).format(
+                      text={`Edited at ${dayjs(commentState.updatedAt).format(
                         'YYYY/MM/DD HH:mm'
                       )}`}
                       width="115px"
@@ -148,8 +165,8 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                           update
                         </span>
                         <span>
-                          {comment.updatedAt
-                            ? fromNowShort(comment.updatedAt)
+                          {commentState.updatedAt
+                            ? fromNowShort(commentState.updatedAt)
                             : ''}
                         </span>
                       </div>
@@ -172,17 +189,19 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
 
                 {/* action bar  */}
                 <div className="flex items-center text-[12px] text-color-subtext mt-2 gap-2">
-                  {comment._count?.childComments != null &&
-                    comment._count?.childComments > 0 && (
+                  {commentState._count?.childComments != null &&
+                    commentState._count?.childComments > 0 && (
                       <button onClick={openRepliesLink}>
                         {openReplies
                           ? 'Hide replies'
-                          : `Show replies (${comment._count?.childComments})`}
+                          : `Show replies (${commentState._count?.childComments})`}
                       </button>
                     )}
                   {session && onReply && (
                     <Button
-                      onClick={() => comment.id && onReply(comment.id)}
+                      onClick={() =>
+                        commentState.id && onReply(commentState.id)
+                      }
                       size="xsmall"
                       color="neutral"
                       boxStyle="box"
@@ -192,21 +211,22 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                     </Button>
                   )}
                   <VoteButtons
-                    commentId={comment.id}
-                    voteCount={comment._count?.votes || 0}
+                    commentId={commentState.id}
+                    voteCount={commentState._count?.votes || 0}
                     canVote={Boolean(session)}
-                    userVotes={comment.votes}
+                    userVotes={commentState.votes}
                   />
                 </div>
 
-                {/* Replies - Moved inside the comment content area */}
-                {openReplies && postId && comment.id && (
+                {/* Replies - Moved inside the commentState content area */}
+                {openReplies && postId && commentState.id && (
                   <ReplyList
                     openReply={openReply}
                     setOpenReply={setOpenReply}
                     parentPostId={postId}
-                    parentCommentId={comment.id}
+                    parentCommentId={commentState.id}
                     closeReplies={() => setOpenReplies(false)}
+                    updateRepliesCount={updateRepliesCount}
                   />
                 )}
               </div>

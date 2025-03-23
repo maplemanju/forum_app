@@ -2,6 +2,7 @@ import prisma from '@/utils/prisma'
 import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { Prisma } from '@prisma/client'
 
 export type GetByPostId = {
   postId: number
@@ -27,12 +28,22 @@ export type UpdateComment = {
 export type CommentStats = {
   take?: number
   skip?: number
-  // sort?: 'recent' | 'popular' | 'rated'
+  sort?: 'oldest' | 'newest' | 'popular' | 'rated'
 }
 
 export const commentRepository = {
   getByPostId: async (args: GetByPostId & CommentStats) => {
     const session = await getServerSession(authOptions)
+    let orderBy: Prisma.CommentsOrderByWithRelationInput[] = []
+    if (args.sort === 'popular') {
+      orderBy = [{ childComments: { _count: 'desc' } }]
+    } else if (args.sort === 'rated') {
+      orderBy = [{ votes: { _count: 'desc' } }]
+    } else if (args.sort === 'newest') {
+      orderBy = [{ createdAt: 'desc' }]
+    } else {
+      orderBy = [{ createdAt: 'asc' }]
+    }
     const comments = await prisma.comments.findMany({
       where: {
         postId: args.postId,
@@ -70,9 +81,7 @@ export const commentRepository = {
             }
           : undefined,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [...orderBy, { createdAt: 'asc' }],
       take: args.take,
       skip: args.skip,
     })
@@ -150,6 +159,15 @@ export const commentRepository = {
 
   getRepliesByCommentId: async (args: GetByCommentId & CommentStats) => {
     const session = await getServerSession(authOptions)
+    let orderBy: Prisma.CommentsOrderByWithRelationInput[] = []
+    if (args.sort === 'rated') {
+      orderBy = [{ votes: { _count: 'desc' } }]
+    } else if (args.sort === 'newest') {
+      orderBy = [{ createdAt: 'desc' }]
+    } else {
+      orderBy = [{ createdAt: 'asc' }]
+    }
+    console.log('args.sort', args.sort)
     const comments = await prisma.comments.findMany({
       where: {
         parentCommentId: args.commentId,
@@ -181,9 +199,7 @@ export const commentRepository = {
             }
           : undefined,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [...orderBy, { createdAt: 'asc' }],
       take: args.take,
       skip: args.skip,
     })
