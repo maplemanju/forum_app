@@ -167,7 +167,6 @@ export const commentRepository = {
     } else {
       orderBy = [{ createdAt: 'asc' }]
     }
-    console.log('args.sort', args.sort)
     const comments = await prisma.comments.findMany({
       where: {
         parentCommentId: args.commentId,

@@ -39,7 +39,6 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
   }, [comment])
 
   const onReply = (parentCommentId: number) => {
-    console.log('reply', parentCommentId, postId)
     setOpenReply(!openReply)
     if (!openReply) {
       setOpenReplies(true)

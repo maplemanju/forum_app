@@ -29,7 +29,6 @@ export const ReplyList = ({
   })
 
   useEffect(() => {
-    // console.log('replies', replies)
     setRepliesState(replies)
   }, [replies])
 

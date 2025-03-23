@@ -133,7 +133,6 @@ export const postRepository = {
     return posts
   },
   getPostsByKeyword: async (args: GetByKeyword & PostStats) => {
-    console.log('getPostsByKeyword', args)
     const keywords = args.keyword.filter((keyword) => !keyword.startsWith('#'))
     const tags = args.keyword
       .filter((keyword) => keyword.startsWith('#'))

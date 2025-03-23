@@ -23,7 +23,7 @@ export const uploadFile = async (file: File): Promise<FileUploadResponse> => {
       }
     }
     const buffer = Buffer.from(await file.arrayBuffer())
-    console.log('buffer', buffer, file)
+    // console.log('buffer', buffer, file)
     const url = await fileUploadRepository.uploadFile({
       file: buffer,
       filename: file.name,

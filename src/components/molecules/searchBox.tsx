@@ -8,7 +8,6 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
   const router = useRouter()
 
   const handleSearch = (prev: string, formData: FormData) => {
-    console.log('handleSearch', formData)
     const searchTerm = formData.get('query')?.toString()
     if (searchTerm) {
       router.push(`/search?q=${encodeURIComponent(searchTerm)}`)

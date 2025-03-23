@@ -61,7 +61,6 @@ export const CommentEdit = ({
     } else {
       response = await createComment(args)
     }
-    console.log('response.data', response.data)
 
     if (response.data) {
       submitCallback?.(response.data, false)
