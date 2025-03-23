@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import '@material-symbols/font-400/rounded.css'
+import { notoSansJP, notoSans } from '@/utils/fonts'
 import Wrapper from '../components/templates/wrapper'
 import '@mdxeditor/editor/style.css'
 import './styles/globals.css'
 import './styles/mdxEditor.scss'
 import './styles/content.scss'
-import { notoSansJP, notoSans } from '@/utils/fonts'
 
 export const metadata: Metadata = {
   title: 'Forum App',
@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body
-        className={`${notoSansJP.variable} ${notoSans.variable} font-noto antialiased`}
+        className={`${notoSansJP.variable} ${notoSans.variable} font-main antialiased`}
       >
         <Wrapper>{children}</Wrapper>
       </body>
