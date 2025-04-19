@@ -12,6 +12,8 @@ import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
 import { Prisma } from '@prisma/client'
 import { sanitizeContent } from '@/utils/domPurifier'
+import { getUserRoles } from './userActions'
+import { ROLES } from '@/utils/consts'
 
 /**
  * Get all top level categories
@@ -73,10 +75,16 @@ export const createCategory = async (
   args: CreateCategoryProps
 ): Promise<UpdateCategoryResponse> => {
   const session = await getServerSession(authOptions)
-  if (!session?.user) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
+
   try {
+    // verify
+    const userRoles = await getUserRoles({ userId: session.user.id })
+    if (!userRoles.includes(ROLES.ADMIN)) {
+      throw new Error('Unauthorized')
+    }
     const sanitizedDescription = sanitizeContent(args.categoryDescription)
     const response = await categoryRepository.createCategory(
       { ...args, categoryDescription: sanitizedDescription },
@@ -113,9 +121,13 @@ export const updateCategory = async (
   args: UpdateCategoryProps
 ): Promise<UpdateCategoryResponse> => {
   const session = await getServerSession(authOptions)
-  if (!session?.user) throw new Error('Unauthorized')
-
+  if (!session?.user?.id) throw new Error('Unauthorized')
   try {
+    // verify
+    const userRoles = await getUserRoles({ userId: session.user.id })
+    if (!userRoles.includes(ROLES.ADMIN)) {
+      throw new Error('Unauthorized')
+    }
     const sanitizedDescription = sanitizeContent(args.categoryDescription)
     const response = await categoryRepository.updateCategory(
       {
@@ -144,9 +156,13 @@ export const deleteCategory = async (
   args: DeleteCategoryProps
 ): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
-  if (!session?.user) throw new Error('Unauthorized')
-
+  if (!session?.user?.id) throw new Error('Unauthorized')
   try {
+    // verify
+    const userRoles = await getUserRoles({ userId: session.user.id })
+    if (!userRoles.includes(ROLES.ADMIN)) {
+      throw new Error('Unauthorized')
+    }
     await categoryRepository.deleteCategory(args, session)
     console.log('deleteCategory')
     return {

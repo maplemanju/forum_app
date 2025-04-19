@@ -8,12 +8,13 @@ import commentRepository, {
   DeleteComment,
   UpdateComment,
   CommentStats,
-  GetById,
   GetByCommentId,
 } from '../repositories/commentRepository'
 import { CommentType, ReplyType } from '@/types/comment'
 import { ResponseType, ApplicationError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
+import { ROLES } from '@/utils/consts'
+import { getUserById } from './userActions'
 
 export const getCommentsByPostId = async (
   args: GetByPostId & CommentStats
@@ -57,10 +58,12 @@ export const createComment = async (
   payload: CreateComment
 ): Promise<ResponseType<Partial<CommentType>>> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    await getUserById({ id: session.user.id })
     const sanitizedContent = sanitizeContent(payload.commentContent)
     const response = await commentRepository.createComment(
       { ...payload, commentContent: sanitizedContent },
@@ -86,10 +89,21 @@ export const deleteComment = async (
   args: DeleteComment
 ): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    const existingComment = await commentRepository.getById({ id: args.id })
+    if (!existingComment) {
+      throw new Error('Comment not found')
+    }
+    const user = await getUserById({ id: session.user.id })
+    const isOwner = user.id === existingComment.createdBy
+    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    if (!isOwner && !isAdmin) {
+      throw new Error('Unauthorized')
+    }
     await commentRepository.deleteComment(args, session)
     console.log('deleteComment')
     return {
@@ -110,10 +124,22 @@ export const updateComment = async (
   args: UpdateComment
 ): Promise<ResponseType<Partial<CommentType>>> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    const existingComment = await commentRepository.getById({ id: args.id })
+    if (!existingComment) {
+      throw new Error('Comment not found')
+    }
+    const user = await getUserById({ id: session.user.id })
+    const isOwner = user.id === existingComment.createdBy
+    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    if (!isOwner && !isAdmin) {
+      throw new Error('Unauthorized')
+    }
+
     const sanitizedContent = sanitizeContent(args.commentContent)
     const response = await commentRepository.updateComment(
       { ...args, commentContent: sanitizedContent },

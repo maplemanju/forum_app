@@ -11,6 +11,9 @@ export type GetByCategory = {
 export type GetBySlug = {
   slug: string
 }
+export type GetById = {
+  id: number
+}
 export type CreatePost = {
   postTitle: string
   postContent: string
@@ -230,6 +233,13 @@ export const postRepository = {
     if (!post) {
       throw new NotFoundError('Post not found')
     }
+    return post
+  },
+
+  getById: async (args: GetById) => {
+    const post = await prisma.posts.findUniqueOrThrow({
+      where: { id: args.id, isDeleted: false },
+    })
     return post
   },
 

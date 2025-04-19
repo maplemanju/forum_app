@@ -4,6 +4,7 @@ import userRepository, {
   GetBySnsIdProps,
   CreateUserProps,
   GetByIdProps,
+  GetUserRolesProps,
 } from '../repositories/userRepository'
 import { ApplicationError } from '@/utils/errors'
 
@@ -28,6 +29,18 @@ export const getUserById = async (args: GetByIdProps) => {
     const error = err as Error
     console.error('Error getting user by id', error?.message)
     throw new ApplicationError('Error getting user by id')
+  }
+}
+
+export const getUserRoles = async (args: GetUserRolesProps) => {
+  try {
+    const userRoles = userRepository.getUserRoles(args)
+    console.log('getUserRoles')
+    return userRoles
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getting user roles', error?.message)
+    throw new ApplicationError('Error getting user roles')
   }
 }
 

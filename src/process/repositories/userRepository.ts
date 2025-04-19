@@ -14,12 +14,16 @@ export type CreateUserProps = {
 export type GetByIdProps = {
   id: number
 }
+export type GetUserRolesProps = {
+  userId: number
+}
 export const userRepository = {
   getBySnsId: async (args: GetBySnsIdProps) => {
     return await prisma.users.findUnique({
       where: {
         snsId: args.snsId,
         authProvider: args.authProvider,
+        isDeleted: false,
       },
       include: {
         userInfo: true,
@@ -33,9 +37,10 @@ export const userRepository = {
   },
 
   getById: async (args: GetByIdProps) => {
-    return await prisma.users.findUnique({
+    return await prisma.users.findUniqueOrThrow({
       where: {
         id: args.id,
+        isDeleted: false,
       },
       include: {
         userInfo: true,
@@ -46,6 +51,16 @@ export const userRepository = {
         },
       },
     })
+  },
+
+  getUserRoles: async (args: GetUserRolesProps) => {
+    const userRoles = await prisma.userRoles.findMany({
+      where: {
+        userId: args.userId,
+        isDeleted: false,
+      },
+    })
+    return userRoles.map((userRole) => userRole.roleId)
   },
 
   createUser: async (args: CreateUserProps) => {

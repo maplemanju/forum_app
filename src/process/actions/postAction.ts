@@ -11,7 +11,8 @@ import { PostType } from '@/types/post'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
-
+import { getUserById } from './userActions'
+import { ROLES } from '@/utils/consts'
 /**
  * Get the most recent posts.
  * Sorted by createdAt in descending order.
@@ -174,10 +175,13 @@ export const createPost = async (
   args: CreatePost
 ): Promise<UpdatePostResponse> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    await getUserById({ id: session.user.id })
+
     const sanitizedContent = sanitizeContent(args.postContent)
     const response = await postRepository.createPost(
       { ...args, postContent: sanitizedContent },
@@ -203,10 +207,18 @@ export const updatePost = async (
   args: UpdatePost
 ): Promise<UpdatePostResponse> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    const user = await getUserById({ id: session.user.id })
+    const existingPost = await postRepository.getById({ id: args.id })
+    const isOwner = user.id === existingPost.createdBy
+    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    if (!isOwner && !isAdmin) {
+      throw new Error('Unauthorized')
+    }
     const sanitizedContent = sanitizeContent(args.postContent)
     const response = await postRepository.updatePost(
       { ...args, postContent: sanitizedContent },
@@ -232,10 +244,19 @@ export const deletePost = async (
   args: DeletePostProps
 ): Promise<ResponseType<null>> => {
   const session = await getServerSession(authOptions)
-  if (!session) {
+  if (!session?.user?.id) {
     throw new Error('Unauthorized')
   }
   try {
+    // verify
+    const user = await getUserById({ id: session.user.id })
+    const existingPost = await postRepository.getById({ id: args.id })
+    const isOwner = user.id === existingPost.createdBy
+    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    if (!isOwner && !isAdmin) {
+      throw new Error('Unauthorized')
+    }
+
     await postRepository.deletePost(args, session)
     console.log('deletePost')
     return {
