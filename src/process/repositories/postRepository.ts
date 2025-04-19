@@ -56,7 +56,7 @@ export const postRepository = {
     const session = await getServerSession(authOptions)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false, publishedAt: { not: null } },
-      orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
+      orderBy: [...(args.orderBy || []), { publishedAt: 'desc' }],
       take: args.take,
       skip: args.skip,
       include: {
@@ -121,7 +121,7 @@ export const postRepository = {
   },
   getRecentPosts: async (args: PostStats) => {
     const posts = await postRepository.getPosts({
-      orderBy: [{ createdAt: 'desc' }],
+      orderBy: [{ publishedAt: 'desc' }],
       take: args.take,
       skip: args.skip,
     })

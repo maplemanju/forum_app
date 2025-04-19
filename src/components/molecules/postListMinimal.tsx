@@ -56,11 +56,13 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
               />
 
               <Tooltip
-                text={dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}
+                text={dayjs(post.publishedAt || post.createdAt).format(
+                  'YYYY/MM/DD HH:mm'
+                )}
                 width="115px"
                 className="text-center"
               >
-                <span>{fromNowShort(post.createdAt)}</span>
+                <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
               </Tooltip>
             </div>
           </li>

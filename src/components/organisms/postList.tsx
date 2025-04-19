@@ -119,9 +119,9 @@ export const PostList = ({
               </span>
 
               <Tooltip
-                text={`Posted at ${dayjs(post.createdAt).format(
-                  'YYYY/MM/DD HH:mm'
-                )}`}
+                text={`Posted at ${dayjs(
+                  post.publishedAt || post.createdAt
+                ).format('YYYY/MM/DD HH:mm')}`}
                 width="115px"
                 className="text-center"
               >
@@ -129,7 +129,9 @@ export const PostList = ({
                   <span className="material-symbols-rounded !text-sm">
                     today
                   </span>
-                  <span>{fromNowShort(post.createdAt)}</span>
+                  <span>
+                    {fromNowShort(post.publishedAt || post.createdAt)}
+                  </span>
                 </div>
               </Tooltip>
             </div>

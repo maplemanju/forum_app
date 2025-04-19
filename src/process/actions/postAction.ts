@@ -15,7 +15,7 @@ import { getUserById } from './userActions'
 import { ROLES } from '@/utils/consts'
 /**
  * Get the most recent posts.
- * Sorted by createdAt in descending order.
+ * Sorted by publishedAt in descending order.
  * @returns The most recent posts
  */
 export const getRecentPosts = async ({

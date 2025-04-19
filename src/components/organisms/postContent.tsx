@@ -65,13 +65,15 @@ export const PostContent = ({ post }: PostProps) => {
           />
         </div>
         <Tooltip
-          text={`Posted at ${dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}`}
+          text={`Posted at ${dayjs(post.publishedAt || post.createdAt).format(
+            'YYYY/MM/DD HH:mm'
+          )}`}
           width="115px"
           className="text-center"
         >
           <div className="flex items-center gap-2">
             <span className="material-symbols-rounded !text-sm">today</span>
-            <span>{fromNowShort(post.createdAt)}</span>
+            <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
           </div>
         </Tooltip>
       </div>
@@ -100,13 +102,15 @@ export const PostContent = ({ post }: PostProps) => {
       {/* info bar bottom  */}
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <Tooltip
-          text={`Posted at ${dayjs(post.createdAt).format('YYYY/MM/DD HH:mm')}`}
+          text={`Posted at ${dayjs(post.publishedAt || post.createdAt).format(
+            'YYYY/MM/DD HH:mm'
+          )}`}
           width="115px"
           className="text-center"
         >
           <div className="flex items-center gap-2">
             <span className="material-symbols-rounded !text-sm">today</span>
-            <span>{fromNowShort(post.createdAt)}</span>
+            <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
           </div>
         </Tooltip>
         {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
