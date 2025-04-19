@@ -19,17 +19,18 @@ model Categories {
 }
 
 model Posts {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique @map("slug") @db.VarChar(255)
-  categoryId  Int      @map("category_id")
-  postTitle   String   @map("post_title") @db.VarChar(255)
-  postContent String   @map("post_content")
-  heroImage   String?  @map("hero_image") @db.VarChar(255)
-  createdBy   Int      @map("created_by")
-  updatedBy   Int      @map("updated_by")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  isDeleted   Boolean  @default(false) @map("is_deleted")
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique @map("slug") @db.VarChar(255)
+  categoryId  Int       @map("category_id")
+  postTitle   String    @map("post_title") @db.VarChar(255)
+  postContent String    @map("post_content")
+  heroImage   String?   @map("hero_image") @db.VarChar(255)
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  publishedAt DateTime? @map("published_at")
 
   category    Categories   @relation(fields: [categoryId], references: [id])
   comments    Comments[]   @relation

@@ -55,7 +55,7 @@ export const postRepository = {
   getPosts: async (args: GetPostBy & PostStats) => {
     const session = await getServerSession(authOptions)
     const posts = await prisma.posts.findMany({
-      where: { ...args.where, isDeleted: false },
+      where: { ...args.where, isDeleted: false, publishedAt: { not: null } },
       orderBy: [...(args.orderBy || []), { createdAt: 'desc' }],
       take: args.take,
       skip: args.skip,
@@ -150,6 +150,8 @@ export const postRepository = {
     }
     const posts = await postRepository.getPosts({
       where: {
+        isDeleted: false,
+        publishedAt: { not: null },
         OR: [
           ...keywords.map((keyword) => ({
             postTitle: {
@@ -189,6 +191,7 @@ export const postRepository = {
       where: {
         slug: args.slug,
         isDeleted: false,
+        publishedAt: { not: null },
       },
       include: {
         _count: {
@@ -238,7 +241,7 @@ export const postRepository = {
 
   getById: async (args: GetById) => {
     const post = await prisma.posts.findUniqueOrThrow({
-      where: { id: args.id, isDeleted: false },
+      where: { id: args.id, isDeleted: false, publishedAt: { not: null } },
     })
     return post
   },
@@ -252,6 +255,7 @@ export const postRepository = {
         slug,
         createdBy: Number(session.user.id),
         updatedBy: Number(session.user.id),
+        publishedAt: new Date(), // TODO: add option to publish drafts
       },
     })
     await postRepository.updatePostUpdate(post.id)

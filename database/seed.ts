@@ -96,6 +96,7 @@ async function main() {
         postContent: 'Welcome to our new forum. We hope you enjoy your stay!',
         createdBy: admin.id,
         updatedBy: admin.id,
+        publishedAt: new Date(),
       },
       {
         categoryId: mainCategory.id,
@@ -105,6 +106,7 @@ async function main() {
           'Please read our community guidelines carefully. Be respectful to others and follow our posting rules.',
         createdBy: admin.id,
         updatedBy: admin.id,
+        publishedAt: new Date(),
       },
       {
         categoryId: mainCategory.id,
@@ -114,6 +116,7 @@ async function main() {
           'Learn how to use markdown formatting to make your posts more readable and engaging.',
         createdBy: admin.id,
         updatedBy: admin.id,
+        publishedAt: new Date(),
       },
       {
         categoryId: mainCategory.id,
@@ -123,6 +126,7 @@ async function main() {
           'Find answers to common questions about using the forum and your account settings.',
         createdBy: admin.id,
         updatedBy: admin.id,
+        publishedAt: new Date(),
       },
       {
         categoryId: mainCategory.id,
@@ -132,6 +136,7 @@ async function main() {
           'We value your input! Let us know what features you would like to see added to the forum.',
         createdBy: admin.id,
         updatedBy: admin.id,
+        publishedAt: new Date(),
       },
     ],
   })
