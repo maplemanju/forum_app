@@ -7,11 +7,6 @@ import './styles/globals.css'
 import './styles/mdxEditor.scss'
 import './styles/content.scss'
 
-export const metadata: Metadata = {
-  title: 'Forum App',
-  description: 'A modern forum app.',
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -13,6 +13,7 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
+import { generateSiteMetadata } from '@/utils/metadata'
 
 export default async function CategoryPage({
   searchParams,
@@ -80,4 +81,20 @@ export default async function CategoryPage({
       </Suspense>
     </>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categorySlug: string }>
+}) {
+  const categorySlug = (await params)?.categorySlug
+  const categoryResponse = await getCategory({ slug: categorySlug })
+
+  return generateSiteMetadata({
+    title: categoryResponse.data?.categoryName,
+    description: categoryResponse.data?.categoryDescription ?? undefined,
+    type: 'website',
+    category: categoryResponse.data?.categoryName,
+  })
 }

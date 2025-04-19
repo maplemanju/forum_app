@@ -1,3 +1,4 @@
+import { generateSiteMetadata } from '@/utils/metadata'
 import Link from 'next/link'
 
 export default function NotFound() {
@@ -16,4 +17,12 @@ export default function NotFound() {
       </Link>
     </div>
   )
+}
+
+export async function generateMetadata() {
+  return generateSiteMetadata({
+    title: '404',
+    description: 'Page Not Found',
+    noIndex: true,
+  })
 }

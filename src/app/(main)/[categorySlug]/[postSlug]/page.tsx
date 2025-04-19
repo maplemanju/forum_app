@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation'
 import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
+import { generateSiteMetadata } from '@/utils/metadata'
 
 export default async function PostPage({
   searchParams,
@@ -69,4 +70,24 @@ export default async function PostPage({
       </Suspense>
     </>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ postSlug: string }>
+}) {
+  const postSlug = (await params)?.postSlug
+  const post = await getPostBySlug({ slug: postSlug })
+
+  return generateSiteMetadata({
+    title: post.data?.postTitle,
+    description: post.data?.postContent,
+    image: post.data?.heroImage ?? undefined,
+    type: 'article',
+    publishedTime: post.data?.publishedAt?.toISOString(),
+    modifiedTime: post.data?.updatedAt?.toISOString(),
+    author: post.data?.createdUser.userInfo?.displayName,
+    category: post.data?.category.categoryName,
+  })
 }

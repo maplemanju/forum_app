@@ -10,6 +10,7 @@ import {
 import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
+import { generateSiteMetadata } from '@/utils/metadata'
 
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
@@ -39,4 +40,11 @@ export default async function Home() {
       </Suspense>
     </>
   )
+}
+
+export async function generateMetadata() {
+  return generateSiteMetadata({
+    title: 'A modern forum app',
+    description: 'A modern forum app.',
+  })
 }

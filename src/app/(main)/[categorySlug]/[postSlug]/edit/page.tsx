@@ -8,6 +8,7 @@ import { getRecentPosts } from '@/process/actions/postAction'
 import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
+import { generateSiteMetadata } from '@/utils/metadata'
 
 export default async function EditPage({
   params,
@@ -41,4 +42,19 @@ export default async function EditPage({
       </Suspense>
     </>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ postSlug: string }>
+}) {
+  const postSlug = (await params)?.postSlug
+  const post = await getPostBySlug({ slug: postSlug })
+
+  return generateSiteMetadata({
+    title: `Edit Post - ${post.data?.postTitle}`,
+    description: post.data?.postContent,
+    noIndex: true,
+  })
 }

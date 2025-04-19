@@ -9,7 +9,7 @@ import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
 import { Sidebar } from '@/components/templates/sidebar'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
-
+import { generateSiteMetadata } from '@/utils/metadata'
 export default async function SearchPage({
   searchParams,
 }: {
@@ -50,4 +50,16 @@ export default async function SearchPage({
       </Suspense>
     </>
   )
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q: string; sort: string }>
+}) {
+  const keyword = (await searchParams)?.q
+  return generateSiteMetadata({
+    title: `Search ${keyword || ''}`,
+    description: `Search results for ${keyword || ''}`,
+  })
 }
