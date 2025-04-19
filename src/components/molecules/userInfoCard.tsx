@@ -90,7 +90,7 @@ export const UserInfoCard = ({
           <div>
             <div className="font-medium flex items-center gap-1">
               <Tooltip
-                text={`Likes received`}
+                text={`Hearts received`}
                 width="115px"
                 className="text-center"
               >

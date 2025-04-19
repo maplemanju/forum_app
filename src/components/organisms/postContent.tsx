@@ -70,7 +70,7 @@ export const PostContent = ({ post }: PostProps) => {
           className="text-center"
         >
           <div className="flex items-center gap-2">
-            <span className="material-symbols-rounded text-sm">today</span>
+            <span className="material-symbols-rounded !text-sm">today</span>
             <span>{fromNowShort(post.createdAt)}</span>
           </div>
         </Tooltip>
@@ -118,7 +118,7 @@ export const PostContent = ({ post }: PostProps) => {
             className="text-center"
           >
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-              <span className="material-symbols-rounded text-sm">update</span>
+              <span className="material-symbols-rounded !text-sm">update</span>
               <span>{fromNowShort(post.updatedAt)}</span>
             </div>
           </Tooltip>

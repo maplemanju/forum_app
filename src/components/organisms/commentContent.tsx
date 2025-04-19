@@ -190,11 +190,11 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                 <div className="flex items-center text-[12px] text-subtext mt-2 gap-2">
                   {commentState._count?.childComments != null &&
                     commentState._count?.childComments > 0 && (
-                      <button onClick={openRepliesLink}>
+                      <div onClick={openRepliesLink} className="cursor-pointer">
                         {openReplies
                           ? 'Hide replies'
                           : `Show replies (${commentState._count?.childComments})`}
-                      </button>
+                      </div>
                     )}
                   {session && onReply && (
                     <Button
