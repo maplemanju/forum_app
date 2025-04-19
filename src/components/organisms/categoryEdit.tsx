@@ -96,7 +96,7 @@ export default function CategoryEdit({
   }
 
   // Return if user doesn't have permission
-  if (!session || !category || (!canEdit && Boolean(category))) {
+  if (!session || !canEdit) {
     return <></>
   }
 

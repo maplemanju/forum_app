@@ -11,12 +11,31 @@ export type CreateUserProps = {
   email: string
   authProvider: string
 }
+export type GetByIdProps = {
+  id: number
+}
 export const userRepository = {
   getBySnsId: async (args: GetBySnsIdProps) => {
     return await prisma.users.findUnique({
       where: {
         snsId: args.snsId,
         authProvider: args.authProvider,
+      },
+      include: {
+        userInfo: true,
+        userRoles: {
+          select: {
+            roleId: true,
+          },
+        },
+      },
+    })
+  },
+
+  getById: async (args: GetByIdProps) => {
+    return await prisma.users.findUnique({
+      where: {
+        id: args.id,
       },
       include: {
         userInfo: true,

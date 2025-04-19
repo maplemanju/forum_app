@@ -1,7 +1,11 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import { getUserBySnsId, createUser } from '@/process/actions/userActions'
+import {
+  getUserBySnsId,
+  createUser,
+  getUserById,
+} from '@/process/actions/userActions'
 import { ROLES } from '@/utils/consts'
 
 export const authOptions: NextAuthOptions = {
@@ -30,7 +34,6 @@ export const authOptions: NextAuthOptions = {
         })
         let userName = existingUser?.userInfo?.displayName
         let userId = existingUser?.id
-        let roles = existingUser?.userRoles.map((role) => role.roleId) || []
         if (!existingUser) {
           // Create a new user in the database if they don't exist
           const createdUser = await createUser({
@@ -40,21 +43,30 @@ export const authOptions: NextAuthOptions = {
           })
           userName = createdUser?.userInfo?.displayName
           userId = createdUser?.id
-          roles = createdUser?.userRoles.map((role) => role.roleId) || []
         }
 
         // Attach user information to the JWT token
         token.name = userName
         token.userId = userId
-        token.roles = roles
       }
       return token
     },
     async session({ session, token }) {
       if (session?.user) {
+        const userId = token.userId ? Number(token.userId) : undefined
         session.user.name = String(token.name)
-        session.user.id = token.userId ? Number(token.userId) : undefined
+        session.user.id = userId
         session.user.roles = token.roles as number[]
+
+        if (userId) {
+          // Get roles on every page load.
+          // WARNING: do not rely on this to check user roles for any DB transactions. Always verify roles on the server side.
+          const existingUser = await getUserById({
+            id: userId,
+          })
+          session.user.roles =
+            existingUser?.userRoles.map((role) => role.roleId) || []
+        }
       }
       return session
     },
