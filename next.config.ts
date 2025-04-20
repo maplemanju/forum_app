@@ -9,9 +9,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '9000',
+        protocol: process.env.S3_USE_SSL === 'true' ? 'https' : 'http',
+        hostname: process.env.S3_ENDPOINT || 'localhost',
+        port: process.env.S3_PORT || '9000',
         pathname: '/uploads/**',
       },
     ],

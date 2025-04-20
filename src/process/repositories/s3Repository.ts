@@ -2,11 +2,11 @@ import { Client } from 'minio'
 
 // MinIO client configuration
 const minioClient = new Client({
-  endPoint: 'localhost',
-  port: 9000,
-  useSSL: false,
-  accessKey: 'minioadmin',
-  secretKey: 'minioadmin',
+  endPoint: process.env.S3_ENDPOINT || 'localhost',
+  port: parseInt(process.env.S3_PORT || '9000'),
+  useSSL: process.env.S3_USE_SSL === 'true',
+  accessKey: process.env.S3_ACCESS_KEY,
+  secretKey: process.env.S3_SECRET_KEY,
 })
 
 const BUCKET_NAME = 'uploads'
