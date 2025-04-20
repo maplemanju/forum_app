@@ -6,6 +6,10 @@ import '@mdxeditor/editor/style.css'
 import './styles/globals.css'
 import './styles/mdxEditor.scss'
 import './styles/content.scss'
+import { s3Repository } from '../process/repositories/s3Repository'
+
+// Initialize services
+s3Repository.initBucket()
 
 export default function RootLayout({
   children,

@@ -29,6 +29,12 @@ import { ListsButton } from './mdxEditor/listsButton'
 import { BlockTypesButton } from './mdxEditor/blockTypesButton'
 import { EditorSwitchButton } from './mdxEditor/editorSwitchButton'
 import { ImageDialog } from './mdxEditor/imageDialog'
+import {
+  uploadFile,
+  FileUploadResponse,
+} from '@/process/actions/fileUploadAction'
+import { startTransition } from 'react'
+import { getImagePath } from '@/utils/getImagePath'
 
 export default function TextEditorInitialize({
   editorRef,
@@ -42,6 +48,18 @@ export default function TextEditorInitialize({
   className?: string
   markdown: string
 } & MDXEditorProps) {
+  const handleImageUpload = async (image: File) => {
+    try {
+      const response = await uploadFile(image)
+      if (response.success) {
+        return getImagePath(response.data?.url || '')
+      }
+      return ''
+    } catch (error) {
+      console.error('Upload failed:', error)
+      return ''
+    }
+  }
   return (
     <MDXEditor
       markdown={markdown}
@@ -53,6 +71,7 @@ export default function TextEditorInitialize({
         imagePlugin({
           disableImageResize: true,
           ImageDialog: ImageDialog,
+          imageUploadHandler: handleImageUpload,
         }),
         linkDialogPlugin(),
         thematicBreakPlugin(),

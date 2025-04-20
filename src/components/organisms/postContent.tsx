@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
 import { UserInfoCard } from '../molecules/userInfoCard'
+import { getImagePath } from '@/utils/getImagePath'
 
 type PostProps = {
   post?: PostType
@@ -82,7 +83,7 @@ export const PostContent = ({ post }: PostProps) => {
       {post.heroImage && (
         <div className="relative max-w-4xl mx-auto my-4">
           <Image
-            src={post.heroImage}
+            src={getImagePath(post.heroImage)}
             alt={post.postTitle}
             width={0}
             height={0}

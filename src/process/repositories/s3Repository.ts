@@ -1,0 +1,102 @@
+import { Client } from 'minio'
+
+// MinIO client configuration
+const minioClient = new Client({
+  endPoint: 'localhost',
+  port: 9000,
+  useSSL: false,
+  accessKey: 'minioadmin',
+  secretKey: 'minioadmin',
+})
+
+const BUCKET_NAME = 'uploads'
+
+export type UploadFileProps = {
+  file: Buffer
+  filename: string
+  mimetype: string
+}
+
+export type DeleteFileProps = {
+  fileUrl: string
+}
+
+export const s3Repository = {
+  uploadFile: async ({
+    file,
+    filename,
+    mimetype,
+  }: UploadFileProps): Promise<string> => {
+    try {
+      // Create unique filename to prevent collisions
+      const uniqueFilename = `${Date.now()}_${filename.replace(
+        /[^a-zA-Z0-9.-]/g,
+        '_'
+      )}`
+
+      // Upload to MinIO
+      await minioClient.putObject(
+        BUCKET_NAME,
+        uniqueFilename,
+        file,
+        file.length,
+        { 'Content-Type': mimetype }
+      )
+
+      // Return the public URL
+      return `/${BUCKET_NAME}/${uniqueFilename}`
+    } catch (error) {
+      console.error('S3 upload failed:', error)
+      throw new Error('Failed to upload file to S3')
+    }
+  },
+
+  deleteFile: async ({ fileUrl }: DeleteFileProps): Promise<boolean> => {
+    try {
+      // Extract filename from URL
+      const filename = fileUrl.split('/').pop()
+      if (!filename) {
+        throw new Error('Invalid file URL')
+      }
+
+      // Delete object from MinIO
+      await minioClient.removeObject(BUCKET_NAME, filename)
+      return true
+    } catch (error) {
+      console.error('S3 delete failed:', error)
+      return false
+    }
+  },
+
+  // Initialize bucket if it doesn't exist
+  initBucket: async () => {
+    try {
+      const bucketExists = await minioClient.bucketExists(BUCKET_NAME)
+      if (!bucketExists) {
+        await minioClient.makeBucket(BUCKET_NAME)
+      }
+
+      const publicPolicy = JSON.stringify({
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['*'] },
+            Action: ['s3:GetObject', 's3:GetBucketLocation'],
+            Resource: [
+              `arn:aws:s3:::${BUCKET_NAME}/*`,
+              `arn:aws:s3:::${BUCKET_NAME}`,
+            ],
+          },
+        ],
+      })
+
+      await minioClient.setBucketPolicy(BUCKET_NAME, publicPolicy)
+    } catch (error) {
+      console.error('Failed to initialize bucket:', error)
+      throw new Error('Failed to initialize S3 bucket')
+    }
+  },
+}
+
+export default s3Repository

@@ -1,10 +1,10 @@
 'use server'
 
 import { ResponseType } from '@/utils/errors'
-import fileUploadRepository from '../repositories/fileUploadRepository'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 import { MAX_FILE_SIZE } from '@/utils/consts'
+import { s3Repository } from '../repositories/s3Repository'
 
 export type FileUploadResponse = ResponseType<{ url: string }>
 export const uploadFile = async (file: File): Promise<FileUploadResponse> => {
@@ -23,16 +23,16 @@ export const uploadFile = async (file: File): Promise<FileUploadResponse> => {
       }
     }
     const buffer = Buffer.from(await file.arrayBuffer())
-    // console.log('buffer', buffer, file)
-    const url = await fileUploadRepository.uploadFile({
+    const url = await s3Repository.uploadFile({
       file: buffer,
       filename: file.name,
       mimetype: file.type,
     })
-    console.log('uploadFile')
     return {
       success: true,
-      data: { url },
+      data: {
+        url,
+      },
     }
   } catch (error) {
     console.error('File upload failed:', error)
@@ -52,7 +52,8 @@ export const deleteFile = async (
     throw new Error('Unauthorized')
   }
   try {
-    await fileUploadRepository.deleteFile({ fileUrl })
+    await s3Repository.deleteFile({ fileUrl })
+
     console.log('deleteFile')
     return {
       success: true,
@@ -64,8 +65,4 @@ export const deleteFile = async (
       message: error instanceof Error ? error.message : 'File deletion failed',
     }
   }
-}
-
-export const getFileUrl = async (filename: string): Promise<string> => {
-  return await fileUploadRepository.getFileUrl(filename)
 }

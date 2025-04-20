@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { uploadFile, deleteFile } from '@/process/actions/fileUploadAction'
 import { MAX_FILE_SIZE } from '@/utils/consts'
+import { getImagePath } from '@/utils/getImagePath'
 
 interface HeroImageUploadProps {
   onUpload: (url: string) => void
@@ -73,7 +74,7 @@ export const HeroImageUpload = ({
         <div className="relative">
           <div className="relative max-w-4xl mx-auto">
             <Image
-              src={preview}
+              src={getImagePath(preview)}
               alt="Hero image preview"
               width={0}
               height={0}

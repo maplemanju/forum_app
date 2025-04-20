@@ -15,6 +15,7 @@ import { useInfinitePostScroll } from '@/hooks/useInfinitePostScroll'
 import { useRef } from 'react'
 import { SortSelect } from '@/components/molecules/sortSelect'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { getImagePath } from '@/utils/getImagePath'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
@@ -141,7 +142,7 @@ export const PostList = ({
               <div className="relative max-w-4xl mx-auto my-4">
                 <Link href={`/${post.category.slug}/${post.slug}`}>
                   <Image
-                    src={post.heroImage}
+                    src={getImagePath(post.heroImage)}
                     alt={post.postTitle}
                     width={0}
                     height={0}
