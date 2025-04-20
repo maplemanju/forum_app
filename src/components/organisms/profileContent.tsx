@@ -7,6 +7,7 @@ import { getImagePath } from '@/utils/getImagePath'
 import { User } from '@/types/user'
 import { UserInfoCard } from '../molecules/userInfoCard'
 import { useSession } from 'next-auth/react'
+
 export default function ProfileContent({ user }: { user?: User }) {
   const router = useRouter()
   const session = useSession()

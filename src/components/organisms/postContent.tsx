@@ -17,6 +17,7 @@ import Image from 'next/image'
 import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
 import { UserInfoCard } from '../molecules/userInfoCard'
 import { getImagePath } from '@/utils/getImagePath'
+import { UserAndIcon } from '@/components/molecules/userAndIcon'
 
 type PostProps = {
   post?: PostType
@@ -57,13 +58,10 @@ export const PostContent = ({ post }: PostProps) => {
       {/* info bar top  */}
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
         <div>
-          <Button
-            size="small"
-            color="fade"
-            boxStyle="box"
-            leftIcon="person"
-            label={`${post.createdUser.userInfo?.displayName}`}
-            linkPath={`/profile/${post.createdUser.publicId}`}
+          <UserAndIcon
+            displayName={post.createdUser.userInfo?.displayName || 'Anonymous'}
+            publicId={post.createdUser.publicId}
+            profileImage={post.createdUser.userInfo?.profileImage}
           />
         </div>
         <Tooltip

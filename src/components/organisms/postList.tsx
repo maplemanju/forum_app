@@ -16,6 +16,7 @@ import { useRef } from 'react'
 import { SortSelect } from '@/components/molecules/sortSelect'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getImagePath } from '@/utils/getImagePath'
+import { UserAndIcon } from '@/components/molecules/userAndIcon'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
@@ -102,21 +103,18 @@ export const PostList = ({
             )}
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <h3 className="text-xl font-semibold text-foreground hover:text-link">
+              <h3 className="text-xl font-semibold text-foreground hover:text-link mb-1">
                 {post.postTitle}
               </h3>
             </Link>
-            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap">
+            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap mb-1">
               <span>
-                <Button
-                  size="small"
-                  color="fade"
-                  boxStyle="box"
-                  leftIcon="person"
-                  label={`${
+                <UserAndIcon
+                  displayName={
                     post.createdUser.userInfo?.displayName || 'Anonymous'
-                  }`}
-                  linkPath={`/profile/${post.createdUser.publicId}`}
+                  }
+                  publicId={post.createdUser.publicId}
+                  profileImage={post.createdUser.userInfo?.profileImage}
                 />
               </span>
 

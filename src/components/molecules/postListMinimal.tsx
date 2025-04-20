@@ -3,14 +3,12 @@
 import { PostType } from '@/types/post'
 import Link from 'next/link'
 import Tooltip from '@/components/atoms/tooltip'
-import { VoteButtons } from '@/components/molecules/voteButtons'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/atoms/button'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { stripMarkdown } from '@/utils/stripMarkdown'
 import { fromNowShort } from '@/utils/dateFormatter'
-import Image from 'next/image'
+import { UserAndIcon } from '@/components/molecules/userAndIcon'
 dayjs.extend(relativeTime)
 
 type PostListProps = {
@@ -44,16 +42,14 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
                 {post.postTitle}
               </div>
             </Link>
-            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap text-xs">
-              <Button
-                size="xsmall"
-                color="fade"
-                boxStyle="box"
-                leftIcon="person"
-                label={`${
+            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap text-xs mt-1">
+              <UserAndIcon
+                displayName={
                   post.createdUser.userInfo?.displayName || 'Anonymous'
-                }`}
-                linkPath={`/profile/${post.createdUser.publicId}`}
+                }
+                publicId={post.createdUser.publicId}
+                profileImage={post.createdUser.userInfo?.profileImage}
+                size="xs"
               />
 
               <Tooltip
