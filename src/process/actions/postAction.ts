@@ -180,7 +180,7 @@ export const createPost = async (
   }
   try {
     // verify
-    await getUserById({ id: session.user.id })
+    await getUserById({ userId: session.user.id })
 
     const sanitizedContent = sanitizeContent(args.postContent)
     const response = await postRepository.createPost(
@@ -212,10 +212,12 @@ export const updatePost = async (
   }
   try {
     // verify
-    const user = await getUserById({ id: session.user.id })
+    const user = await getUserById({ userId: session.user.id })
     const existingPost = await postRepository.getById({ id: args.id })
-    const isOwner = user.id === existingPost.createdBy
-    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    const isOwner = user.data?.publicId === existingPost.createdBy
+    const isAdmin = user.data?.userRoles.some(
+      (role) => role.roleId === ROLES.ADMIN
+    )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
     }
@@ -249,10 +251,12 @@ export const deletePost = async (
   }
   try {
     // verify
-    const user = await getUserById({ id: session.user.id })
+    const user = await getUserById({ userId: session.user.id })
     const existingPost = await postRepository.getById({ id: args.id })
-    const isOwner = user.id === existingPost.createdBy
-    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    const isOwner = user.data?.publicId === existingPost.createdBy
+    const isAdmin = user.data?.userRoles.some(
+      (role) => role.roleId === ROLES.ADMIN
+    )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
     }

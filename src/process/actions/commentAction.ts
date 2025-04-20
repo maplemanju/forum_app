@@ -63,7 +63,7 @@ export const createComment = async (
   }
   try {
     // verify
-    await getUserById({ id: session.user.id })
+    await getUserById({ userId: session.user.id })
     const sanitizedContent = sanitizeContent(payload.commentContent)
     const response = await commentRepository.createComment(
       { ...payload, commentContent: sanitizedContent },
@@ -98,9 +98,11 @@ export const deleteComment = async (
     if (!existingComment) {
       throw new Error('Comment not found')
     }
-    const user = await getUserById({ id: session.user.id })
-    const isOwner = user.id === existingComment.createdBy
-    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    const user = await getUserById({ userId: session.user.id })
+    const isOwner = user.data?.publicId === existingComment.createdBy
+    const isAdmin = user.data?.userRoles.some(
+      (role) => role.roleId === ROLES.ADMIN
+    )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
     }
@@ -133,9 +135,11 @@ export const updateComment = async (
     if (!existingComment) {
       throw new Error('Comment not found')
     }
-    const user = await getUserById({ id: session.user.id })
-    const isOwner = user.id === existingComment.createdBy
-    const isAdmin = user.userRoles.some((role) => role.roleId === ROLES.ADMIN)
+    const user = await getUserById({ userId: session.user.id })
+    const isOwner = user.data?.publicId === existingComment.createdBy
+    const isAdmin = user.data?.userRoles.some(
+      (role) => role.roleId === ROLES.ADMIN
+    )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
     }
