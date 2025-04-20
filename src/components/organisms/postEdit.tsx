@@ -152,7 +152,6 @@ export default function PostEdit({ post, category }: PostEditProps) {
             onUpload={handleImageUpload}
             currentImage={heroImage}
           />
-          <input type="hidden" name="heroImage" value={heroImage || ''} />
         </div>
 
         <div className="post-content ">

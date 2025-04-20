@@ -59,6 +59,7 @@ export const Button = ({
     <button
       className={`rounded-md ${colorClass[color]} ${sizeClass[boxStyle][size]} enabled:cursor-pointer`}
       {...props}
+      type={type}
     >
       {isLoading ? (
         <div
