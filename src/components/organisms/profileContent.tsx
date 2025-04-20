@@ -6,15 +6,10 @@ import { useRouter } from 'next/navigation'
 import { getImagePath } from '@/utils/getImagePath'
 import { User } from '@/types/user'
 import { UserInfoCard } from '../molecules/userInfoCard'
-
-export default function ProfileContent({
-  user,
-  publicId,
-}: {
-  user?: User
-  publicId: string
-}) {
+import { useSession } from 'next-auth/react'
+export default function ProfileContent({ user }: { user?: User }) {
   const router = useRouter()
+  const session = useSession()
 
   return (
     <>
@@ -56,13 +51,15 @@ export default function ProfileContent({
             </div>
 
             {/* Edit Button */}
-            <div className="flex justify-end pt-4 gap-4">
-              <Button
-                onClick={() => router.push(`/profile/edit`)}
-                label="Edit Profile"
-                color="primary"
-              />
-            </div>
+            {user?.publicId === session.data?.user?.id && (
+              <div className="flex justify-end pt-4 gap-4">
+                <Button
+                  onClick={() => router.push(`/profile/edit`)}
+                  label="Edit Profile"
+                  color="primary"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

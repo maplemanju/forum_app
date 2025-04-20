@@ -13,7 +13,7 @@ export default async function ProfilePage({
   return (
     <Content>
       <Alert response={user} />
-      <ProfileContent user={user.data} publicId={publicId} />
+      <ProfileContent user={user.data} />
     </Content>
   )
 }
