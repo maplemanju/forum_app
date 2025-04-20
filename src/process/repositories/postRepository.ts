@@ -54,7 +54,6 @@ export type PostStats = {
 export const postRepository = {
   getPosts: async (args: GetPostBy & PostStats) => {
     const session = await getServerSession(authOptions)
-    console.log('session', session)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false, publishedAt: { not: null } },
       orderBy: [...(args.orderBy || []), { publishedAt: 'desc' }],

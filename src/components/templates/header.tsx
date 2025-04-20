@@ -4,7 +4,8 @@ import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
-
+import Image from 'next/image'
+import { getImagePath } from '@/utils/getImagePath'
 export default function Header() {
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
@@ -39,7 +40,19 @@ export default function Header() {
           {session && (
             <div className="text-gray-600 dark:text-white">
               <Link href={`/profile/${session.user?.id}`}>
-                {session.user?.name}
+                {session.user?.profileImage ? (
+                  <Image
+                    src={getImagePath(session.user?.profileImage || '')}
+                    alt={session.user?.name || ''}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <span className="material-symbols-rounded rounded-full bg-gray-200 text-gray-500 py-1 px-1">
+                    person
+                  </span>
+                )}
               </Link>
             </div>
           )}

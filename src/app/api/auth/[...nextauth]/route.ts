@@ -30,6 +30,7 @@ export const authOptions: NextAuthOptions = {
         let userName = existingUser?.userInfo?.displayName
         let publicId = existingUser?.publicId
         let roles = existingUser?.userRoles.map((role) => role.roleId) || []
+        let profileImage = existingUser?.userInfo?.profileImage
         if (!existingUser) {
           // Create a new user in the database if they don't exist
           const createdUser = await createUser({
@@ -49,6 +50,7 @@ export const authOptions: NextAuthOptions = {
         token.name = userName
         token.userId = publicId
         token.roles = roles
+        token.profileImage = profileImage
       }
       return token
     },
@@ -58,6 +60,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = String(token.name)
         session.user.id = userId
         session.user.roles = token.roles as number[]
+        session.user.profileImage = token.profileImage as string | null
       }
       return session
     },

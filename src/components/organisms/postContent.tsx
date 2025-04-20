@@ -63,6 +63,7 @@ export const PostContent = ({ post }: PostProps) => {
             boxStyle="box"
             leftIcon="person"
             label={`${post.createdUser.userInfo?.displayName}`}
+            linkPath={`/profile/${post.createdUser.publicId}`}
           />
         </div>
         <Tooltip
@@ -142,6 +143,7 @@ export const PostContent = ({ post }: PostProps) => {
           postId={post.id}
           voteCount={post._count.votes || 0}
           canVote={Boolean(session)}
+          userVotes={post.votes}
         />
       </div>
 

@@ -5,6 +5,7 @@ import { type MDXEditorMethods } from '@mdxeditor/editor'
 import { useRef, useState, useEffect } from 'react'
 import { EditorSwitchButton } from '@/components/atoms/mdxEditor/editorSwitchButton'
 import { EditorSkeleton } from '@/components/molecules/skeletons/editorSkeleton'
+import { debounce } from 'lodash'
 
 // This is the only place TextEditor is imported directly.
 const Editor = dynamic(() => import('../atoms/textEditorInitialize'), {
@@ -35,6 +36,7 @@ export const TextEditor = ({
   const [content, setContent] = useState<string>(markdown || '')
 
   useEffect(() => {
+    console.log(markdown)
     if (markdown !== content) {
       setContent(markdown || '')
       // Force update the editor
@@ -44,20 +46,20 @@ export const TextEditor = ({
     }
   }, [markdown])
 
-  const handleChange = (newContent: string) => {
+  const handleChange = debounce((newContent: string) => {
     setContent(newContent)
-    onChangeCallback(newContent)
-  }
+  }, 300) // 300ms delay
 
   return (
     <div>
       {isMdxEditor && !isTextAreaOnly ? (
         <Editor
-          markdown={content}
+          markdown={markdown}
           editorRef={editorRef}
           onChange={handleChange}
           setToRawEditor={() => setIsMdxEditor(false)}
           className={className}
+          onBlur={() => onChangeCallback(content)}
         />
       ) : (
         <>
@@ -74,7 +76,7 @@ export const TextEditor = ({
             <div>
               <textarea
                 className={`w-full px-3 py-2 content-editable ${className}`}
-                value={content}
+                value={markdown}
                 rows={10}
                 onChange={(e) => handleChange(e.target.value)}
               />
