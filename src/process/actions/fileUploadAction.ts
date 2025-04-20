@@ -7,7 +7,10 @@ import { MAX_FILE_SIZE } from '@/utils/consts'
 import { s3Repository } from '../repositories/s3Repository'
 
 export type FileUploadResponse = ResponseType<{ url: string }>
-export const uploadFile = async (file: File): Promise<FileUploadResponse> => {
+export const uploadFile = async (
+  file: File,
+  subDir: string
+): Promise<FileUploadResponse> => {
   const session = await getServerSession(authOptions)
   if (!session) {
     throw new Error('Unauthorized')
@@ -27,6 +30,7 @@ export const uploadFile = async (file: File): Promise<FileUploadResponse> => {
       file: buffer,
       filename: file.name,
       mimetype: file.type,
+      subDir: subDir,
     })
     return {
       success: true,

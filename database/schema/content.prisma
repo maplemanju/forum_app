@@ -4,8 +4,8 @@ model Categories {
   categoryName        String   @map("category_name") @db.VarChar(255)
   categoryDescription String?  @map("category_description")
   parentCategoryId    Int?     @map("parent_category_id")
-  createdBy           Int      @map("created_by")
-  updatedBy           Int      @map("updated_by")
+  createdBy           String   @map("created_by") @db.VarChar(20)
+  updatedBy           String   @map("updated_by") @db.VarChar(20)
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
   isDeleted           Boolean  @default(false) @map("is_deleted")
@@ -25,8 +25,8 @@ model Posts {
   postTitle   String    @map("post_title") @db.VarChar(255)
   postContent String    @map("post_content")
   heroImage   String?   @map("hero_image") @db.VarChar(255)
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
+  createdBy   String    @map("created_by") @db.VarChar(20)
+  updatedBy   String    @map("updated_by") @db.VarChar(20)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
   isDeleted   Boolean   @default(false) @map("is_deleted")
@@ -35,7 +35,7 @@ model Posts {
   category    Categories   @relation(fields: [categoryId], references: [id])
   comments    Comments[]   @relation
   votes       Votes[]      @relation
-  createdUser Users        @relation(fields: [createdBy], references: [id])
+  createdUser Users        @relation(fields: [createdBy], references: [publicId])
   postTags    PostTags?    @relation
   postUpdate  PostUpdates? @relation
 
@@ -47,8 +47,8 @@ model Comments {
   postId          Int      @map("post_id")
   commentContent  String   @map("comment_content")
   parentCommentId Int?     @map("parent_comment_id")
-  createdBy       Int      @map("created_by")
-  updatedBy       Int      @map("updated_by")
+  createdBy       String   @map("created_by") @db.VarChar(20)
+  updatedBy       String   @map("updated_by") @db.VarChar(20)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   isDeleted       Boolean  @default(false) @map("is_deleted")
@@ -57,7 +57,7 @@ model Comments {
   votes          Votes[]    @relation
   childComments  Comments[] @relation("related_comments")
   parentComments Comments?  @relation(name: "related_comments", fields: [parentCommentId], references: [id])
-  createdUser    Users      @relation(fields: [createdBy], references: [id])
+  createdUser    Users      @relation(fields: [createdBy], references: [publicId])
 
   @@map("comments")
 }

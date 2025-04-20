@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { nanoid } from 'nanoid'
 const prisma = new PrismaClient()
 
 async function main() {
@@ -43,6 +44,7 @@ async function main() {
       snsId: process.env.ADMIN_SNS_ID || '',
       authProvider: 'google',
       email: process.env.ADMIN_EMAIL || '',
+      publicId: 'usr-' + nanoid(16),
     },
   })
   await prisma.userInfo.create({
@@ -53,7 +55,7 @@ async function main() {
   })
   await prisma.userRoles.create({
     data: {
-      userId: admin.id,
+      userId: admin.publicId,
       roleId: 1,
     },
   })
@@ -63,23 +65,23 @@ async function main() {
       categoryName: 'General Discussion',
       slug: 'general-discussion',
       categoryDescription: 'A place for general forum discussions',
-      createdBy: admin.id,
-      updatedBy: admin.id,
+      createdBy: admin.publicId,
+      updatedBy: admin.publicId,
       childCategories: {
         create: [
           {
             categoryName: 'Introductions',
             slug: 'introductions',
             categoryDescription: 'New members introduce yourself here',
-            createdBy: admin.id,
-            updatedBy: admin.id,
+            createdBy: admin.publicId,
+            updatedBy: admin.publicId,
           },
           {
             categoryName: 'Announcements',
             slug: 'announcements',
             categoryDescription: 'Important forum announcements',
-            createdBy: admin.id,
-            updatedBy: admin.id,
+            createdBy: admin.publicId,
+            updatedBy: admin.publicId,
           },
         ],
       },
@@ -94,8 +96,8 @@ async function main() {
         slug: 'welcome-to-our-forum',
         postTitle: 'Welcome to our Forum!',
         postContent: 'Welcome to our new forum. We hope you enjoy your stay!',
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        createdBy: admin.publicId,
+        updatedBy: admin.publicId,
         publishedAt: new Date(),
       },
       {
@@ -104,8 +106,8 @@ async function main() {
         postTitle: 'Forum Rules and Guidelines',
         postContent:
           'Please read our community guidelines carefully. Be respectful to others and follow our posting rules.',
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        createdBy: admin.publicId,
+        updatedBy: admin.publicId,
         publishedAt: new Date(),
       },
       {
@@ -114,8 +116,8 @@ async function main() {
         postTitle: 'How to Format Your Posts',
         postContent:
           'Learn how to use markdown formatting to make your posts more readable and engaging.',
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        createdBy: admin.publicId,
+        updatedBy: admin.publicId,
         publishedAt: new Date(),
       },
       {
@@ -124,8 +126,8 @@ async function main() {
         postTitle: 'Frequently Asked Questions',
         postContent:
           'Find answers to common questions about using the forum and your account settings.',
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        createdBy: admin.publicId,
+        updatedBy: admin.publicId,
         publishedAt: new Date(),
       },
       {
@@ -134,8 +136,8 @@ async function main() {
         postTitle: 'Share Your Feedback',
         postContent:
           'We value your input! Let us know what features you would like to see added to the forum.',
-        createdBy: admin.id,
-        updatedBy: admin.id,
+        createdBy: admin.publicId,
+        updatedBy: admin.publicId,
         publishedAt: new Date(),
       },
     ],
@@ -157,8 +159,8 @@ async function main() {
     data: {
       postId: forumRulesPost[0].id,
       commentContent: 'Thanks for the warm welcome!',
-      createdBy: admin.id,
-      updatedBy: admin.id,
+      createdBy: admin.publicId,
+      updatedBy: admin.publicId,
     },
   })
 }

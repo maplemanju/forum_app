@@ -50,33 +50,42 @@ export const categoryRepository = {
     return category
   },
   createCategory: async (args: CreateCategoryProps, session: Session) => {
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     return await prisma.categories.create({
       data: {
         categoryName: args.categoryName,
         categoryDescription: args.categoryDescription,
         slug: args.slug,
         parentCategoryId: args.parentCategoryId,
-        createdBy: Number(session.user.id),
-        updatedBy: Number(session.user.id),
+        createdBy: session.user.id,
+        updatedBy: session.user.id,
       },
     })
   },
   updateCategory: async (args: UpdateCategoryProps, session: Session) => {
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     return await prisma.categories.update({
       where: { id: args.id },
       data: {
         ...args,
-        updatedBy: Number(session.user.id),
+        updatedBy: session.user.id,
       },
     })
   },
 
   deleteCategory: async (args: DeleteCategoryProps, session: Session) => {
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     return await prisma.categories.update({
       where: { id: args.id },
       data: {
         isDeleted: true,
-        updatedBy: Number(session.user.id),
+        updatedBy: session.user.id,
       },
     })
   },

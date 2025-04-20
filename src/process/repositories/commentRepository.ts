@@ -73,7 +73,7 @@ export const commentRepository = {
         votes: session
           ? {
               where: {
-                userId: Number(session.user.id),
+                userId: session.user.id,
               },
               select: {
                 vote: true,
@@ -115,8 +115,8 @@ export const commentRepository = {
     const comment = await prisma.comments.create({
       data: {
         ...args,
-        createdBy: Number(session.user.id),
-        updatedBy: Number(session.user.id),
+        createdBy: session.user.id,
+        updatedBy: session.user.id,
       },
       include: {
         createdUser: {
@@ -135,7 +135,7 @@ export const commentRepository = {
   deleteComment: async (args: DeleteComment, session: Session) => {
     return await prisma.comments.update({
       where: { id: args.id },
-      data: { isDeleted: true, updatedBy: Number(session.user.id) },
+      data: { isDeleted: true, updatedBy: session.user.id },
     })
   },
 
@@ -144,7 +144,7 @@ export const commentRepository = {
       where: { id: args.id },
       data: {
         commentContent: args.commentContent,
-        updatedBy: Number(session.user.id),
+        updatedBy: session.user.id,
       },
       include: {
         createdUser: {
@@ -190,7 +190,7 @@ export const commentRepository = {
         votes: session
           ? {
               where: {
-                userId: Number(session.user.id),
+                userId: session.user.id,
               },
               select: {
                 vote: true,

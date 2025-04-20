@@ -38,7 +38,9 @@ export default function Header() {
           />
           {session && (
             <div className="text-gray-600 dark:text-white">
-              {session.user?.name}
+              <Link href={`/profile/${session.user?.id}`}>
+                {session.user?.name}
+              </Link>
             </div>
           )}
           <Button

@@ -29,11 +29,7 @@ import { ListsButton } from './mdxEditor/listsButton'
 import { BlockTypesButton } from './mdxEditor/blockTypesButton'
 import { EditorSwitchButton } from './mdxEditor/editorSwitchButton'
 import { ImageDialog } from './mdxEditor/imageDialog'
-import {
-  uploadFile,
-  FileUploadResponse,
-} from '@/process/actions/fileUploadAction'
-import { startTransition } from 'react'
+import { uploadFile } from '@/process/actions/fileUploadAction'
 import { getImagePath } from '@/utils/getImagePath'
 
 export default function TextEditorInitialize({
@@ -50,7 +46,7 @@ export default function TextEditorInitialize({
 } & MDXEditorProps) {
   const handleImageUpload = async (image: File) => {
     try {
-      const response = await uploadFile(image)
+      const response = await uploadFile(image, 'content')
       if (response.success) {
         return getImagePath(response.data?.url || '')
       }

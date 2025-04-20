@@ -1,6 +1,7 @@
 import { ROLES } from '@/utils/consts'
 import prisma from '@/utils/prisma'
 import generateRandomDisplayName from '@/utils/randomNameGenerator'
+import { nanoid } from 'nanoid'
 
 export type GetBySnsIdProps = {
   snsId: string
@@ -12,10 +13,15 @@ export type CreateUserProps = {
   authProvider: string
 }
 export type GetByIdProps = {
-  id: number
+  userId: string
 }
 export type GetUserRolesProps = {
-  userId: number
+  userId: string
+}
+export type UpdateUserProfileProps = {
+  userId?: string
+  displayName?: string
+  profileImage?: string
 }
 export const userRepository = {
   getBySnsId: async (args: GetBySnsIdProps) => {
@@ -39,7 +45,7 @@ export const userRepository = {
   getById: async (args: GetByIdProps) => {
     return await prisma.users.findUniqueOrThrow({
       where: {
-        id: args.id,
+        publicId: args.userId,
         isDeleted: false,
       },
       include: {
@@ -54,9 +60,10 @@ export const userRepository = {
   },
 
   getUserRoles: async (args: GetUserRolesProps) => {
+    const user = await userRepository.getById(args)
     const userRoles = await prisma.userRoles.findMany({
       where: {
-        userId: args.userId,
+        userId: user.publicId,
         isDeleted: false,
       },
     })
@@ -66,7 +73,7 @@ export const userRepository = {
   createUser: async (args: CreateUserProps) => {
     // create user
     const user = await prisma.users.create({
-      data: args,
+      data: { ...args, publicId: 'usr-' + nanoid(16) },
     })
 
     // create user info
@@ -78,7 +85,7 @@ export const userRepository = {
     })
 
     // create user role
-    await userRepository.createUserRole(user.id, ROLES.USER)
+    await userRepository.createUserRole(user.publicId, ROLES.USER)
 
     // get user info
     const userInfo = await prisma.users.findUnique({
@@ -97,11 +104,25 @@ export const userRepository = {
     return userInfo
   },
 
-  createUserRole: async (userId: number, roleId: number) => {
+  createUserRole: async (userId: string, roleId: number) => {
     return await prisma.userRoles.create({
       data: {
         userId,
         roleId,
+      },
+    })
+  },
+
+  updateUserProfile: async (args: UpdateUserProfileProps) => {
+    if (!args.userId) {
+      throw new Error('User ID is required')
+    }
+    const user = await userRepository.getById({ userId: args.userId })
+    return await prisma.userInfo.update({
+      where: { userId: user.id },
+      data: {
+        displayName: args.displayName,
+        profileImage: args.profileImage,
       },
     })
   },

@@ -5,8 +5,8 @@ CREATE TABLE "categories" (
     "category_name" VARCHAR(255) NOT NULL,
     "category_description" TEXT,
     "parent_category_id" INTEGER,
-    "created_by" INTEGER NOT NULL,
-    "updated_by" INTEGER NOT NULL,
+    "created_by" VARCHAR(20) NOT NULL,
+    "updated_by" VARCHAR(20) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
@@ -22,8 +22,8 @@ CREATE TABLE "posts" (
     "post_title" VARCHAR(255) NOT NULL,
     "post_content" TEXT NOT NULL,
     "hero_image" VARCHAR(255),
-    "created_by" INTEGER NOT NULL,
-    "updated_by" INTEGER NOT NULL,
+    "created_by" VARCHAR(20) NOT NULL,
+    "updated_by" VARCHAR(20) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
@@ -38,8 +38,8 @@ CREATE TABLE "comments" (
     "post_id" INTEGER NOT NULL,
     "comment_content" TEXT NOT NULL,
     "parent_comment_id" INTEGER,
-    "created_by" INTEGER NOT NULL,
-    "updated_by" INTEGER NOT NULL,
+    "created_by" VARCHAR(20) NOT NULL,
+    "updated_by" VARCHAR(20) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
@@ -61,7 +61,7 @@ CREATE TABLE "votes" (
     "vote" SMALLINT NOT NULL,
     "post_id" INTEGER,
     "comment_id" INTEGER,
-    "user_id" INTEGER NOT NULL,
+    "user_id" VARCHAR(20) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -87,6 +87,7 @@ CREATE TABLE "post_updates" (
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
+    "public_id" VARCHAR(20) NOT NULL,
     "sns_id" VARCHAR(255) NOT NULL,
     "auth_provider" VARCHAR(50) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
@@ -109,7 +110,7 @@ CREATE TABLE "roles" (
 
 -- CreateTable
 CREATE TABLE "user_roles" (
-    "userId" INTEGER NOT NULL,
+    "userId" VARCHAR(20) NOT NULL,
     "roleId" INTEGER NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
 
@@ -120,6 +121,7 @@ CREATE TABLE "user_roles" (
 CREATE TABLE "user_info" (
     "userId" INTEGER NOT NULL,
     "display_name" VARCHAR(255) NOT NULL,
+    "profile_image" VARCHAR(255),
     "score" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -138,6 +140,9 @@ CREATE UNIQUE INDEX "posts_slug_key" ON "posts"("slug");
 CREATE UNIQUE INDEX "votes_user_id_post_id_comment_id_key" ON "votes"("user_id", "post_id", "comment_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_public_id_key" ON "users"("public_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "users_sns_id_key" ON "users"("sns_id");
 
 -- CreateIndex
@@ -153,7 +158,7 @@ ALTER TABLE "categories" ADD CONSTRAINT "categories_parent_category_id_fkey" FOR
 ALTER TABLE "posts" ADD CONSTRAINT "posts_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "posts" ADD CONSTRAINT "posts_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "posts" ADD CONSTRAINT "posts_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("public_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -162,10 +167,10 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_post_id_fkey" FOREIGN KEY ("post
 ALTER TABLE "comments" ADD CONSTRAINT "comments_parent_comment_id_fkey" FOREIGN KEY ("parent_comment_id") REFERENCES "comments"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "comments" ADD CONSTRAINT "comments_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("public_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "votes" ADD CONSTRAINT "votes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "votes" ADD CONSTRAINT "votes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("public_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "votes" ADD CONSTRAINT "votes_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -183,7 +188,7 @@ ALTER TABLE "post_updates" ADD CONSTRAINT "post_updates_post_id_fkey" FOREIGN KE
 ALTER TABLE "roles" ADD CONSTRAINT "roles_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("public_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

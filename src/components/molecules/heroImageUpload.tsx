@@ -36,7 +36,7 @@ export const HeroImageUpload = ({
 
     try {
       setIsUploading(true)
-      const response = await uploadFile(file)
+      const response = await uploadFile(file, 'hero')
 
       if (response.success && response.data) {
         // If there's an existing image, delete it

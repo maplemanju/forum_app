@@ -14,7 +14,7 @@ export const executeVote = async (args: ExecuteVote) => {
   }
   try {
     // verify
-    await getUserById({ id: session.user.id })
+    await getUserById({ userId: session.user.id })
 
     const result = await voteRepository.executeVote(args, session)
     console.log('executeVote')

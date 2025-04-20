@@ -54,6 +54,7 @@ export type PostStats = {
 export const postRepository = {
   getPosts: async (args: GetPostBy & PostStats) => {
     const session = await getServerSession(authOptions)
+    console.log('session', session)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false, publishedAt: { not: null } },
       orderBy: [...(args.orderBy || []), { publishedAt: 'desc' }],
@@ -90,7 +91,7 @@ export const postRepository = {
         votes: session
           ? {
               where: {
-                userId: Number(session.user.id),
+                userId: session.user.id,
               },
               select: {
                 vote: true,
@@ -224,7 +225,7 @@ export const postRepository = {
         votes: session
           ? {
               where: {
-                userId: Number(session.user.id),
+                userId: session.user.id,
               },
               select: {
                 vote: true,
@@ -247,14 +248,17 @@ export const postRepository = {
   },
 
   createPost: async (args: CreatePost, session: Session) => {
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     const slug = generateSlug(args.postTitle)
     const { postTags, ...rest } = args
     const post = await prisma.posts.create({
       data: {
         ...rest,
         slug,
-        createdBy: Number(session.user.id),
-        updatedBy: Number(session.user.id),
+        createdBy: session.user.id,
+        updatedBy: session.user.id,
         publishedAt: new Date(), // TODO: add option to publish drafts
       },
     })
@@ -270,9 +274,12 @@ export const postRepository = {
 
   updatePost: async (args: UpdatePost, session: Session) => {
     const { postTags, id, ...rest } = args
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     const post = await prisma.posts.update({
       where: { id },
-      data: { ...rest, updatedBy: Number(session.user.id) },
+      data: { ...rest, updatedBy: session.user.id },
     })
     if (postTags?.tags) {
       await postRepository.upsertPostTags({
@@ -284,9 +291,12 @@ export const postRepository = {
   },
 
   deletePost: async (args: DeletePostProps, session: Session) => {
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
     return await prisma.posts.update({
       where: { id: args.id },
-      data: { isDeleted: true, updatedBy: Number(session.user.id) },
+      data: { isDeleted: true, updatedBy: session.user.id },
     })
   },
 

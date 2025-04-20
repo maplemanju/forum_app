@@ -10,7 +10,7 @@ export const voteRepository = {
   executeVote: async (args: ExecuteVote, session: Session) => {
     const existingVote = await prisma.votes.findFirst({
       where: {
-        userId: Number(session.user.id),
+        userId: session.user.id,
         ...(args.postId ? { postId: args.postId } : {}),
         ...(args.commentId ? { commentId: args.commentId } : {}),
       },
@@ -42,11 +42,15 @@ export const voteRepository = {
       }
     }
 
+    if (!session.user.id) {
+      throw new Error('User ID is required')
+    }
+
     // create new vote
     const newVote = await prisma.votes.create({
       data: {
         ...args,
-        userId: Number(session.user.id),
+        userId: session.user.id,
       },
     })
     return {

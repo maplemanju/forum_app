@@ -116,6 +116,7 @@ export const PostList = ({
                   label={`${
                     post.createdUser.userInfo?.displayName || 'Anonymous'
                   }`}
+                  linkPath={`/profile/${post.createdUser.publicId}`}
                 />
               </span>
 

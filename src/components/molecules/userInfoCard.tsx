@@ -1,9 +1,12 @@
 import dayjs from 'dayjs'
-// import Image from 'next/image'
+import Image from 'next/image'
 import Tooltip from '../atoms/tooltip'
+import { getImagePath } from '@/utils/getImagePath'
+import Link from 'next/link'
 
 type UserInfoCardProps = {
   user?: {
+    publicId: string
     userInfo?: {
       displayName: string
       createdAt: Date
@@ -11,7 +14,7 @@ type UserInfoCardProps = {
       isDeleted: boolean
       userId: number
       score: number
-      // avatar: string
+      profileImage?: string | null
       // bio: string
     } | null
     createdAt: Date
@@ -36,22 +39,27 @@ export const UserInfoCard = ({
     >
       {/* Avatar */}
       <div className="w-16 h-16 rounded-full bg-border-secondary overflow-hidden">
-        {/* <Image
-          src={user.userInfo.avatar}
-          alt={user.userInfo?.displayName || 'User'}
-          width={64}
-          height={64}
-          className="w-full h-full object-cover"
-        /> */}
-        <div className="w-full h-full flex items-center justify-center text-subtext">
-          <span className="material-symbols-rounded !text-4xl">person</span>
-        </div>
+        {user?.userInfo?.profileImage ? (
+          <Image
+            src={getImagePath(user?.userInfo?.profileImage || '')}
+            alt={user?.userInfo?.displayName || 'User'}
+            width={64}
+            height={64}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-subtext">
+            <span className="material-symbols-rounded !text-4xl">person</span>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col md:items-center gap-1">
         {/* User Name */}
         <div className="font-medium text-foreground md:mb-1">
-          {user?.userInfo?.displayName || 'Unknown User'}
+          <Link href={`/profile/${user?.publicId}`}>
+            {user?.userInfo?.displayName || 'Unknown User'}
+          </Link>
         </div>
 
         {/* Join Date */}

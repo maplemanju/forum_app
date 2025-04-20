@@ -15,6 +15,7 @@ export type UploadFileProps = {
   file: Buffer
   filename: string
   mimetype: string
+  subDir: string
 }
 
 export type DeleteFileProps = {
@@ -26,6 +27,7 @@ export const s3Repository = {
     file,
     filename,
     mimetype,
+    subDir,
   }: UploadFileProps): Promise<string> => {
     try {
       // Create unique filename to prevent collisions
@@ -37,14 +39,14 @@ export const s3Repository = {
       // Upload to MinIO
       await minioClient.putObject(
         BUCKET_NAME,
-        uniqueFilename,
+        `${subDir}/${uniqueFilename}`,
         file,
         file.length,
         { 'Content-Type': mimetype }
       )
 
       // Return the public URL
-      return `/${BUCKET_NAME}/${uniqueFilename}`
+      return `/${BUCKET_NAME}/${subDir}/${uniqueFilename}`
     } catch (error) {
       console.error('S3 upload failed:', error)
       throw new Error('Failed to upload file to S3')

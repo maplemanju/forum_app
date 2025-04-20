@@ -3,11 +3,11 @@ model Votes {
   vote      Int      @map("vote") @db.SmallInt
   postId    Int?     @map("post_id")
   commentId Int?     @map("comment_id")
-  userId    Int      @map("user_id")
+  userId    String   @map("user_id") @db.VarChar(20)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user    Users     @relation(fields: [userId], references: [id])
+  user    Users     @relation(fields: [userId], references: [publicId])
   post    Posts?    @relation(fields: [postId], references: [id])
   comment Comments? @relation(fields: [commentId], references: [id])
 

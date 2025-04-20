@@ -53,6 +53,7 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
                 label={`${
                   post.createdUser.userInfo?.displayName || 'Anonymous'
                 }`}
+                linkPath={`/profile/${post.createdUser.publicId}`}
               />
 
               <Tooltip

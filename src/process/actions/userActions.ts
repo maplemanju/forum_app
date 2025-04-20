@@ -1,12 +1,14 @@
 'use server'
 
+import { User } from '@/types/user'
 import userRepository, {
   GetBySnsIdProps,
   CreateUserProps,
   GetByIdProps,
   GetUserRolesProps,
+  UpdateUserProfileProps,
 } from '../repositories/userRepository'
-import { ApplicationError } from '@/utils/errors'
+import { ApplicationError, ResponseType } from '@/utils/errors'
 
 export const getUserBySnsId = async (args: GetBySnsIdProps) => {
   try {
@@ -20,15 +22,25 @@ export const getUserBySnsId = async (args: GetBySnsIdProps) => {
   }
 }
 
-export const getUserById = async (args: GetByIdProps) => {
+export type GetUserByIdResponse = ResponseType<User>
+export const getUserById = async (
+  args: GetByIdProps
+): Promise<GetUserByIdResponse> => {
   try {
-    const userInfo = userRepository.getById(args)
+    const userInfo = await userRepository.getById(args)
     console.log('getUserById')
-    return userInfo
+    return {
+      data: userInfo,
+      success: true,
+    }
   } catch (err) {
     const error = err as Error
     console.error('Error getting user by id', error?.message)
-    throw new ApplicationError('Error getting user by id')
+    return {
+      success: false,
+      message: 'Error getting user by id',
+      type: 'error',
+    }
   }
 }
 
@@ -53,5 +65,33 @@ export const createUser = async (args: CreateUserProps) => {
     const error = err as Error
     console.error('Error creating user', error?.message)
     throw new ApplicationError('Error creating user')
+  }
+}
+
+export type UpdateUserProfileResponse = ResponseType<
+  Partial<UpdateUserProfileProps>
+>
+export const updateUserProfile = async (
+  args: UpdateUserProfileProps
+): Promise<UpdateUserProfileResponse> => {
+  try {
+    const response = await userRepository.updateUserProfile(args)
+    console.log('updateUserProfile')
+    return {
+      data: {
+        userId: args.userId,
+        displayName: response.displayName,
+        profileImage: response.profileImage || '',
+      },
+      success: true,
+    }
+  } catch (err) {
+    const error = err as Error
+    console.error('Error updating user profile', error?.message)
+    return {
+      success: false,
+      message: 'Error updating user profile',
+      type: 'error',
+    }
   }
 }

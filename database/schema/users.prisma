@@ -1,5 +1,6 @@
 model Users {
   id           Int      @id @default(autoincrement())
+  publicId     String   @unique @map("public_id") @db.VarChar(20)
   snsId        String   @unique @map("sns_id") @db.VarChar(255)
   authProvider String   @map("auth_provider") @db.VarChar(50)
   email        String   @unique @map("email") @db.VarChar(255)
@@ -29,11 +30,11 @@ model Roles {
 }
 
 model UserRoles {
-  userId    Int
+  userId    String  @db.VarChar(20)
   roleId    Int
   isDeleted Boolean @default(false) @map("is_deleted")
 
-  user Users @relation(fields: [userId], references: [id])
+  user Users @relation(fields: [userId], references: [publicId])
   role Roles @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
@@ -41,12 +42,13 @@ model UserRoles {
 }
 
 model UserInfo {
-  userId      Int      @id
-  displayName String   @map("display_name") @db.VarChar(255)
-  score       Int      @default(0) @map("score")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  isDeleted   Boolean  @default(false) @map("is_deleted")
+  userId       Int      @id
+  displayName  String   @map("display_name") @db.VarChar(255)
+  profileImage String?  @map("profile_image") @db.VarChar(255)
+  score        Int      @default(0) @map("score")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  isDeleted    Boolean  @default(false) @map("is_deleted")
 
   user Users @relation(fields: [userId], references: [id])
 
