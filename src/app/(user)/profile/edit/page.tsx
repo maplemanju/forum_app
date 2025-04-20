@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { Alert } from '@/components/atoms/alerts'
+import { generateSiteMetadata } from '@/utils/metadata'
 
 export default async function EditProfilePage() {
   const session = await getServerSession(authOptions)
@@ -22,4 +23,12 @@ export default async function EditProfilePage() {
       <ProfileEdit publicId={publicId} user={user.data} />
     </Content>
   )
+}
+
+export async function generateMetadata() {
+  return generateSiteMetadata({
+    title: `Edit Profile`,
+    description: 'Edit your profile',
+    noIndex: true,
+  })
 }
