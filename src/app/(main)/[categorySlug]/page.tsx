@@ -8,7 +8,6 @@ import CategoryToolbox from '@/components/molecules/categoryToolbox'
 import CategoryContent from '@/components/organisms/categoryContent'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
-import { mdxSerializer } from '@/utils/mdxSerializer'
 import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
 import { Suspense } from 'react'
@@ -39,10 +38,6 @@ export default async function CategoryPage({
       })
     : null
 
-  const mdxSource = await mdxSerializer(
-    categoryResponse.data?.categoryDescription ?? ''
-  )
-
   // for sidebar (suspended)
   const newPostsResponse = getRecentPosts({})
   const categoryListPromise = getAllCategories()
@@ -53,10 +48,7 @@ export default async function CategoryPage({
       <Content>
         <Breadcrumbs category={categoryResponse.data} />
         <CategoryToolbox category={categoryResponse.data} />
-        <CategoryContent
-          category={categoryResponse.data}
-          mdxSource={mdxSource}
-        />
+        <CategoryContent category={categoryResponse.data} />
         <CategoryList
           categories={categoryResponse.data?.childCategories}
           label="Subcategories"
