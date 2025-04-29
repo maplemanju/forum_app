@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXContent } from '../templates/MDXContent'
 
 interface CategoryContentProps {
   category?: CategoryType | null
@@ -22,7 +23,7 @@ const CategoryContent: React.FC<CategoryContentProps> = ({
       </h1>
 
       <div className="post-content mt-3">
-        <MDXRemote {...mdxSource} />
+        <MDXContent source={mdxSource} />
       </div>
     </div>
   )
