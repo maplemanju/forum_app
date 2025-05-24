@@ -9,7 +9,7 @@ const minioClient = new Client({
   secretKey: process.env.S3_SECRET_KEY,
 })
 
-const BUCKET_NAME = 'uploads'
+const bucketName = process.env.S3_BUCKET_NAME || 'uploads'
 
 export type UploadFileProps = {
   file: Buffer
@@ -38,7 +38,7 @@ export const s3Repository = {
 
       // Upload to MinIO
       await minioClient.putObject(
-        BUCKET_NAME,
+        bucketName,
         `${subDir}/${uniqueFilename}`,
         file,
         file.length,
@@ -46,7 +46,7 @@ export const s3Repository = {
       )
 
       // Return the public URL
-      return `/${BUCKET_NAME}/${subDir}/${uniqueFilename}`
+      return `/${bucketName}/${subDir}/${uniqueFilename}`
     } catch (error) {
       console.error('S3 upload failed:', error)
       throw new Error('Failed to upload file to S3')
@@ -62,7 +62,7 @@ export const s3Repository = {
       }
 
       // Delete object from MinIO
-      await minioClient.removeObject(BUCKET_NAME, filename)
+      await minioClient.removeObject(bucketName, filename)
       return true
     } catch (error) {
       console.error('S3 delete failed:', error)
@@ -73,9 +73,9 @@ export const s3Repository = {
   // Initialize bucket if it doesn't exist
   initBucket: async () => {
     try {
-      const bucketExists = await minioClient.bucketExists(BUCKET_NAME)
+      const bucketExists = await minioClient.bucketExists(bucketName)
       if (!bucketExists) {
-        await minioClient.makeBucket(BUCKET_NAME)
+        await minioClient.makeBucket(bucketName)
       }
 
       const publicPolicy = JSON.stringify({
@@ -86,14 +86,14 @@ export const s3Repository = {
             Principal: { AWS: ['*'] },
             Action: ['s3:GetObject', 's3:GetBucketLocation'],
             Resource: [
-              `arn:aws:s3:::${BUCKET_NAME}/*`,
-              `arn:aws:s3:::${BUCKET_NAME}`,
+              `arn:aws:s3:::${bucketName}/*`,
+              `arn:aws:s3:::${bucketName}`,
             ],
           },
         ],
       })
 
-      await minioClient.setBucketPolicy(BUCKET_NAME, publicPolicy)
+      await minioClient.setBucketPolicy(bucketName, publicPolicy)
     } catch (error) {
       console.error('Failed to initialize bucket:', error)
       throw new Error('Failed to initialize S3 bucket')
