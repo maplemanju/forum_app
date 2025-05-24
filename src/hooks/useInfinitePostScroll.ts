@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { PostType } from '@/types/post'
 import {
   getPostsByCategory,
@@ -25,9 +25,19 @@ export const useInfinitePostScroll = ({
   const [posts, setPosts] = useState<PostType[]>(initialPosts)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+  const prevInitialPostsRef = useRef<PostType[]>(initialPosts)
 
+  // Update posts when initialPosts changes (new search)
   useEffect(() => {
-    setPosts(initialPosts)
+    // Only update if initialPosts actually changed
+    if (
+      JSON.stringify(prevInitialPostsRef.current) !==
+      JSON.stringify(initialPosts)
+    ) {
+      setPosts(initialPosts)
+      prevInitialPostsRef.current = initialPosts
+      setHasMore(true) // Reset hasMore when new search is performed
+    }
   }, [initialPosts])
 
   useEffect(() => {
@@ -36,7 +46,6 @@ export const useInfinitePostScroll = ({
         if (entries[0].isIntersecting && hasMore && !isLoading) {
           setIsLoading(true)
           try {
-            console.log('loading more posts')
             let response: ResponseType<PostType[]>
             if (typeOfList === 'category' && categoryId) {
               response = await getPostsByCategory({
