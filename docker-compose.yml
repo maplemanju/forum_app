@@ -11,18 +11,6 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  shadow_db:
-    container_name: shadow_db
-    image: postgres:15
-    environment:
-      POSTGRES_DB: 'app'
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'password'
-    ports:
-      - '54321:5432'
-    volumes:
-      - shadow_db:/var/lib/postgresql/data
-
   minio:
     image: minio/minio
     ports:
@@ -37,5 +25,4 @@ services:
 
 volumes:
   db:
-  shadow_db:
   minio_data:
