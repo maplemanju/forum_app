@@ -3,7 +3,7 @@ import { Client } from 'minio'
 // MinIO client configuration
 const minioClient = new Client({
   endPoint: process.env.S3_ENDPOINT || 'localhost',
-  port: parseInt(process.env.S3_PORT || '9000'),
+  port: process.env.S3_PORT ? parseInt(process.env.S3_PORT) : undefined,
   useSSL: process.env.S3_USE_SSL === 'true',
   accessKey: process.env.S3_ACCESS_KEY,
   secretKey: process.env.S3_SECRET_KEY,
