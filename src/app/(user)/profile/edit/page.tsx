@@ -3,7 +3,7 @@ import { Content } from '@/components/templates/content'
 import { getUserById } from '@/process/actions/userActions'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { Alert } from '@/components/atoms/alerts'
 import { generateSiteMetadata } from '@/utils/metadata'
 

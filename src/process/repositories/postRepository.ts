@@ -3,7 +3,7 @@ import { generateSlug } from '@/utils/slugGenerator'
 import { Prisma } from '@prisma/client'
 import { getServerSession, Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 
 export type GetByCategory = {
   categoryId: number

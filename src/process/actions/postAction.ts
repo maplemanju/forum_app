@@ -8,7 +8,7 @@ import postRepository, {
   DeletePostProps,
 } from '../repositories/postRepository'
 import { PostType } from '@/types/post'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
 import { getUserById } from './userActions'

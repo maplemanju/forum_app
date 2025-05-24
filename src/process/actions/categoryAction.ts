@@ -7,7 +7,7 @@ import categoryRepository, {
   DeleteCategoryProps,
 } from '../repositories/categoryRepository'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
 import { Prisma } from '@prisma/client'

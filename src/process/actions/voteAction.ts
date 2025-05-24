@@ -3,9 +3,8 @@
 import { ExecuteVote } from '../repositories/voteRepository'
 import { voteRepository } from '../repositories/voteRepository'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { getUserById } from './userActions'
-import postRepository from '../repositories/postRepository'
 
 export const executeVote = async (args: ExecuteVote) => {
   const session = await getServerSession(authOptions)

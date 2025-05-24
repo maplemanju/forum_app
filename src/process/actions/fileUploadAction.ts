@@ -1,7 +1,7 @@
 'use server'
 
 import { ResponseType } from '@/utils/errors'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
 import { MAX_FILE_SIZE } from '@/utils/consts'
 import { s3Repository } from '../repositories/s3Repository'
