@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import '@material-symbols/font-400/rounded.css'
 import { notoSansJP, notoSans } from '@/utils/fonts'
 import Wrapper from '../components/templates/wrapper'

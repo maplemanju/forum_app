@@ -40,7 +40,6 @@ export const PostList = ({
   categoryId,
   keywords,
   showSort,
-  sort,
 }: PostListProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -52,7 +51,6 @@ export const PostList = ({
     typeOfList: typeOfList,
     categoryId: categoryId,
     keywords: keywords,
-    sort: sort,
   })
 
   if (!posts || posts.length === 0) {

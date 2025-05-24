@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         let userName = existingUser?.userInfo?.displayName
         let publicId = existingUser?.publicId
         let roles = existingUser?.userRoles.map((role) => role.roleId) || []
-        let profileImage = existingUser?.userInfo?.profileImage
+        const profileImage = existingUser?.userInfo?.profileImage
         if (!existingUser) {
           // Create a new user in the database if they don't exist
           const createdUser = await createUser({

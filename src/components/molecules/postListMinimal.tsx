@@ -3,8 +3,6 @@
 import { PostType } from '@/types/post'
 import Link from 'next/link'
 import Tooltip from '@/components/atoms/tooltip'
-import { useSession } from 'next-auth/react'
-import { Button } from '@/components/atoms/button'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { fromNowShort } from '@/utils/dateFormatter'
@@ -17,8 +15,6 @@ type PostListProps = {
 }
 
 export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
-  const { data: session } = useSession()
-
   if (!posts || posts.length === 0) {
     return <div className="text-subtext italic">No posts found</div>
   }

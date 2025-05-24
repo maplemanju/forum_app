@@ -15,23 +15,19 @@ export const useInfinitePostScroll = ({
   typeOfList,
   categoryId,
   keywords,
-  sort,
 }: {
   initialPosts: PostType[]
   observerTarget: React.RefObject<HTMLDivElement | null>
   typeOfList: 'recent' | 'category' | 'keyword'
   categoryId?: number | null
   keywords?: string[] | null
-  sort?: 'recent' | 'popular' | 'rated'
 }) => {
   const [posts, setPosts] = useState<PostType[]>(initialPosts)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
-    if (JSON.stringify(posts) !== JSON.stringify(initialPosts)) {
-      setPosts(initialPosts)
-    }
+    setPosts(initialPosts)
   }, [initialPosts])
 
   useEffect(() => {
@@ -82,7 +78,15 @@ export const useInfinitePostScroll = ({
     }
 
     return () => observer.disconnect()
-  }, [posts.length, hasMore, isLoading, observerTarget])
+  }, [
+    posts.length,
+    hasMore,
+    isLoading,
+    observerTarget,
+    categoryId,
+    typeOfList,
+    keywords,
+  ])
 
   return {
     posts,

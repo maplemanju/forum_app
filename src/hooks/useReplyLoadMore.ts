@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ReplyType } from '@/types/comment'
 import { getRepliesByCommentId } from '@/process/actions/commentAction'
 import { useSearchParams } from 'next/navigation'
@@ -12,7 +12,7 @@ export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
   const [isInitialized, setIsInitialized] = useState(false)
   const searchParams = useSearchParams()
 
-  const handleLoadMore = async () => {
+  const handleLoadMore = useCallback(async () => {
     if (hasMore && !isLoading) {
       setIsLoading(true)
       console.log('loading more replies')
@@ -41,7 +41,7 @@ export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
       }
       setIsLoading(false)
     }
-  }
+  }, [commentId, hasMore, isLoading, searchParams, replies])
 
   const isInitialLoad = (replyResponse: ReplyType[]) => {
     return (
@@ -56,7 +56,7 @@ export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
       setIsInitialized(true)
       handleLoadMore()
     }
-  }, [commentId, isInitialized])
+  }, [commentId, isInitialized, handleLoadMore])
 
   return {
     replies,

@@ -14,13 +14,7 @@ import {
 } from '@/process/actions/userActions'
 import { User } from '@/types/user'
 
-export const ProfileEdit = ({
-  user,
-  publicId,
-}: {
-  user: User
-  publicId: string
-}) => {
+export const ProfileEdit = ({ user }: { user: User }) => {
   const router = useRouter()
   const { data: session, update } = useSession()
   const [profileImage, setProfileImage] = useState(
@@ -47,7 +41,7 @@ export const ProfileEdit = ({
   }
 
   const handleSubmit = async (
-    prevState: any,
+    prevState: UpdateUserProfileResponse,
     formData: FormData
   ): Promise<UpdateUserProfileResponse> => {
     if (!session?.user?.id) {
@@ -68,7 +62,7 @@ export const ProfileEdit = ({
     return response
   }
 
-  const [formState, formAction, isPending] = useActionState(handleSubmit, {
+  const [formState, formAction] = useActionState(handleSubmit, {
     data: {
       userId: user.publicId,
       displayName: user.userInfo?.displayName || '',

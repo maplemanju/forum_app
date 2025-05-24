@@ -1,7 +1,7 @@
 import prisma from '@/utils/prisma'
 import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/auth'
 import { Prisma } from '@prisma/client'
 
 export type GetByPostId = {
@@ -115,8 +115,8 @@ export const commentRepository = {
     const comment = await prisma.comments.create({
       data: {
         ...args,
-        createdBy: session.user.id,
-        updatedBy: session.user.id,
+        createdBy: session.user.id!,
+        updatedBy: session.user.id!,
       },
       include: {
         createdUser: {

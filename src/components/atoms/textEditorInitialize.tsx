@@ -14,15 +14,10 @@ import {
   type MDXEditorMethods,
   type MDXEditorProps,
   BoldItalicUnderlineToggles,
-  StrikeThroughSupSubToggles,
   InsertImage,
   CreateLink,
-  BlockTypeSelect,
   Separator,
-  ButtonWithTooltip,
-  Button,
   UndoRedo,
-  ListsToggle,
 } from '@mdxeditor/editor'
 import { StrikeoutButton } from './mdxEditor/strikeoutButton'
 import { ListsButton } from './mdxEditor/listsButton'

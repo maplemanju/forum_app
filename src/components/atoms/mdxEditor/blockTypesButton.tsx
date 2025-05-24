@@ -26,9 +26,11 @@ export const BlockTypesButton: React.FC = () => {
           ),
           active: currentBlockType === 'quote',
           onChange: () => {
-            currentBlockType === 'quote'
-              ? convertSelectionToNode(() => $createParagraphNode())
-              : convertSelectionToNode(() => $createQuoteNode())
+            if (currentBlockType === 'quote') {
+              convertSelectionToNode(() => $createParagraphNode())
+            } else {
+              convertSelectionToNode(() => $createQuoteNode())
+            }
           },
         },
 
@@ -39,9 +41,11 @@ export const BlockTypesButton: React.FC = () => {
           ),
           active: currentBlockType === 'h2',
           onChange: () => {
-            currentBlockType === 'h2'
-              ? convertSelectionToNode(() => $createParagraphNode())
-              : convertSelectionToNode(() => $createHeadingNode('h2'))
+            if (currentBlockType === 'h2') {
+              convertSelectionToNode(() => $createParagraphNode())
+            } else {
+              convertSelectionToNode(() => $createHeadingNode('h2'))
+            }
           },
         },
         {
@@ -51,9 +55,11 @@ export const BlockTypesButton: React.FC = () => {
           ),
           active: currentBlockType === 'h3',
           onChange: () => {
-            currentBlockType === 'h3'
-              ? convertSelectionToNode(() => $createParagraphNode())
-              : convertSelectionToNode(() => $createHeadingNode('h3'))
+            if (currentBlockType === 'h3') {
+              convertSelectionToNode(() => $createParagraphNode())
+            } else {
+              convertSelectionToNode(() => $createHeadingNode('h3'))
+            }
           },
         },
       ]}

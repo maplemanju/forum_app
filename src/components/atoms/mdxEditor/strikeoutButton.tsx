@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  iconComponentFor$,
   useTranslation,
   applyFormat$,
   MultipleChoiceToggleGroup,
@@ -14,10 +13,7 @@ import { useCellValues, usePublisher } from '@mdxeditor/gurx'
  * @group Toolbar Components
  */
 export const StrikeoutButton: React.FC = () => {
-  const [currentFormat, iconComponentFor] = useCellValues(
-    currentFormat$,
-    iconComponentFor$
-  )
+  const [currentFormat] = useCellValues(currentFormat$)
 
   const t = useTranslation()
   const applyFormat = usePublisher(applyFormat$)

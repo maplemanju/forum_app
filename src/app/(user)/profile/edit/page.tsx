@@ -20,7 +20,7 @@ export default async function EditProfilePage() {
   return (
     <Content>
       <Alert response={user} />
-      <ProfileEdit publicId={publicId} user={user.data} />
+      <ProfileEdit user={user.data} />
     </Content>
   )
 }

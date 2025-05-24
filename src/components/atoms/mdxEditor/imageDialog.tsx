@@ -27,7 +27,9 @@ export const ImageDialog: React.FC = () => {
   const [formState, setFormState] = useState<ImageFormFields | null>(null)
 
   useEffect(() => {
-    setFormState(state.type === 'editing' ? (state.initialValues as any) : {})
+    setFormState(
+      state.type === 'editing' ? (state.initialValues as ImageFormFields) : null
+    )
   }, [state])
 
   const handleSubmit = async (formData: FormData) => {

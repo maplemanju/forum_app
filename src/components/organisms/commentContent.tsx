@@ -7,7 +7,6 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSession } from 'next-auth/react'
 import { fromNowShort } from '@/utils/dateFormatter'
-import { deleteComment } from '@/process/actions/commentAction'
 import { Button } from '../atoms/button'
 import { ReplyList } from './replyList'
 import { mdxSerializer } from '@/utils/mdxSerializer'
@@ -38,7 +37,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
     setCommentState(comment)
   }, [comment])
 
-  const onReply = (parentCommentId: number) => {
+  const onReply = () => {
     setOpenReply(!openReply)
     if (!openReply) {
       setOpenReplies(true)
@@ -198,9 +197,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                     )}
                   {session && onReply && (
                     <Button
-                      onClick={() =>
-                        commentState.id && onReply(commentState.id)
-                      }
+                      onClick={onReply}
                       size="xsmall"
                       color="neutral"
                       boxStyle="box"

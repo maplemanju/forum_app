@@ -1,4 +1,4 @@
-import { CommentType, ReplyType } from '@/types/comment'
+import { ReplyType } from '@/types/comment'
 import Tooltip from '../atoms/tooltip'
 import { useEffect, useState } from 'react'
 import { CommentEdit } from './commentEdit'

@@ -36,14 +36,16 @@ export const TextEditor = ({
   const [content, setContent] = useState<string>(markdown || '')
 
   useEffect(() => {
-    console.log(markdown)
-    if (markdown !== content) {
-      setContent(markdown || '')
-      // Force update the editor
-      if (editorRef.current) {
-        editorRef.current.setMarkdown(markdown || '')
+    setContent((prev) => {
+      if (markdown !== prev) {
+        // Force update the editor
+        if (editorRef.current) {
+          editorRef.current.setMarkdown(markdown || '')
+        }
+        return markdown || ''
       }
-    }
+      return prev
+    })
   }, [markdown])
 
   const handleChange = debounce((newContent: string) => {

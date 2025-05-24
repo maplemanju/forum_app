@@ -42,7 +42,7 @@ export default function CategoryEdit({
   }, [category])
 
   const handleContentChange = useCallback((newContent: string) => {
-    // setContent(newContent)
+    setContent(newContent)
   }, [])
 
   const handleSubmit = async (
