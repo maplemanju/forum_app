@@ -14,6 +14,13 @@ export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
 
   const handleLoadMore = useCallback(async () => {
     if (hasMore && !isLoading) {
+      const isInitialLoad = (replyResponse: ReplyType[]) => {
+        return (
+          JSON.stringify(replies) === JSON.stringify(replyResponse) ||
+          replies.length === 0
+        )
+      }
+
       setIsLoading(true)
       console.log('loading more replies')
       const sort = searchParams.get('sort') as
@@ -42,13 +49,6 @@ export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
       setIsLoading(false)
     }
   }, [commentId, hasMore, isLoading, searchParams, replies])
-
-  const isInitialLoad = (replyResponse: ReplyType[]) => {
-    return (
-      JSON.stringify(replies) === JSON.stringify(replyResponse) ||
-      replies.length === 0
-    )
-  }
 
   // Load initial replies when mounted
   useEffect(() => {
