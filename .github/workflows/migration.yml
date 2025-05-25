@@ -4,22 +4,52 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup-ssh.yml
-    secrets:
-      EC2_HOST: ${{ secrets.EC2_HOST }}
-      EC2_USER: ${{ secrets.EC2_USER }}
-      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-      ENV_VARS: ${{ secrets.ENV_VARS }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
-
   migrate:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get runner IP address
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      - name: Whitelist runner IP address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      - name: Setup SSH
+        run: |
+          # Create .ssh directory with correct permissions
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          # Write SSH key with proper format
+          echo -e "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Start SSH agent
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
+          # Create known_hosts if it doesn't exist
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+          # Add host key to known_hosts
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+          # Test SSH connection with verbose output
+          ssh -v -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
+
       - name: Run Prisma Migrations on EC2
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
@@ -31,14 +61,11 @@ jobs:
             yarn prisma migrate deploy --schema=./prisma/schema.prisma
           EOF
 
-  revoke:
-    needs: migrate
-    if: always()
-    uses: ./.github/workflows/revoke-ip.yml
-    with:
-      runner_ip: ${{ needs.setup.outputs.runner_ip }}
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
+      - name: Revoke runner IP address
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
