@@ -1,0 +1,37 @@
+# Dockerfile.prod
+
+# Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# Copy all source files
+COPY . .
+
+# Generate Prisma client using .env (which is .env.production)
+RUN yarn prisma generate
+
+# Build Next.js app
+RUN yarn next build
+
+# -----------------------------
+
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy from builder stage
+COPY --from=builder /app ./
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+EXPOSE 3000
+
+# Start the app
+CMD ["yarn", "next", "start"]

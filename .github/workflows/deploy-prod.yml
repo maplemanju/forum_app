@@ -1,0 +1,31 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup-ssh.yml
+
+  deploy:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Copy files to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "mkdir -p ~/lifehacksjapan-forum"
+          scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/lifehacksjapan-forum
+
+      - name: Deploy Docker on EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/lifehacksjapan-forum
+            docker stop lifehacksjapan-container || true && docker rm lifehacksjapan-container || true
+            docker build -f docker/Dockerfile.prod -t lifehacksjapan-image .
+            docker run -d -p 3000:3000 --env-file .env --name lifehacksjapan-container lifehacksjapan-image
+          EOF
