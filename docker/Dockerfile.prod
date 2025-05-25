@@ -12,8 +12,9 @@ RUN yarn install --frozen-lockfile
 # Copy all source files
 COPY . .
 
-# Generate Prisma client using .env (which is .env.production)
-RUN yarn prisma generate
+# Create generated directory and generate Prisma client
+RUN mkdir -p database/schema/generated/client && \
+    yarn prisma generate
 
 # Build Next.js app
 RUN yarn next build
