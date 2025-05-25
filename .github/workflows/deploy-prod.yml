@@ -70,8 +70,24 @@ jobs:
       - name: Deploy Docker on EC2
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            # Clean up only what we need
+            echo "Cleaning up Docker..."
+            
+            # Stop and remove our container if it exists
+            docker stop lifehacksjapan-container || true
+            docker rm lifehacksjapan-container || true
+            
+            # Remove our specific image
+            docker rmi lifehacksjapan-image || true
+            
+            # Remove dangling images (images without tags)
+            docker image prune -f
+            
+            # Remove unused volumes
+            docker volume prune -f
+
+            # Deploy
             cd ~/lifehacksjapan-forum
-            docker stop lifehacksjapan-container || true && docker rm lifehacksjapan-container || true
             docker build -f docker/Dockerfile.prod -t lifehacksjapan-image .
             docker run -d -p 3000:3000 --env-file .env --name lifehacksjapan-container lifehacksjapan-image
           EOF
