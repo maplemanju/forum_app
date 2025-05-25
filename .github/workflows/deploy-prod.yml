@@ -1,9 +1,7 @@
 name: Deploy to EC2
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -18,7 +16,8 @@ jobs:
 
       - name: Get runner IP address
         id: ip
-        uses: haythem/public-ip@v1.2
+        run: |
+          echo "ipv4=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
 
       - name: Whitelist runner IP address
         run: |
