@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Setup SSH
         run: |
-          # Create .ssh directory
+          # Create .ssh directory with correct permissions
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
@@ -30,27 +30,16 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
 
-          # Add host key with retry
-          for i in {1..3}; do
-            if ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts; then
-              echo "Successfully added host key"
-              break
-            else
-              echo "Attempt $i failed, retrying..."
-              sleep 2
-            fi
-          done
+          # Create known_hosts if it doesn't exist
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
-          chmod 600 ~/.ssh/known_hosts
+          # Add host key to known_hosts
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
 
-          # Test SSH connection
-          ssh -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
+          # Test SSH connection with verbose output
+          ssh -v -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
 
       - name: Create env file
         run: |
-          if [ -z "${{ secrets.EC2_USER }}" ]; then
-            echo "Error: EC2_USER secret is not set"
-            exit 1
-          fi
-
           ssh -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo '${{ secrets.ENV_VARS }}' > ~/lifehacksjapan-forum/.env"
