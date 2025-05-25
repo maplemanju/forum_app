@@ -2,7 +2,15 @@ name: Setup SSH and Environment
 
 on:
   workflow_call:
-    secrets: inherit
+    secrets:
+      EC2_HOST:
+        required: true
+      EC2_USER:
+        required: true
+      EC2_SSH_KEY:
+        required: true
+      ENV_VARS:
+        required: true
 
 jobs:
   setup:
