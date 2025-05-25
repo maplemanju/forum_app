@@ -6,6 +6,11 @@ on:
 jobs:
   setup:
     uses: ./.github/workflows/setup-ssh.yml
+    secrets:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{ secrets.EC2_USER }}
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      ENV_VARS: ${{ secrets.ENV_VARS }}
 
   migrate:
     needs: setup
