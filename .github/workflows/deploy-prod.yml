@@ -94,7 +94,7 @@ jobs:
             
             # Build with no cache and increased memory limit
             echo "Building Docker image..."
-            DOCKER_BUILDKIT=1 docker build \
+            docker build \
               --no-cache \
               --memory=4g \
               --memory-swap=4g \
