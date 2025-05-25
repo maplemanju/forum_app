@@ -5,7 +5,7 @@ on:
     secrets:
       EC2_HOST:
         required: true
-      EC2_USER:
+      EC twice_USER:
         required: true
       EC2_SSH_KEY:
         required: true
@@ -18,18 +18,33 @@ jobs:
     steps:
       - name: Setup SSH
         run: |
-          if [ -z "${{ secrets.EC2_HOST }}" ]; then
-            echo "Error: EC2_HOST secret is not set"
-            exit 1
-          fi
-
+          # Create .ssh directory
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+
+          # Write SSH key with proper format
+          echo -e "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+          # Start SSH agent
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+          # Add host key with retry
+          for i in {1..3}; do
+            if ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts; then
+              echo "Successfully added host key"
+              break
+            else
+              echo "Attempt $i failed, retrying..."
+              sleep 2
+            fi
+          done
+
           chmod 600 ~/.ssh/known_hosts
+
+          # Test SSH connection
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
 
       - name: Create env file
         run: |
