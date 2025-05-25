@@ -13,8 +13,8 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Create generated directory and generate Prisma client
-RUN mkdir -p database/schema/generated/client && \
-    yarn prisma generate
+RUN mkdir -p database/schema/generated/client
+RUN yarn prisma generate
 
 # Build Next.js app
 RUN yarn next build
@@ -26,8 +26,12 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy from builder stage
-COPY --from=builder /app ./
+# Copy only necessary files from builder
+COPY --from=builder /app/package.json /app/yarn.lock ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/database/schema/generated ./database/schema/generated
 
 ENV NODE_ENV=production
 ENV PORT=3000
