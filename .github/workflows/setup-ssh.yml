@@ -9,11 +9,24 @@ jobs:
     steps:
       - name: Setup SSH
         run: |
+          if [ -z "${{ secrets.EC2_HOST }}" ]; then
+            echo "Error: EC2_HOST secret is not set"
+            exit 1
+          fi
+
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
       - name: Create env file
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo '${{ secrets.ENV_VARS }}' > ~/lifehacksjapan-forum/.env"
+          if [ -z "${{ secrets.EC2_USER }}" ]; then
+            echo "Error: EC2_USER secret is not set"
+            exit 1
+          fi
+
+          ssh -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo '${{ secrets.ENV_VARS }}' > ~/lifehacksjapan-forum/.env"
