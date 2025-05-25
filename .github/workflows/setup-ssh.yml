@@ -5,7 +5,7 @@ on:
     secrets:
       EC2_HOST:
         required: true
-      EC twice_USER:
+      EC2_USER:
         required: true
       EC2_SSH_KEY:
         required: true
