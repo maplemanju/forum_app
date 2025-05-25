@@ -6,22 +6,65 @@ on:
       - main
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup-ssh.yml
-    secrets:
-      EC2_HOST: ${{ secrets.EC2_HOST }}
-      EC2_USER: ${{ secrets.EC2_USER }}
-      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-      ENV_VARS: ${{ secrets.ENV_VARS }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
+  whitelist-ip:
+    runs-on: ubuntu-latest
+    outputs:
+      runner_ip: ${{ steps.ip.outputs.ipv4 }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get runner IP address
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      - name: Whitelist runner IP address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
   deploy:
-    needs: setup
+    needs: whitelist-ip
     runs-on: ubuntu-latest
     steps:
+      - name: Setup SSH
+        run: |
+          # Create .ssh directory with correct permissions
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          # Write SSH key with proper format
+          echo -e "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Start SSH agent
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
+          # Create known_hosts if it doesn't exist
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+          # Add host key to known_hosts
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+          # Test SSH connection with verbose output
+          ssh -v -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
+
+      - name: Create env file
+        run: |
+          ssh -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" << 'EOF'
+            mkdir -p ~/lifehacksjapan-forum
+            echo '${{ secrets.ENV_VARS }}' > ~/lifehacksjapan-forum/.env
+          EOF
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -40,11 +83,11 @@ jobs:
           EOF
 
   revoke:
-    needs: deploy
+    needs: [whitelist-ip, deploy]
     if: always()
     uses: ./.github/workflows/revoke-ip.yml
     with:
-      runner_ip: ${{ needs.setup.outputs.runner_ip }}
+      runner_ip: ${{ needs.whitelist-ip.outputs.runner_ip }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
