@@ -31,11 +31,14 @@ jobs:
             yarn prisma migrate deploy --schema=./prisma/schema.prisma
           EOF
 
-      - name: Revoke runner IP address
-        if: always()
-        run: |
-          aws ec2 revoke-security-group-ingress \
-            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ needs.setup.outputs.runner_ip }}/32
+  revoke:
+    needs: migrate
+    if: always()
+    uses: ./.github/workflows/revoke-ip.yml
+    with:
+      runner_ip: ${{ needs.setup.outputs.runner_ip }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_SECURITY_GROUP_ID: ${{ secrets.AWS_SECURITY_GROUP_ID }}
