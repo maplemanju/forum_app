@@ -98,7 +98,7 @@ jobs:
               --no-cache \
               --memory=1g \
               --memory-swap=1g \
-              --cpus=0.5 \
+              --cpu-shares=512 \
               -f docker/Dockerfile.prod \
               -t lifehacksjapan-image .; then
               echo "Docker build failed!"
