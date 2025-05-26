@@ -15,9 +15,9 @@ RUN yarn install --frozen-lockfile
 # Copy only necessary files for build
 COPY src/ ./src/
 COPY public/ ./public/
-COPY next.config.js ./
+COPY next.config.ts ./
 COPY tsconfig.json ./
-COPY postcss.config.js ./
+COPY postcss.config.mjs ./
 COPY eslint.config.mjs ./
 COPY next-env.d.ts ./
 COPY database/schema ./database/schema
