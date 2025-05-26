@@ -82,11 +82,12 @@ jobs:
             # Remove our specific image
             docker rmi lifehacksjapan-image || true
             
-            # Remove dangling images (images without tags)
-            docker image prune -f
+            # Clean up all unused Docker resources
+            docker system prune -af --volumes
             
-            # Remove unused volumes
-            docker volume prune -f
+            # Verify cleanup
+            echo "Docker cleanup status:"
+            docker system df
 
             # Deploy
             cd ~/lifehacksjapan-forum
@@ -103,11 +104,6 @@ jobs:
             # Run container
             echo "Starting container..."
             docker run -d -p 3000:3000 --env-file .env --name lifehacksjapan-container lifehacksjapan-image
-
-            # Show Docker status
-            echo "Docker status:"
-            docker ps
-            docker system df
           EOF
 
       - name: Revoke runner IP address
