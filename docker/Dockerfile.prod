@@ -5,18 +5,29 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Set Node.js memory limits
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 # Install dependencies
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-# Copy all source files
-COPY . .
+# Copy only necessary files for build
+COPY src/ ./src/
+COPY public/ ./public/
+COPY next.config.js ./
+COPY tsconfig.json ./
+COPY postcss.config.js ./
+COPY eslint.config.mjs ./
+COPY next-env.d.ts ./
+COPY database/schema ./database/schema
+COPY .env* ./
 
 # Create generated directory and generate Prisma client
 RUN mkdir -p database/schema/generated/client
 RUN yarn prisma generate
 
-# Build Next.js app
+# Build Next.js app with increased memory limit
 RUN yarn next build
 
 # -----------------------------
