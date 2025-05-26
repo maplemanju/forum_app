@@ -8,9 +8,12 @@ WORKDIR /app
 # Set Node.js memory limits
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
+# Install nice command
+RUN apk add --no-cache util-linux
+
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN nice -n 10 yarn install --frozen-lockfile
 
 # Copy only necessary files for build
 COPY src/ ./src/
@@ -24,10 +27,10 @@ COPY .env* ./
 
 # Create generated directory and generate Prisma client
 RUN mkdir -p database/schema/generated/client
-RUN yarn prisma generate
+RUN nice -n 10 yarn prisma generate
 
 # Build Next.js app with increased memory limit
-RUN yarn next build
+RUN nice -n 10 yarn next build
 
 # -----------------------------
 
