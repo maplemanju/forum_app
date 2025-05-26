@@ -1,11 +1,8 @@
 # Dockerfile.prod
 
-# Build stage
-FROM node:18-alpine AS builder
-
+# Dependencies stage
+FROM node:18-alpine AS deps
 WORKDIR /app
-
-# Set Node.js memory limits
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 # Install nice command
@@ -15,39 +12,55 @@ RUN apk add --no-cache util-linux
 COPY package.json yarn.lock ./
 RUN nice -n 10 yarn install --frozen-lockfile
 
-# Copy only necessary files for build
+# Prisma stage
+FROM node:18-alpine AS prisma
+WORKDIR /app
+ENV NODE_OPTIONS="--max-old-space-size=1024"
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json yarn.lock ./
+COPY database/schema ./database/schema
+
+# Generate Prisma client
+RUN mkdir -p database/schema/generated/client
+RUN nice -n 10 yarn prisma generate
+
+# Builder stage
+FROM node:18-alpine AS builder
+WORKDIR /app
+ENV NODE_OPTIONS="--max-old-space-size=1024"
+
+# Copy dependencies and Prisma client
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=prisma /app/database/schema/generated ./database/schema/generated
+COPY package.json yarn.lock ./
+
+# Copy source files
 COPY src/ ./src/
 COPY public/ ./public/
 COPY next.config.ts ./
 COPY tsconfig.json ./
 COPY postcss.config.mjs ./
 COPY eslint.config.mjs ./
-COPY database/schema ./database/schema
 COPY .env* ./
 
-# Create generated directory and generate Prisma client
-RUN mkdir -p database/schema/generated/client
-RUN nice -n 10 yarn prisma generate
-
-# Build Next.js app with increased memory limit
+# Build Next.js app
 RUN nice -n 10 yarn next build
 
-# -----------------------------
-
 # Production stage
-FROM node:18-alpine
-
+FROM node:18-alpine AS runner
 WORKDIR /app
 
-# Copy only necessary files from builder
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Copy only necessary files
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/database/schema/generated ./database/schema/generated
-
-ENV NODE_ENV=production
-ENV PORT=3000
 
 EXPOSE 3000
 
