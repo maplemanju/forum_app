@@ -94,12 +94,15 @@ jobs:
             
             # Build with no cache and increased memory limit
             echo "Building Docker image..."
-            docker build \
+            if ! docker build \
               --no-cache \
               --memory=4g \
               --memory-swap=4g \
               -f docker/Dockerfile.prod \
-              -t lifehacksjapan-image .
+              -t lifehacksjapan-image .; then
+              echo "Docker build failed!"
+              exit 1
+            fi
 
             # Run container
             echo "Starting container..."
