@@ -63,8 +63,8 @@ export function generateSiteMetadata({
       'application/ld+json': JSON.stringify({
         '@context': 'https://schema.org',
         '@type': type,
-        headline: title,
-        description: description,
+        headline: finalTitle,
+        description: finalDescription,
         ...(author && { author }),
         ...(publishedTime && { datePublished: publishedTime }),
         ...(modifiedTime && { dateModified: modifiedTime }),
