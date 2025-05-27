@@ -3,50 +3,64 @@
 # Dependencies stage
 FROM node:18-alpine AS deps
 WORKDIR /app
-ENV NODE_OPTIONS="--max-old-space-size=1024"
-
-# Install nice command
-RUN apk add --no-cache util-linux
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN nice -n 10 yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
-# Prisma stage
-FROM node:18-alpine AS prisma
+
+# Rebuild the source code only when needed
+FROM node:18-alpine AS builder
 WORKDIR /app
-ENV NODE_OPTIONS="--max-old-space-size=1024"
-
-# Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY package.json yarn.lock ./
-COPY database/schema ./database/schema
+COPY . .
+
+# Pass all build arguments as environment variables
+ARG DATABASE_URL
+ARG NEXT_PUBLIC_SITE_NAME
+ARG NEXT_PUBLIC_SITE_DESCRIPTION
+ARG NEXT_PUBLIC_SIDEBAR_NEW_POST_COUNT
+ARG NEXT_PUBLIC_POST_LIST_PER_PAGE
+ARG NEXT_PUBLIC_COMMENT_LIST_PER_PAGE
+ARG S3_ENDPOINT
+ARG S3_USE_SSL
+ARG S3_ACCESS_KEY
+ARG S3_SECRET_KEY
+ARG S3_BUCKET_NAME
+ARG NEXT_PUBLIC_S3_PATH
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+ARG NEXTAUTH_URL
+ARG NEXTAUTH_SECRET
+ARG NEXT_PUBLIC_ANALYTICS_ID
+ARG NEXT_PUBLIC_API_URL
+
+# Set all ARGs as ENVs
+ENV DATABASE_URL=$DATABASE_URL \
+    NEXT_PUBLIC_SITE_NAME=$NEXT_PUBLIC_SITE_NAME \
+    NEXT_PUBLIC_SITE_DESCRIPTION=$NEXT_PUBLIC_SITE_DESCRIPTION \
+    NEXT_PUBLIC_SIDEBAR_NEW_POST_COUNT=$NEXT_PUBLIC_SIDEBAR_NEW_POST_COUNT \
+    NEXT_PUBLIC_POST_LIST_PER_PAGE=$NEXT_PUBLIC_POST_LIST_PER_PAGE \
+    NEXT_PUBLIC_COMMENT_LIST_PER_PAGE=$NEXT_PUBLIC_COMMENT_LIST_PER_PAGE \
+    S3_ENDPOINT=$S3_ENDPOINT \
+    S3_USE_SSL=$S3_USE_SSL \
+    S3_ACCESS_KEY=$S3_ACCESS_KEY \
+    S3_SECRET_KEY=$S3_SECRET_KEY \
+    S3_BUCKET_NAME=$S3_BUCKET_NAME \
+    NEXT_PUBLIC_S3_PATH=$NEXT_PUBLIC_S3_PATH \
+    GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
+    GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
+    NEXTAUTH_URL=$NEXTAUTH_URL \
+    NEXTAUTH_SECRET=$NEXTAUTH_SECRET \
+    NEXT_PUBLIC_ANALYTICS_ID=$NEXT_PUBLIC_ANALYTICS_ID \
+    NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Generate Prisma client
 RUN mkdir -p database/schema/generated/client
-RUN nice -n 10 yarn prisma generate
-
-# Builder stage
-FROM node:18-alpine AS builder
-WORKDIR /app
-ENV NODE_OPTIONS="--max-old-space-size=1024"
-
-# Copy dependencies and Prisma client
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=prisma /app/database/schema/generated ./database/schema/generated
-COPY package.json yarn.lock ./
-
-# Copy source files
-COPY src/ ./src/
-COPY public/ ./public/
-COPY next.config.ts ./
-COPY tsconfig.json ./
-COPY postcss.config.mjs ./
-COPY eslint.config.mjs ./
-COPY .env* ./
+RUN yarn prisma generate
 
 # Build Next.js app
-RUN nice -n 10 yarn next build
+RUN yarn next build
 
 # Production stage
 FROM node:18-alpine AS runner

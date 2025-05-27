@@ -3,118 +3,113 @@ name: Deploy to EC2
 on:
   workflow_dispatch:
 
+env:
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }} # e.g., yourusername/your-repo-name
+  DOCKER_CONTAINER_NAME: ${{ github.event.repository.name }}-container
+  WORK_PATH: ~/lifehacksjapan-forum
+
 jobs:
-  deploy:
+  build-and-push:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Get runner IP address
-        id: ip
+      - name: Prepare Build Arguments
+        id: prepare-build-args
         run: |
-          echo "ipv4=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
+          # Get all environment variables from ENV_VARS
+          build_args_multiline=$(echo "${{ secrets.ENV_VARS }}")
+          echo "build_args_for_action<<EOF" >> $GITHUB_OUTPUT
+          echo "$build_args_multiline" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Whitelist runner IP address
-        run: |
-          aws ec2 authorize-security-group-ingress \
-            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          # For debugging (without exposing secrets)
+          echo "Number of build args prepared: $(echo "$build_args_multiline" | wc -l)"
 
-      - name: Setup SSH
-        run: |
-          # Create .ssh directory with correct permissions
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.prod
+          push: true
+          tags: |
+            ${{ env.DOCKER_IMAGE_NAME }}:latest
+            ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            ${{ steps.prepare-build-args.outputs.build_args_for_action }}
 
-          # Write SSH key with proper format
-          echo -e "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+  deploy-to-ec2:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build-and-push # Ensure build job completes first
+    steps:
+      - name: Deploy to EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            set -e # Exit on error
 
-          # Start SSH agent
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
+            # Docker Login on EC2
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-          # Create known_hosts if it doesn't exist
-          touch ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+            # Create .env file for runtime variables on EC2 from the GitHub Secret
+            # This will include ALL variables from ENV_VARS secret
+            echo "Creating .env file on EC2..."
+            echo "${{ secrets.ENV_VARS }}" | sudo tee  ${{ env.WORK_PATH }}/.env > /dev/null
+            echo ".env file created."
 
-          # Add host key to known_hosts
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+            # Pull the latest image
+            echo "Pulling latest Docker image..."
+            sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
+            echo "Image pulled."
 
-          # Test SSH connection with verbose output
-          ssh -v -o BatchMode=yes -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'"
+            # Stop the currently running container (if any)
+            echo "Stopping existing container if any..."
+            sudo docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
+            echo "Existing container stopped (or was not running)."
 
-      - name: Clean up EC2 directory
-        run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "rm -rf ~/lifehacksjapan-forum && mkdir -p ~/lifehacksjapan-forum"
+            # Remove the old container (if any)
+            echo "Removing old container if any..."
+            sudo docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
+            echo "Old container removed (or did not exist)."
 
-      - name: Create env file
-        run: |
-          ssh -o StrictHostKeyChecking=no "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" << 'EOF'
-            echo '${{ secrets.ENV_VARS }}' > ~/lifehacksjapan-forum/.env
-          EOF
+            # Run the new container, passing the .env file
+            echo "Running new container with .env file..."
+            sudo docker run -d \
+              -p 3000:3000 \
+              --name ${{ env.DOCKER_CONTAINER_NAME }} \
+              --restart unless-stopped \
+              --env-file ${{ env.WORK_PATH }}/.env \
+              ${{ env.DOCKER_IMAGE_NAME }}:latest
+            echo "New container started."
 
-      - name: Checkout repo
-        uses: actions/checkout@v3
+            # Clean up the .env file from EC2 for security
+            echo "Removing .env file from EC2..."
+            sudo rm ${{ env.WORK_PATH }}/.env
+            echo ".env file removed."
 
-      - name: Copy files to EC2
-        run: |
-          # Copy all files except node_modules and .git
-          rsync -avz --exclude 'node_modules' --exclude '.git' . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/lifehacksjapan-forum/
-
-      - name: Deploy Docker on EC2
-        run: |
-          ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            # Clean up only what we need
-            echo "Cleaning up Docker..."
-            
-            # Stop and remove our container if it exists
-            docker stop lifehacksjapan-container || true
-            docker rm lifehacksjapan-container || true
-            
-            # Remove our specific image
-            docker rmi lifehacksjapan-image || true
-            
-            # Clean up all unused Docker resources
-            docker system prune -af --volumes
-            
-            # Verify cleanup
-            echo "Docker cleanup status:"
-            docker system df
-
-            # Deploy
-            cd ~/lifehacksjapan-forum
-            
-            # Build with no cache and increased memory limit
-            echo "Building Docker image..."
-            if ! docker build \
-              --no-cache \
-              --memory=1g \
-              --memory-swap=1g \
-              --cpu-shares=512 \
-              -f docker/Dockerfile.prod \
-              -t lifehacksjapan-image .; then
-              echo "Docker build failed!"
-              exit 1
-            fi
-
-            # Run container
-            echo "Starting container..."
-            docker run -d -p 3000:3000 --env-file .env --name lifehacksjapan-container lifehacksjapan-image
-          EOF
-
-      - name: Revoke runner IP address
-        if: always()
-        run: |
-          aws ec2 revoke-security-group-ingress \
-            --group-id ${{ secrets.AWS_SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+            # Optional: Prune old images to free up space
+            echo "Pruning old Docker images..."
+            sudo docker image prune -af
+            echo "Docker images pruned."
+            echo "Deployment complete!"
