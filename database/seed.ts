@@ -1,4 +1,4 @@
-import { PrismaClient, Posts } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { nanoid } from 'nanoid'
 const prisma = new PrismaClient()
 
@@ -145,7 +145,7 @@ async function main() {
 
   // post updates
   Promise.all(
-    forumRulesPost.map(async (post: Posts) => {
+    forumRulesPost.map(async (post: (typeof forumRulesPost)[number]) => {
       await prisma.postUpdates.create({
         data: {
           postId: post.id,
