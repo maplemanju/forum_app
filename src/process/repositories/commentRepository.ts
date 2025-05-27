@@ -2,7 +2,7 @@ import prisma from '@/utils/prisma'
 import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
 import { authOptions } from '@/utils/auth'
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 export type GetByPostId = {
   postId: number

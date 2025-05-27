@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma'
 import { generateSlug } from '@/utils/slugGenerator'
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import { getServerSession, Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
 import { authOptions } from '@/utils/auth'
@@ -156,13 +156,13 @@ export const postRepository = {
           ...keywords.map((keyword) => ({
             postTitle: {
               contains: keyword,
-              mode: Prisma.QueryMode.insensitive,
+              mode: 'insensitive' as const,
             },
           })),
           ...keywords.map((keyword) => ({
             postContent: {
               contains: keyword,
-              mode: Prisma.QueryMode.insensitive,
+              mode: 'insensitive' as const,
             },
           })),
           ...(tags.length > 0

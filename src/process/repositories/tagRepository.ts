@@ -7,6 +7,8 @@ export const tagRepository = {
         tags: true,
       },
     })
-    return [...new Set(tags.flatMap((tag: { tags: string[] }) => tag.tags))]
+    return [
+      ...new Set(tags.flatMap((tag: { tags: string[] }) => tag.tags)),
+    ] as string[]
   },
 }
