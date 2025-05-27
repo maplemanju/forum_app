@@ -22,22 +22,6 @@ const nextConfig: NextConfig = {
         pathname: `/${process.env.S3_BUCKET_NAME}/**`,
       },
     ],
-    unoptimized: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: true,
-      }
-    }
-    return config
   },
 }
 
