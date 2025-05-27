@@ -216,7 +216,7 @@ export const updatePost = async (
     const existingPost = await postRepository.getById({ id: args.id })
     const isOwner = user.data?.publicId === existingPost.createdBy
     const isAdmin = user.data?.userRoles.some(
-      (role) => role.roleId === ROLES.ADMIN
+      (role: { roleId: number }) => role.roleId === ROLES.ADMIN
     )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
@@ -255,7 +255,7 @@ export const deletePost = async (
     const existingPost = await postRepository.getById({ id: args.id })
     const isOwner = user.data?.publicId === existingPost.createdBy
     const isAdmin = user.data?.userRoles.some(
-      (role) => role.roleId === ROLES.ADMIN
+      (role: { roleId: number }) => role.roleId === ROLES.ADMIN
     )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')

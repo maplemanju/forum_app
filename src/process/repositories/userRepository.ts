@@ -67,7 +67,7 @@ export const userRepository = {
         isDeleted: false,
       },
     })
-    return userRoles.map((userRole) => userRole.roleId)
+    return userRoles.map((userRole: { roleId: number }) => userRole.roleId)
   },
 
   createUser: async (args: CreateUserProps) => {

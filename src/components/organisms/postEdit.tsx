@@ -107,14 +107,14 @@ export default function PostEdit({ post, category }: PostEditProps) {
     return <></>
   }
   return (
-    <div className="w-full mx-auto p-6">
+    <div className="mx-auto w-full p-6">
       <Alert response={alert} />
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="mb-4 text-2xl font-bold">
         {post ? 'Edit Post' : 'Create New Post'}
       </h1>
       <form action={formAction} className="space-y-4">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium mb-1">
+          <label htmlFor="title" className="mb-1 block text-sm font-medium">
             Title
           </label>
           <input
@@ -122,7 +122,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
             type="text"
             name="title"
             defaultValue={formState.data?.postTitle || ''}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background focus:ring-border focus:ring-2"
+            className="border-border bg-background focus:ring-border w-full rounded-md border px-3 py-2 focus:ring-2"
             required
           />
         </div>
@@ -130,7 +130,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
           <div>
             <label
               htmlFor="category"
-              className="block text-sm font-medium mb-1"
+              className="mb-1 block text-sm font-medium"
             >
               Category
             </label>
@@ -138,7 +138,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
               id="category"
               type="text"
               name="category"
-              className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-2 focus:ring-blue-500"
+              className="bg-background border-border w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500"
               defaultValue={category.categoryName}
               readOnly
               disabled
@@ -147,15 +147,15 @@ export default function PostEdit({ post, category }: PostEditProps) {
           </div>
         )}
         <div>
-          <label className="block text-sm font-medium mb-1">Hero Image</label>
+          <label className="mb-1 block text-sm font-medium">Hero Image</label>
           <HeroImageUpload
             onUpload={handleImageUpload}
             currentImage={heroImage}
           />
         </div>
 
-        <div className="post-content ">
-          <div className="block text-sm font-medium mb-1">Content</div>
+        <div className="post-content">
+          <div className="mb-1 block text-sm font-medium">Content</div>
           <TextEditor
             markdown={content}
             onChangeCallback={handleContentChange}
@@ -163,7 +163,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
         </div>
 
         <div>
-          <label htmlFor="tags" className="block text-sm font-medium mb-1">
+          <label htmlFor="tags" className="mb-1 block text-sm font-medium">
             Tags
           </label>
           <input
@@ -172,10 +172,10 @@ export default function PostEdit({ post, category }: PostEditProps) {
             name="tags"
             defaultValue={
               formState.data?.postTags?.tags
-                .map((tag) => `#${tag}`)
+                .map((tag: string) => `#${tag}`)
                 .join(' ') || ''
             }
-            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:ring-border focus:ring-2"
+            className="bg-background border-border focus:ring-border w-full rounded-md border px-3 py-2 focus:ring-2"
           />
         </div>
 
