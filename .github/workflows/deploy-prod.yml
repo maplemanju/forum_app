@@ -31,8 +31,8 @@ jobs:
       - name: Prepare Build Arguments
         id: prepare-build-args
         run: |
-          # Get all environment variables from ENV_VARS
-          build_args_multiline=$(echo "${{ secrets.ENV_VARS }}")
+          # Get DATABASE_URL and NEXT_PUBLIC_ variables from ENV_VARS
+          build_args_multiline=$(echo "${{ secrets.ENV_VARS }}" | grep -E '^(DATABASE_URL|NEXT_PUBLIC_)')
           echo "build_args_for_action<<EOF" >> $GITHUB_OUTPUT
           echo "$build_args_multiline" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
