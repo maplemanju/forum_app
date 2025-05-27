@@ -30,6 +30,9 @@ export const s3Repository = {
     subDir,
   }: UploadFileProps): Promise<string> => {
     try {
+      // Initialize bucket if needed
+      await s3Repository.initBucket()
+
       // Create unique filename to prevent collisions
       const uniqueFilename = `${Date.now()}_${filename.replace(
         /[^a-zA-Z0-9.-]/g,
@@ -55,6 +58,9 @@ export const s3Repository = {
 
   deleteFile: async ({ fileUrl }: DeleteFileProps): Promise<boolean> => {
     try {
+      // Initialize bucket if needed
+      await s3Repository.initBucket()
+
       // Extract filename from URL
       const filename = fileUrl.split('/').pop()
       if (!filename) {
