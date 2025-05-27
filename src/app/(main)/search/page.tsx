@@ -10,6 +10,9 @@ import { Suspense } from 'react'
 import { Sidebar } from '@/components/templates/sidebar'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+
+export const dynamic = 'force-dynamic'
+
 export default async function SearchPage({
   searchParams,
 }: {

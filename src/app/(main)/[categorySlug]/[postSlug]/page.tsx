@@ -13,6 +13,8 @@ import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PostPage({
   searchParams,
   params,
@@ -34,8 +36,9 @@ export default async function PostPage({
     | 'rated'
   const commentsResponse = await getCommentsByPostId({
     postId: postId,
-    take: Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE),
-    skip: Number(page) * Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE),
+    take: Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5),
+    skip:
+      Number(page) * Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5),
     sort: sort,
   })
   const categorySlug = (await params)?.categorySlug

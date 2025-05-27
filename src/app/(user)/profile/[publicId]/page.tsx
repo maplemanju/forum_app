@@ -4,6 +4,8 @@ import { Content } from '@/components/templates/content'
 import { getUserById } from '@/process/actions/userActions'
 import { generateSiteMetadata } from '@/utils/metadata'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProfilePage({
   params,
 }: {

@@ -9,12 +9,14 @@ import { getAllCategories } from '@/process/actions/categoryAction'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AddPostPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const categorySlug = (await searchParams)?.categorySlug
+  const categorySlug = (await searchParams)?.categorySlug || ''
   const categoryResponse = await getCategory({ slug: categorySlug as string })
 
   // for sidebar (suspended)

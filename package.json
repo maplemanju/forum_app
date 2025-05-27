@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "dotenv -e env/.env.dev next dev --turbopack",
     "build": "dotenv -e env/.env.dev next build",
+    "build:debug": "set NODE_OPTIONS=--trace-warnings --trace-uncaught && set NEXT_TELEMETRY_DEBUG=1 &&  next build",
     "start": "dotenv -e env/.env.dev next start",
     "lint": "next lint",
     "prisma:generate": "dotenv -e env/.env.dev prisma generate",
