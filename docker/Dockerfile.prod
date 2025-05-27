@@ -36,7 +36,6 @@ ENV DATABASE_URL=$DATABASE_URL \
     NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Generate Prisma client
-RUN mkdir -p database/schema/generated/client
 RUN yarn prisma generate
 
 # Build Next.js app

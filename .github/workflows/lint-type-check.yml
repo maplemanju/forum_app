@@ -26,9 +26,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Clean Prisma generated files
-        run: rm -rf database/schema/generated
-
       - name: Generate Prisma Client
         run: yarn prisma generate
 
