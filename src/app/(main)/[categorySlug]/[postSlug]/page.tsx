@@ -13,8 +13,6 @@ import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
 
-export const dynamic = 'force-dynamic'
-
 export default async function PostPage({
   searchParams,
   params,

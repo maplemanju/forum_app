@@ -6,8 +6,6 @@ import { Content } from '@/components/templates/content'
 import { Sidebar } from '@/components/templates/sidebar'
 import { generateSiteMetadata } from '@/utils/metadata'
 
-export const dynamic = 'force-dynamic'
-
 export default async function CategoryEditPage({
   params,
 }: {
