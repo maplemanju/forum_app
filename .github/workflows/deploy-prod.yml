@@ -100,7 +100,7 @@ jobs:
         run: |
           # Get the command ID from the last command
           COMMAND_ID=$(aws ssm list-commands \
-            --filters "key=InstanceIds,values=${{ secrets.EC2_INSTANCE_ID }}" \
+            --filters "key=InstanceIds,value=${{ secrets.EC2_INSTANCE_ID }}" \
             --query "Commands[0].CommandId" \
             --output text)
 
