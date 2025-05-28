@@ -67,6 +67,9 @@ jobs:
 
       - name: Deploy using AWS SSM
         run: |
+          # Encode environment variables in base64
+          ENV_BASE64=$(echo "${{ secrets.ENV_VARS }}" | base64 -w 0)
+
           # Send commands to EC2 instance using SSM
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
@@ -78,7 +81,7 @@ jobs:
               'echo \"Creating work directory...\"',
               'sudo mkdir -p ${{ env.WORK_PATH }}',
               'echo \"Creating .env file...\"',
-              'sudo bash -c \"cat > ${{ env.WORK_PATH }}/.env << \\\"EOL\\\"\n${{ secrets.ENV_VARS }}\nEOL\"',
+              'echo \"$ENV_BASE64\" | base64 -d > ${{ env.WORK_PATH }}/.env',
               'echo \"Pulling Docker image...\"',
               'sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest',
               'echo \"Stopping existing container...\"',
