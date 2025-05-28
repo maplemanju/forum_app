@@ -75,20 +75,36 @@ jobs:
             --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
+              'set -x',
+              'echo \"Logging into Docker Hub...\"',
               'echo \"${{ secrets.DOCKERHUB_TOKEN }}\" | sudo docker login -u \"${{ secrets.DOCKERHUB_USERNAME }}\" --password-stdin',
+              'echo \"Creating work directory...\"',
               'sudo mkdir -p ${{ env.WORK_PATH }}',
+              'echo \"Copying .env file...\"',
               'sudo cp .env ${{ env.WORK_PATH }}/.env',
+              'echo \"Pulling Docker image...\"',
               'sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest',
+              'echo \"Stopping existing container...\"',
               'sudo docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true',
+              'echo \"Removing existing container...\"',
               'sudo docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true',
+              'echo \"Starting new container...\"',
               'sudo docker run -d -p 3000:3000 --name ${{ env.DOCKER_CONTAINER_NAME }} --restart unless-stopped --env-file ${{ env.WORK_PATH }}/.env ${{ env.DOCKER_IMAGE_NAME }}:latest',
+              'echo \"Cleaning up...\"',
               'sudo rm ${{ env.WORK_PATH }}/.env',
-              'sudo docker image prune -af'
+              'sudo docker image prune -af',
+              'echo \"Deployment complete!\"'
             ]"
 
       - name: Wait for deployment
         run: |
-          # Wait for the SSM command to complete
+          # Get the command ID from the last command
+          COMMAND_ID=$(aws ssm list-commands \
+            --filters "key=InstanceIds,values=${{ secrets.EC2_INSTANCE_ID }}" \
+            --query "Commands[0].CommandId" \
+            --output text)
+
+          # Wait for the command to complete
           aws ssm wait command-executed \
-            --command-id $(aws ssm list-commands --filters "Key=InstanceIds,Values=${{ secrets.EC2_INSTANCE_ID }}" --query "Commands[0].CommandId" --output text) \
-            --instance-id ${{ secrets.EC2_INSTANCE_ID }}
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
