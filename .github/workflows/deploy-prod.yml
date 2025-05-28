@@ -98,10 +98,10 @@ jobs:
 
       - name: Wait for deployment
         run: |
-          # Get the most recent command ID and ensure it's a single UUID
+          # Get the first command ID from the list
           COMMAND_ID=$(aws ssm list-commands \
             --filters "key=InstanceId,value=${{ secrets.EC2_INSTANCE_ID }}" \
-            --query "sort_by(Commands, &RequestedDateTime)[-1].CommandId" \
+            --query "Commands[0].CommandId" \
             --output text | tr -d '\n\r')
 
           # Validate command ID format
