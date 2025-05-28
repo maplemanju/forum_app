@@ -67,9 +67,6 @@ jobs:
 
       - name: Deploy using AWS SSM
         run: |
-          # Create .env file for runtime variables
-          echo "${{ secrets.ENV_VARS }}" > .env
-
           # Send commands to EC2 instance using SSM
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
@@ -81,7 +78,7 @@ jobs:
               'echo \"Creating work directory...\"',
               'sudo mkdir -p ${{ env.WORK_PATH }}',
               'echo \"Creating .env file...\"',
-              'cat > ${{ env.WORK_PATH }}/.env << \"EOL\"\n${{ secrets.ENV_VARS }}\nEOL',
+              'sudo bash -c \"cat > ${{ env.WORK_PATH }}/.env << \\\"EOL\\\"\n${{ secrets.ENV_VARS }}\nEOL\"',
               'echo \"Pulling Docker image...\"',
               'sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest',
               'echo \"Stopping existing container...\"',
