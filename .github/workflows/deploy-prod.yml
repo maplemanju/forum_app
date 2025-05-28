@@ -98,9 +98,10 @@ jobs:
 
       - name: Wait for deployment
         run: |
-          # Get the first command ID from the list
+          # Get the most recent command ID with proper pagination
           COMMAND_ID=$(aws ssm list-commands \
             --filters "key=InstanceId,value=${{ secrets.EC2_INSTANCE_ID }}" \
+            --no-paginate \
             --query "Commands[0].CommandId" \
             --output text | tr -d '\n\r')
 
