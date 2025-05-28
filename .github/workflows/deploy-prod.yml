@@ -98,11 +98,18 @@ jobs:
 
       - name: Wait for deployment
         run: |
-          # Get the command ID from the last command
+          # Get the most recent command ID
           COMMAND_ID=$(aws ssm list-commands \
             --filters "key=InstanceId,value=${{ secrets.EC2_INSTANCE_ID }}" \
-            --query "Commands[0].CommandId" \
+            --query "sort_by(Commands, &RequestedDateTime)[-1].CommandId" \
             --output text)
+
+          if [ -z "$COMMAND_ID" ]; then
+            echo "No command ID found"
+            exit 1
+          fi
+
+          echo "Waiting for command $COMMAND_ID to complete..."
 
           # Wait for the command to complete
           aws ssm wait command-executed \
