@@ -98,14 +98,15 @@ jobs:
 
       - name: Wait for deployment
         run: |
-          # Get the most recent command ID
+          # Get the most recent command ID and ensure it's a single UUID
           COMMAND_ID=$(aws ssm list-commands \
             --filters "key=InstanceId,value=${{ secrets.EC2_INSTANCE_ID }}" \
             --query "sort_by(Commands, &RequestedDateTime)[-1].CommandId" \
-            --output text)
+            --output text | tr -d '\n\r')
 
-          if [ -z "$COMMAND_ID" ]; then
-            echo "No command ID found"
+          # Validate command ID format
+          if ! [[ $COMMAND_ID =~ ^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$ ]]; then
+            echo "Invalid command ID format: $COMMAND_ID"
             exit 1
           fi
 
