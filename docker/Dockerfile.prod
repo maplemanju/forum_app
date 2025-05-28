@@ -43,11 +43,13 @@ COPY --from=builder /app/database ./database
 # Create startup script
 RUN echo '#!/bin/sh\n\
 echo "Running Prisma migrations..."\n\
-yarn prisma migrate deploy\n\
+yarn prisma migrate deploy || exit 1\n\
+echo "Migrations completed successfully"\n\
 echo "Starting Next.js..."\n\
-yarn next start' > /app/start.sh && chmod +x /app/start.sh
+yarn next start' > start.sh && \
+    chmod +x start.sh
 
 EXPOSE 3000
 
 # Start the app with migrations
-CMD ["/app/start.sh"]
+CMD ["./start.sh"]
