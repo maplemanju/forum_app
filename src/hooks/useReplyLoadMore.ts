@@ -3,7 +3,9 @@ import { ReplyType } from '@/types/comment'
 import { getRepliesByCommentId } from '@/process/actions/commentAction'
 import { useSearchParams } from 'next/navigation'
 
-const REPLIES_PER_PAGE = Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE)
+const REPLIES_PER_PAGE = Number(
+  process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5
+)
 
 export const useReplyLoadMore = ({ commentId }: { commentId: number }) => {
   const [replies, setReplies] = useState<ReplyType[]>([])
