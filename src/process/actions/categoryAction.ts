@@ -10,7 +10,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/utils/auth'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { CategoryType } from '@/types/category'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { sanitizeContent } from '@/utils/domPurifier'
 import { getUserRoles } from './userActions'
 import { ROLES } from '@/utils/consts'
@@ -99,7 +99,7 @@ export const createCategory = async (
     const error = err as Error
     console.error('Error creating category:', error?.message)
 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof PrismaClientKnownRequestError) {
       // Unique constraint violation
       if (error.code === 'P2002') {
         return {

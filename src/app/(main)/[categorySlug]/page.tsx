@@ -33,7 +33,7 @@ export default async function CategoryPage({
   const postsResponse = categoryId
     ? await getPostsByCategory({
         categoryId: categoryId,
-        take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+        take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
         sort: sort,
       })
     : null

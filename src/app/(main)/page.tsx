@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic'
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
   const postsResponse = await getRecentlyUpdatedPosts({
-    take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE),
+    take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
   })
 
   // for sidebar (suspended)

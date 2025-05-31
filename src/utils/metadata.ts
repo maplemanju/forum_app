@@ -24,11 +24,12 @@ export function generateSiteMetadata({
   category,
 }: GenerateMetadataProps): Metadata {
   // Base title
-  const baseTitle = process.env.NEXT_PUBLIC_SITE_NAME
+  const baseTitle = process.env.NEXT_PUBLIC_SITE_NAME || 'A Modern Forum App'
   const finalTitle = title ? `${title} | ${baseTitle}` : baseTitle
 
   // Base description
-  const baseDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION
+  const baseDescription =
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'A Modern Forum App'
   const finalDescription = description || baseDescription
 
   return {
@@ -63,8 +64,8 @@ export function generateSiteMetadata({
       'application/ld+json': JSON.stringify({
         '@context': 'https://schema.org',
         '@type': type,
-        headline: title,
-        description: description,
+        headline: finalTitle,
+        description: finalDescription,
         ...(author && { author }),
         ...(publishedTime && { datePublished: publishedTime }),
         ...(modifiedTime && { dateModified: modifiedTime }),

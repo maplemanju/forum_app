@@ -24,7 +24,10 @@ export const authOptions: NextAuthOptions = {
         })
         let userName = existingUser?.userInfo?.displayName
         let publicId = existingUser?.publicId
-        let roles = existingUser?.userRoles.map((role) => role.roleId) || []
+        let roles =
+          existingUser?.userRoles.map(
+            (role: { roleId: number }) => role.roleId
+          ) || []
         const profileImage = existingUser?.userInfo?.profileImage
         if (!existingUser) {
           // Create a new user in the database if they don't exist
@@ -38,7 +41,10 @@ export const authOptions: NextAuthOptions = {
 
           // Get roles on initial login only for client side.
           // WARNING: do not rely on this to check user roles for any DB transactions. Always verify roles on the server side.
-          roles = createdUser?.userRoles.map((role) => role.roleId) || []
+          roles =
+            createdUser?.userRoles.map(
+              (role: { roleId: number }) => role.roleId
+            ) || []
         }
 
         // Attach user information to the JWT token

@@ -145,7 +145,7 @@ async function main() {
 
   // post updates
   Promise.all(
-    forumRulesPost.map(async (post) => {
+    forumRulesPost.map(async (post: (typeof forumRulesPost)[number]) => {
       await prisma.postUpdates.create({
         data: {
           postId: post.id,

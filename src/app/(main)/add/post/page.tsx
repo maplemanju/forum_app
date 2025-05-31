@@ -14,7 +14,7 @@ export default async function AddPostPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const categorySlug = (await searchParams)?.categorySlug
+  const categorySlug = (await searchParams)?.categorySlug || ''
   const categoryResponse = await getCategory({ slug: categorySlug as string })
 
   // for sidebar (suspended)

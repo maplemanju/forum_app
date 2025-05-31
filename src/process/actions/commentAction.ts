@@ -101,7 +101,7 @@ export const deleteComment = async (
     const user = await getUserById({ userId: session.user.id })
     const isOwner = user.data?.publicId === existingComment.createdBy
     const isAdmin = user.data?.userRoles.some(
-      (role) => role.roleId === ROLES.ADMIN
+      (role: { roleId: number }) => role.roleId === ROLES.ADMIN
     )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')
@@ -138,7 +138,7 @@ export const updateComment = async (
     const user = await getUserById({ userId: session.user.id })
     const isOwner = user.data?.publicId === existingComment.createdBy
     const isAdmin = user.data?.userRoles.some(
-      (role) => role.roleId === ROLES.ADMIN
+      (role: { roleId: number }) => role.roleId === ROLES.ADMIN
     )
     if (!isOwner && !isAdmin) {
       throw new Error('Unauthorized')

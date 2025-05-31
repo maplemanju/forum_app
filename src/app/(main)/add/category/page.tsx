@@ -14,7 +14,7 @@ export default async function AddCategoryPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const parentCategorySlug = (await searchParams)?.parentCategorySlug
+  const parentCategorySlug = (await searchParams)?.parentCategorySlug || ''
 
   let parentCategoryResponse
   if (parentCategorySlug) {
