@@ -66,6 +66,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Deploy using AWS SSM
         run: |
           # Encode environment variables in base64
@@ -77,8 +83,6 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
               'set -x',
-              'echo \"Logging into Docker Hub...\"',
-              'echo \"${{ secrets.DOCKERHUB_TOKEN }}\" | sudo docker login -u \"${{ secrets.DOCKERHUB_USERNAME }}\" --password-stdin',
               'echo \"Creating work directory...\"',
               'sudo mkdir -p ${{ env.WORK_PATH }}',
               'echo \"Creating .env file...\"',
@@ -118,3 +122,20 @@ jobs:
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
             --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
+
+      - name: Cleanup old Docker Hub tags
+        if: success()
+        run: |
+          # Get all tags except latest
+          TAGS=$(docker images ${{ env.DOCKER_IMAGE_NAME }} --format "{{.Tag}}" | grep -v "latest" | sort -r)
+
+          # Keep only the 5 most recent tags
+          KEEP_TAGS=$(echo "$TAGS" | head -n 5)
+
+          # Delete old tags
+          echo "$TAGS" | while read tag; do
+            if ! echo "$KEEP_TAGS" | grep -q "^$tag$"; then
+              echo "Deleting tag: $tag"
+              docker rmi ${{ env.DOCKER_IMAGE_NAME }}:$tag
+            fi
+          done
