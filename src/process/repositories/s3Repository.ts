@@ -7,6 +7,7 @@ const minioClient = new Client({
   useSSL: process.env.S3_USE_SSL === 'true',
   accessKey: process.env.S3_ACCESS_KEY,
   secretKey: process.env.S3_SECRET_KEY,
+  region: process.env.S3_REGION,
 })
 
 const bucketName = process.env.S3_BUCKET_NAME || 'uploads'
@@ -49,7 +50,7 @@ export const s3Repository = {
       )
 
       // Return the public URL
-      return `/${bucketName}/${subDir}/${uniqueFilename}`
+      return `/${subDir}/${uniqueFilename}`
     } catch (error) {
       console.error('S3 upload failed:', error)
       throw new Error('Failed to upload file to S3')

@@ -43,6 +43,3 @@ next-env.d.ts
 
 # uploads
 public/uploads
-
-# prisma
-database/schema/generated
