@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     S3_PORT: process.env.S3_PORT ?? '',
     S3_USE_SSL: process.env.S3_USE_SSL ?? '',
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME ?? '',
+    S3_HOSTNAME: process.env.S3_HOSTNAME ?? '',
+    S3_REGION: process.env.S3_REGION ?? '',
+    ENV: process.env.ENV ?? '',
   },
   experimental: {
     serverActions: {
@@ -17,9 +20,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: process.env.S3_USE_SSL === 'true' ? 'https' : 'http',
-        hostname: process.env.S3_ENDPOINT ?? 'localhost',
-        port: process.env.S3_PORT ?? '9000',
-        pathname: `/${process.env.S3_BUCKET_NAME ?? 'default'}/**`,
+        hostname: process.env.S3_HOSTNAME ?? 'localhost',
+        port:
+          process.env.ENV === 'prod' ? undefined : (process.env.S3_PORT ?? ''),
+        pathname: '/**',
       },
     ],
   },
