@@ -17,8 +17,10 @@ COPY . .
 
 # Pass all build arguments as environment variables
 ARG DATABASE_URL
+ARG S3_HOSTNAME
 # Set all ARGs as ENVs
 ENV DATABASE_URL=$DATABASE_URL 
+ENV S3_HOSTNAME=$S3_HOSTNAME 
 
 # Generate Prisma client
 RUN yarn prisma generate

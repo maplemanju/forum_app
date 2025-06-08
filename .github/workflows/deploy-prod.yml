@@ -32,7 +32,7 @@ jobs:
         id: prepare-build-args
         run: |
           # Get DATABASE_URL and NEXT_PUBLIC_ variables from ENV_VARS
-          build_args_multiline=$(echo "${{ secrets.ENV_VARS }}" | grep -E '^(DATABASE_URL|NEXT_PUBLIC_)')
+          build_args_multiline=$(echo "${{ secrets.ENV_VARS }}" | grep -E '^(DATABASE_URL|NEXT_PUBLIC_|S3_HOSTNAME)')
           echo "build_args_for_action<<EOF" >> $GITHUB_OUTPUT
           echo "$build_args_multiline" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -122,20 +122,3 @@ jobs:
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
             --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
-
-      - name: Cleanup old Docker Hub tags
-        if: success()
-        run: |
-          # Get all tags except latest
-          TAGS=$(docker images ${{ env.DOCKER_IMAGE_NAME }} --format "{{.Tag}}" | grep -v "latest" | sort -r)
-
-          # Keep only the 5 most recent tags
-          KEEP_TAGS=$(echo "$TAGS" | head -n 5)
-
-          # Delete old tags
-          echo "$TAGS" | while read tag; do
-            if ! echo "$KEEP_TAGS" | grep -q "^$tag$"; then
-              echo "Deleting tag: $tag"
-              docker rmi ${{ env.DOCKER_IMAGE_NAME }}:$tag
-            fi
-          done
