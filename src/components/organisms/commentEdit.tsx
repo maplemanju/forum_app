@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useActionState, useCallback, useEffect, useState } from 'react'
 import {
   createComment,

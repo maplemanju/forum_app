@@ -11,13 +11,14 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { config } from '@/utils/config'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const categoriesResponse = await getAllCategories()
   const postsResponse = await getRecentlyUpdatedPosts({
-    take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
+    take: Number(config.postListPerPage),
   })
 
   // for sidebar (suspended)

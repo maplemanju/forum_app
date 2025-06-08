@@ -7,7 +7,7 @@ import { Button } from '@/components/atoms/button'
 import { Input } from '@/components/atoms/input'
 import { uploadFile } from '@/process/actions/fileUploadAction'
 import { useRouter } from 'next/navigation'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 import {
   updateUserProfile,
   UpdateUserProfileResponse,
@@ -72,8 +72,8 @@ export const ProfileEdit = ({ user }: { user: User }) => {
 
   return (
     <form action={formAction}>
-      <div className="p-6 rounded-lg bg-background-secondary">
-        <div className="flex justify-between items-center mb-6">
+      <div className="bg-background-secondary rounded-lg p-6">
+        <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Edit Profile
           </h1>
@@ -82,7 +82,7 @@ export const ProfileEdit = ({ user }: { user: User }) => {
         <div className="flex gap-8">
           {/* Left Side - Avatar */}
           <div className="flex-shrink-0">
-            <label className="cursor-pointer group">
+            <label className="group cursor-pointer">
               <input
                 type="file"
                 accept="image/*"
@@ -90,28 +90,28 @@ export const ProfileEdit = ({ user }: { user: User }) => {
                 className="hidden"
                 disabled={isUploading}
               />
-              <div className="relative w-48 h-48 rounded-lg overflow-hidden">
+              <div className="relative h-48 w-48 overflow-hidden rounded-lg">
                 {profileImage ? (
                   <>
                     <Image
-                      src={getImagePath(profileImage)}
+                      src={`${config.s3Path}${profileImage}`}
                       alt="Profile"
                       fill
                       className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-all flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-all group-hover:opacity-50">
                       <span className="text-white opacity-0 group-hover:opacity-100">
                         Change Photo
                       </span>
                     </div>
                   </>
                 ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center group-hover:bg-gray-300">
+                  <div className="flex h-full w-full items-center justify-center bg-gray-200 group-hover:bg-gray-300">
                     <span className="text-gray-500">Upload Photo</span>
                   </div>
                 )}
                 {isUploading && (
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  <div className="bg-opacity-50 absolute inset-0 flex items-center justify-center bg-black">
                     <span className="text-white">Uploading...</span>
                   </div>
                 )}
@@ -122,7 +122,7 @@ export const ProfileEdit = ({ user }: { user: User }) => {
           {/* Right Side - User Info */}
           <div className="flex-grow space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-500 dark:text-gray-400">
                 Display Name
               </label>
               <Input
@@ -135,7 +135,7 @@ export const ProfileEdit = ({ user }: { user: User }) => {
             </div>
 
             {/* Save Button */}
-            <div className="flex justify-end pt-4 gap-4">
+            <div className="flex justify-end gap-4 pt-4">
               <Button
                 onClick={() => router.push(`/profile/${user.publicId}`)}
                 label="Cancel"

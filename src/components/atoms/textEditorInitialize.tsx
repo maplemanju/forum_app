@@ -25,7 +25,7 @@ import { BlockTypesButton } from './mdxEditor/blockTypesButton'
 import { EditorSwitchButton } from './mdxEditor/editorSwitchButton'
 import { ImageDialog } from './mdxEditor/imageDialog'
 import { uploadFile } from '@/process/actions/fileUploadAction'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 
 export default function TextEditorInitialize({
   editorRef,
@@ -43,7 +43,7 @@ export default function TextEditorInitialize({
     try {
       const response = await uploadFile(image, 'content')
       if (response.success) {
-        return getImagePath(response.data?.url || '')
+        return `${config.s3Path}${response.data?.url || ''}`
       }
       return ''
     } catch (error) {

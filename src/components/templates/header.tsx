@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
-import { getImagePath } from '@/utils/getImagePath'
+import { getImagePath } from '@/utils/imageUtils'
+
 export default function Header() {
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
@@ -19,8 +20,8 @@ export default function Header() {
   }
 
   return (
-    <div className="w-full bg-background-secondary px-4 py-3">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <div className="bg-background-secondary w-full px-4 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         {/** left */}
         <div>
           <Link href="/">
@@ -42,14 +43,14 @@ export default function Header() {
               <Link href={`/profile/${session.user?.id}`}>
                 {session.user?.profileImage ? (
                   <Image
-                    src={getImagePath(session.user?.profileImage || '')}
+                    src={getImagePath(session.user?.profileImage)}
                     alt={session.user?.name || ''}
                     width={32}
                     height={32}
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="material-symbols-rounded rounded-full bg-gray-200 text-gray-500 py-1 px-1">
+                  <span className="material-symbols-rounded rounded-full bg-gray-200 px-1 py-1 text-gray-500">
                     person
                   </span>
                 )}
