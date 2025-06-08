@@ -19,10 +19,14 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.S3_USE_SSL === 'true' ? 'https' : 'http',
+        protocol: 'https',
         hostname: process.env.S3_HOSTNAME ?? 'localhost',
-        port:
-          process.env.ENV === 'prod' ? undefined : (process.env.S3_PORT ?? ''),
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000',
         pathname: '/**',
       },
     ],
