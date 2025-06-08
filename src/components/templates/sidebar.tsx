@@ -1,3 +1,5 @@
+'use client'
+
 import { PostListMinimal } from '@/components/molecules/postListMinimal'
 import { CategoryListMinimal } from '@/components/molecules/categoryListMinimal'
 import { CategoryType } from '@/types/category'
@@ -25,10 +27,9 @@ export const Sidebar = ({
   const postList = postListResponse?.data
   const categoryList = categoryListResponse?.data
   const subCategoryList = subCategoryListResponse?.data?.childCategories
-
   return (
-    <aside className="py-6 sidebar">
-      <div className="p-6 h-full rounded-lg">
+    <aside className="sidebar py-6">
+      <div className="h-full rounded-lg p-6">
         {postList && postList.length > 0 && (
           <PostListMinimal posts={postList} label="New Posts" />
         )}

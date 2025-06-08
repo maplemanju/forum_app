@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/atoms/button'
 
 export const EditorSwitchButton: React.FC<{

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import {
   closeImageDialog$,
@@ -61,14 +63,7 @@ export const ImageDialog: React.FC = () => {
               accept="image/*"
               id="file"
               name="file"
-              className="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-                file:bg-primary file:text-white
-                hover:file:bg-primary/90
-                cursor-pointer border rounded-md
-                p-1"
+              className="file:bg-primary hover:file:bg-primary/90 block w-full cursor-pointer rounded-md border p-1 text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
             />
           </div>
         )}
