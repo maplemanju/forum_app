@@ -3,7 +3,7 @@ import { Client } from 'minio'
 // Add debug logging
 const logConfig = () => {
   console.log('S3 Configuration:', {
-    endPoint: process.env.S3_ENDPOINT || 'localhost',
+    endPoint: process.env.S3_ENDPOINT,
     port: process.env.S3_PORT ? parseInt(process.env.S3_PORT) : undefined,
     useSSL: process.env.S3_USE_SSL === 'true',
     region: process.env.S3_REGION,
@@ -14,7 +14,7 @@ const logConfig = () => {
 }
 
 export const minioClient = new Client({
-  endPoint: process.env.S3_ENDPOINT || 'localhost',
+  endPoint: process.env.S3_ENDPOINT!,
   port: process.env.S3_PORT ? parseInt(process.env.S3_PORT) : undefined,
   useSSL: process.env.S3_USE_SSL === 'true',
   accessKey: process.env.S3_ACCESS_KEY,
@@ -22,7 +22,7 @@ export const minioClient = new Client({
   region: process.env.S3_REGION,
 })
 
-export const bucketName = process.env.S3_BUCKET_NAME || 'uploads'
+export const bucketName = process.env.S3_BUCKET_NAME!
 
 let bucketInitialized = false
 export async function initBucket() {
