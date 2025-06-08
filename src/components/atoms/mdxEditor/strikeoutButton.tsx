@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import {
   useTranslation,
@@ -24,7 +26,7 @@ export const StrikeoutButton: React.FC = () => {
         {
           title: t('toolbar.strikeout', 'Insert strikeout'),
           contents: (
-            <div className="flex material-symbols-rounded">strikethrough_s</div>
+            <div className="material-symbols-rounded flex">strikethrough_s</div>
           ),
           active: (currentFormat & IS_STRIKETHROUGH) !== 0,
           onChange: () => applyFormat('strikethrough'),

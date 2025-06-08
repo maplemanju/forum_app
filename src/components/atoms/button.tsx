@@ -1,3 +1,5 @@
+'use client'
+
 import { ButtonHTMLAttributes } from 'react'
 import Link from 'next/link'
 
@@ -63,13 +65,13 @@ export const Button = ({
     >
       {isLoading ? (
         <div
-          className={`flex items-center gap-2 leading-none  ${className || ''}`}
+          className={`flex items-center gap-2 leading-none ${className || ''}`}
         >
-          <div className="w-5 h-5 border-2 border-subtext border-t-transparent rounded-full animate-spin"></div>
+          <div className="border-subtext h-5 w-5 animate-spin rounded-full border-2 border-t-transparent"></div>
         </div>
       ) : (
         <div
-          className={`flex items-center gap-2 leading-none  ${className || ''}`}
+          className={`flex items-center gap-2 leading-none ${className || ''}`}
         >
           {leftIcon && (
             <span
