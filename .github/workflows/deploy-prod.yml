@@ -51,9 +51,7 @@ jobs:
             ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            S3_HOSTNAME=${{ secrets.S3_HOSTNAME }}
+          build-args: ${{ steps.prepare-build-args.outputs.build_args_for_action }}
 
   deploy-to-ec2:
     name: Deploy to EC2
