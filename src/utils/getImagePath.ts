@@ -1,3 +1,3 @@
 export const getImagePath = (filename: string) => {
-  return `${process.env.NEXT_PUBLIC_S3_PATH}${filename}`
+  return `https://lifehacksjapan-uploads.s3.ap-northeast-1.amazonaws.com${filename}`
 }

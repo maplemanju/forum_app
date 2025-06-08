@@ -1,7 +1,5 @@
 import type { NextConfig } from 'next'
 
-console.log('S3_HOSTNAME at build:', process.env.S3_HOSTNAME)
-
 const nextConfig: NextConfig = {
   env: {
     DATABASE_URL: process.env.DATABASE_URL ?? '',
