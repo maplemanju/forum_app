@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
 import { UserInfoCard } from '../molecules/userInfoCard'
-import { getImagePath } from '@/utils/getImagePath'
+import { S3_PATH } from '@/utils/consts'
 import { UserAndIcon } from '@/components/molecules/userAndIcon'
 
 type PostProps = {
@@ -48,15 +48,15 @@ export const PostContent = ({ post }: PostProps) => {
     return <div>Post not found</div>
   }
   return (
-    <div className="p-6 rounded-lg bg-background-secondary">
+    <div className="bg-background-secondary rounded-lg p-6">
       {/* title  */}
 
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
         {post.postTitle}
       </h1>
 
       {/* info bar top  */}
-      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
+      <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
         <div>
           <UserAndIcon
             displayName={post.createdUser.userInfo?.displayName || 'Anonymous'}
@@ -80,14 +80,14 @@ export const PostContent = ({ post }: PostProps) => {
 
       {/* content  */}
       {post.heroImage && (
-        <div className="relative max-w-4xl mx-auto my-4">
+        <div className="relative mx-auto my-4 max-w-4xl">
           <Image
-            src={getImagePath(post.heroImage)}
+            src={`${S3_PATH}${post.heroImage}`}
             alt={post.postTitle}
             width={0}
             height={0}
             sizes="100vw"
-            className="w-full h-auto rounded-md"
+            className="h-auto w-full rounded-md"
           />
         </div>
       )}
@@ -100,7 +100,7 @@ export const PostContent = ({ post }: PostProps) => {
       </div>
 
       {/* info bar bottom  */}
-      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2 gap-2">
+      <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
         <Tooltip
           text={`Posted at ${dayjs(post.publishedAt || post.createdAt).format(
             'YYYY/MM/DD HH:mm'
@@ -128,7 +128,7 @@ export const PostContent = ({ post }: PostProps) => {
           </Tooltip>
         )}
       </div>
-      <div className="flex items-center gap-2 mt-4">
+      <div className="mt-4 flex items-center gap-2">
         <Button
           rightIcon="chat"
           size="small"
@@ -147,7 +147,7 @@ export const PostContent = ({ post }: PostProps) => {
 
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags.join('') && (
-        <div className="flex flex-column gap-2 mt-2 text-sm text-gray-600 dark:text-gray-400 items-center">
+        <div className="flex-column mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <span className={`material-symbols-rounded`}>label</span>
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>

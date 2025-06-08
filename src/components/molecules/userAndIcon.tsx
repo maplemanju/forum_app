@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getImagePath } from '@/utils/getImagePath'
+import { S3_PATH } from '@/utils/consts'
 
 export const UserAndIcon = ({
   displayName,
@@ -16,19 +16,19 @@ export const UserAndIcon = ({
   return (
     <Link
       href={`/profile/${publicId}`}
-      className={`flex items-center gap-2 text-${size} text-foreground hover:opacity-80 transition-opacity`}
+      className={`flex items-center gap-2 text-${size} text-foreground transition-opacity hover:opacity-80`}
     >
-      <div className="w-6 h-6 rounded-full overflow-hidden bg-border-secondary">
+      <div className="bg-border-secondary h-6 w-6 overflow-hidden rounded-full">
         {profileImage ? (
           <Image
-            src={getImagePath(profileImage)}
+            src={`${S3_PATH}${profileImage}`}
             alt={displayName || 'Anonymous'}
             width={24}
             height={24}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-subtext">
+          <div className="text-subtext flex h-full w-full items-center justify-center">
             <span className="material-symbols-rounded !text-sm">person</span>
           </div>
         )}
