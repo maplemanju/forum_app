@@ -18,13 +18,11 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      // Production AWS S3
       {
         protocol: 'https',
-        hostname: 'lifehacksjapan-uploads.s3.ap-northeast-1.amazonaws.com',
+        hostname: process.env.S3_HOSTNAME ?? 'localhost',
         pathname: '/**',
       },
-      // Local MinIO
       {
         protocol: 'http',
         hostname: 'localhost',
