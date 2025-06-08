@@ -46,7 +46,6 @@ jobs:
           context: .
           file: docker/Dockerfile.prod
           push: true
-          no-cache: true
           tags: |
             ${{ env.DOCKER_IMAGE_NAME }}:latest
             ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
