@@ -15,7 +15,7 @@ import { useInfinitePostScroll } from '@/hooks/useInfinitePostScroll'
 import { useRef } from 'react'
 import { SortSelect } from '@/components/molecules/sortSelect'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 import { UserAndIcon } from '@/components/molecules/userAndIcon'
 dayjs.extend(relativeTime)
 
@@ -139,7 +139,7 @@ export const PostList = ({
               <div className="relative mx-auto my-4 max-w-4xl">
                 <Link href={`/${post.category.slug}/${post.slug}`}>
                   <Image
-                    src={`${S3_PATH}${post.heroImage}`}
+                    src={`${config.s3Path}${post.heroImage}`}
                     alt={post.postTitle}
                     width={0}
                     height={0}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 export default function Header() {
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
@@ -42,7 +42,7 @@ export default function Header() {
               <Link href={`/profile/${session.user?.id}`}>
                 {session.user?.profileImage ? (
                   <Image
-                    src={`${S3_PATH}${session.user?.profileImage || ''}`}
+                    src={`${config.s3Path}${session.user?.profileImage || ''}`}
                     alt={session.user?.name || ''}
                     width={32}
                     height={32}

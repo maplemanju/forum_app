@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 
 export const UserAndIcon = ({
   displayName,
@@ -21,7 +21,7 @@ export const UserAndIcon = ({
       <div className="bg-border-secondary h-6 w-6 overflow-hidden rounded-full">
         {profileImage ? (
           <Image
-            src={`${S3_PATH}${profileImage}`}
+            src={`${config.s3Path}${profileImage}`}
             alt={displayName || 'Anonymous'}
             width={24}
             height={24}

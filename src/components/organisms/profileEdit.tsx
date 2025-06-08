@@ -7,7 +7,7 @@ import { Button } from '@/components/atoms/button'
 import { Input } from '@/components/atoms/input'
 import { uploadFile } from '@/process/actions/fileUploadAction'
 import { useRouter } from 'next/navigation'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 import {
   updateUserProfile,
   UpdateUserProfileResponse,
@@ -94,7 +94,7 @@ export const ProfileEdit = ({ user }: { user: User }) => {
                 {profileImage ? (
                   <>
                     <Image
-                      src={`${S3_PATH}${profileImage}`}
+                      src={`${config.s3Path}${profileImage}`}
                       alt="Profile"
                       fill
                       className="object-cover"

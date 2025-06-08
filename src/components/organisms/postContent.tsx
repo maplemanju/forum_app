@@ -16,8 +16,8 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { PostSkeleton } from '@/components/molecules/skeletons/postSkeleton'
 import { UserInfoCard } from '../molecules/userInfoCard'
-import { S3_PATH } from '@/utils/consts'
 import { UserAndIcon } from '@/components/molecules/userAndIcon'
+import { config } from '@/utils/config'
 
 type PostProps = {
   post?: PostType
@@ -82,7 +82,7 @@ export const PostContent = ({ post }: PostProps) => {
       {post.heroImage && (
         <div className="relative mx-auto my-4 max-w-4xl">
           <Image
-            src={`${S3_PATH}${post.heroImage}`}
+            src={`${config.s3Path}${post.heroImage}`}
             alt={post.postTitle}
             width={0}
             height={0}

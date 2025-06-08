@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Tooltip from '../atoms/tooltip'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 import Link from 'next/link'
 
 type UserInfoCardProps = {
@@ -40,7 +40,7 @@ export const UserInfoCard = ({
       <div className="bg-border-secondary h-16 w-16 overflow-hidden rounded-full">
         {user?.userInfo?.profileImage ? (
           <Image
-            src={`${S3_PATH}${user?.userInfo?.profileImage || ''}`}
+            src={`${config.s3Path}${user?.userInfo?.profileImage || ''}`}
             alt={user?.userInfo?.displayName || 'User'}
             width={64}
             height={64}

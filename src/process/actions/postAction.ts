@@ -13,13 +13,15 @@ import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
 import { getUserById } from './userActions'
 import { ROLES } from '@/utils/consts'
+import { config } from '@/utils/config'
+
 /**
  * Get the most recent posts.
  * Sorted by publishedAt in descending order.
  * @returns The most recent posts
  */
 export const getRecentPosts = async ({
-  take = Number(process.env.NEXT_PUBLIC_SIDEBAR_NEW_POST_COUNT || 5),
+  take = Number(config.sidebarNewPostCount),
   skip = 0,
 }: {
   take?: number
@@ -45,7 +47,7 @@ export const getRecentPosts = async ({
  * @returns The most recently updated posts
  */
 export const getRecentlyUpdatedPosts = async ({
-  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
+  take = Number(config.postListPerPage),
   skip = 0,
 }: {
   take?: number
@@ -75,7 +77,7 @@ export const getRecentlyUpdatedPosts = async ({
  * @returns The posts
  */
 export const getPostsByCategory = async ({
-  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
+  take = Number(config.postListPerPage),
   skip = 0,
   categoryId,
   sort,
@@ -110,7 +112,7 @@ export const getPostsByCategory = async ({
  * @returns The posts
  */
 export const getPostsByKeyword = async ({
-  take = Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
+  take = Number(config.postListPerPage),
   skip = 0,
   keyword,
   sort,

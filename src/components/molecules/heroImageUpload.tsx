@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { uploadFile, deleteFile } from '@/process/actions/fileUploadAction'
 import { MAX_FILE_SIZE } from '@/utils/consts'
-import { S3_PATH } from '@/utils/consts'
+import { config } from '@/utils/config'
 
 interface HeroImageUploadProps {
   onUpload: (url: string) => void
@@ -74,7 +74,7 @@ export const HeroImageUpload = ({
         <div className="relative">
           <div className="relative mx-auto max-w-4xl">
             <Image
-              src={`${S3_PATH}${preview}`}
+              src={`${config.s3Path}${preview}`}
               alt="Hero image preview"
               width={0}
               height={0}
