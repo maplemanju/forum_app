@@ -21,6 +21,19 @@ export type DeleteCategoryProps = {
   id: number
 }
 export const categoryRepository = {
+  getAllLowLevelCategories: async () => {
+    return await prisma.categories.findMany({
+      where: {
+        isDeleted: false,
+        childCategories: {
+          none: {},
+        },
+      },
+      include: {
+        parentCategory: true,
+      },
+    })
+  },
   getAllTopLevelCategories: async () => {
     return await prisma.categories.findMany({
       where: {
