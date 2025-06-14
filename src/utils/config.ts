@@ -1,6 +1,6 @@
 export const config = {
   s3Path: process.env.NEXT_PUBLIC_S3_PATH ?? '',
-  siteName: process.env.NEXT_PUBLIC_SITE_NAME ?? 'A Modern Forum App',
+  siteName: process.env.NEXT_PUBLIC_SITE_NAME ?? 'Forum App',
   siteDescription:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'A Modern Forum App',
   sidebarNewPostCount:

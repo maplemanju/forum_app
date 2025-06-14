@@ -46,8 +46,5 @@ export default async function Home() {
 }
 
 export async function generateMetadata() {
-  return generateSiteMetadata({
-    title: 'A modern forum app',
-    description: 'A modern forum app.',
-  })
+  return generateSiteMetadata({})
 }

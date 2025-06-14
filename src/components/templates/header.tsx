@@ -6,6 +6,7 @@ import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
 import { getImagePath } from '@/utils/imageUtils'
+import { config } from '@/utils/config'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -25,7 +26,7 @@ export default function Header() {
         {/** left */}
         <div>
           <Link href="/">
-            <h1 className="text-xl font-semibold">Forum App</h1>
+            <h1 className="text-xl font-semibold">{config.siteName}</h1>
           </Link>
         </div>
 
