@@ -14,12 +14,16 @@ export default function ProfileContent({ user }: { user?: User }) {
 
   return (
     <>
-      <div className="bg-background-secondary rounded-lg p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Profile
-          </h1>
-        </div>
+      <main
+        className="bg-background-secondary rounded-lg p-4"
+        aria-labelledby="profile-heading"
+      >
+        <h1
+          id="profile-heading"
+          className="text-3xl font-bold text-gray-900 dark:text-white"
+        >
+          Profile
+        </h1>
 
         <div className="flex gap-8">
           {/* Left Side - Avatar */}
@@ -28,7 +32,7 @@ export default function ProfileContent({ user }: { user?: User }) {
               {user?.userInfo?.profileImage ? (
                 <Image
                   src={`${config.s3Path}${user.userInfo?.profileImage || ''}`}
-                  alt="Profile"
+                  alt={`${user?.userInfo?.displayName}'s avatar`}
                   fill
                   className="object-cover"
                 />
@@ -43,10 +47,16 @@ export default function ProfileContent({ user }: { user?: User }) {
           {/* Right Side - User Info */}
           <div className="flex-grow space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+              <label
+                htmlFor="display-name"
+                className="block text-sm font-medium text-gray-500 dark:text-gray-400"
+              >
                 Display Name
               </label>
-              <p className="text-xl font-semibold text-gray-900 dark:text-white">
+              <p
+                id="display-name"
+                className="text-xl font-semibold text-gray-900 dark:text-white"
+              >
                 {user?.userInfo?.displayName}
               </p>
             </div>
@@ -58,15 +68,16 @@ export default function ProfileContent({ user }: { user?: User }) {
                   onClick={() => router.push(`/profile/edit`)}
                   label="Edit Profile"
                   color="primary"
+                  aria-label="Edit profile"
                 />
               </div>
             )}
           </div>
         </div>
-      </div>
+      </main>
 
       {/* User Info - Full card for main comments */}
-      <div className="mt-4">
+      <div className="mt-4 p-4" role="group">
         <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
           Post Banner
         </h2>

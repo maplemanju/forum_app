@@ -26,14 +26,19 @@ export default function SearchBox({ tags }: { tags?: string[] }) {
         defaultValue={keyword}
         placeholder="Search..."
         list="tag-suggestions"
-        className="px-4 py-2 bg-background border rounded-lg flex-grow border-border focus:ring-border focus:ring-2"
+        className="bg-background border-border focus:ring-border flex-grow rounded-lg border px-4 py-2 focus:ring-2"
+        aria-label="Enter a search keyword"
       />
       <datalist id="tag-suggestions">
-        {tags?.map((tag) => (
-          <option value={`#${tag}`} key={tag} />
-        ))}
+        {tags?.map((tag) => <option value={`#${tag}`} key={tag} />)}
       </datalist>
-      <Button type="submit" label="Search" color="primary" leftIcon="search" />
+      <Button
+        type="submit"
+        label="Search"
+        color="primary"
+        leftIcon="search"
+        aria-label="search"
+      />
     </form>
   )
 }

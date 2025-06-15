@@ -13,6 +13,7 @@ type VoteButtonsProps = {
   userVotes?: {
     vote: number
   }[]
+  commenterName?: string
 }
 
 export const VoteButtons: React.FC<VoteButtonsProps> = ({
@@ -21,6 +22,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
   commentId,
   canVote,
   userVotes,
+  commenterName,
 }) => {
   const [voteCountState, setVoteCountState] = useState(voteCount)
   const [userVoteCount, setUserVoteCount] = useState(0)
@@ -70,7 +72,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" role="group">
       {/* <span>{voteCountState}</span> */}
       <>
         <Button
@@ -81,6 +83,8 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           boxStyle="box"
           label={voteCountState.toString()}
           className={userVoteCount === 1 ? 'text-heart' : ''}
+          title="Heart it"
+          aria-label={`Heart the ${commentId ? 'comment' : 'post'} from ${commenterName}`}
         />
         <Button
           rightIcon="question_mark"
@@ -89,6 +93,8 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
           color="neutral"
           boxStyle="box"
           className={userVoteCount === -1 ? 'text-heart' : ''}
+          title="?"
+          aria-label={`Utter confusion about the ${commentId ? 'comment' : 'post'} from ${commenterName}`}
         />
       </>
     </div>

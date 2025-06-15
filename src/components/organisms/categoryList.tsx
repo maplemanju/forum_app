@@ -20,16 +20,17 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
     return (
       <div
         key={category.id}
-        className="p-2 flex flex-column gap-2 justify-between border-b border-border-secondary"
+        role="listitem"
+        className="flex-column border-border-secondary flex justify-between gap-2 border-b p-2"
       >
         <div>
           <Link href={`/${category.slug}`}>
-            <h3 className="text-lg font-semibold text-foreground hover:text-link">
+            <h3 className="text-foreground hover:text-link text-lg font-semibold">
               {category.categoryName}
             </h3>
           </Link>
 
-          <p className="text-subtext text-sm line-clamp-1">
+          <p className="text-subtext line-clamp-1 text-sm">
             {stripMarkdown(category.categoryDescription ?? '', 180)}
           </p>
         </div>
@@ -52,7 +53,7 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
     <>
       <h2 className="divider-label text-lg font-semibold">{label}</h2>
 
-      <div className="[&>*:last-child]:border-b-0">
+      <div className="[&>*:last-child]:border-b-0" role="list">
         {categories?.map((category) => renderCategory(category))}
       </div>
     </>

@@ -37,14 +37,13 @@ export default function CategoryToolbox({ category }: CategoryToolboxProps) {
           size="small"
         />
       )}
-      {category && (
-        <Button
-          linkPath={`/add/post?categorySlug=${category?.slug}`}
-          label="Add Post"
-          leftIcon="add"
-          size="small"
-        />
-      )}
+
+      <Button
+        linkPath={`/add/post?categorySlug=${category?.slug}`}
+        label="Add Post"
+        leftIcon="add"
+        size="small"
+      />
     </div>
   )
 }

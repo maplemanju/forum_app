@@ -24,18 +24,26 @@ export const UserAndIcon = ({
         {profileImage ? (
           <Image
             src={`${config.s3Path}${profileImage}`}
-            alt={displayName || 'Anonymous'}
+            alt={`${displayName || 'Anonymous'}'s avatar`}
             width={24}
             height={24}
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="text-subtext flex h-full w-full items-center justify-center">
+          <div
+            className="text-subtext flex h-full w-full items-center justify-center"
+            aria-hidden
+          >
             <span className="material-symbols-rounded !text-sm">person</span>
           </div>
         )}
       </div>
-      <span>{displayName || 'Anonymous'}</span>
+      <address
+        aria-label={`Posted by ${displayName || 'Anonymous'}`}
+        className="not-italic"
+      >
+        {displayName || 'Anonymous'}
+      </address>
     </Link>
   )
 }

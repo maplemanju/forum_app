@@ -21,12 +21,14 @@ export default function Header() {
   }
 
   return (
-    <div className="bg-background-secondary w-full px-4 py-3">
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
+    <div className="bg-background-secondary fixed top-0 left-0 z-9 w-full px-4 py-3">
+      <div className="top-header flex items-center justify-between">
         {/** left */}
         <div>
           <Link href="/">
-            <h1 className="text-xl font-semibold">{config.siteName}</h1>
+            <h1 className="pl-[44px] text-xl font-semibold md:pl-0">
+              {config.siteName}
+            </h1>
           </Link>
         </div>
 
@@ -38,9 +40,14 @@ export default function Header() {
             rightIcon="search"
             linkPath="/search"
             boxStyle="box"
+            title="Search"
+            aria-label="Search"
           />
           {session && (
-            <div className="text-gray-600 dark:text-white">
+            <div
+              className="text-gray-600 dark:text-white"
+              aria-label="Go to your Profie"
+            >
               <Link href={`/profile/${session.user?.id}`}>
                 {session.user?.profileImage ? (
                   <Image
@@ -64,6 +71,8 @@ export default function Header() {
             size="small"
             onClick={loginOrLogout}
             leftIcon={session ? 'logout' : 'login'}
+            title="Logout"
+            aria-label="Logout"
           />
         </div>
       </div>

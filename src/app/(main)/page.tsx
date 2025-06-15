@@ -1,7 +1,5 @@
 import { Content } from '@/components/templates/content'
 import { getAllCategories } from '@/process/actions/categoryAction'
-import { CategoryList } from '@/components/organisms/categoryList'
-import CategoryToolbox from '@/components/molecules/categoryToolbox'
 import { PostList } from '@/components/organisms/postList'
 import {
   getRecentlyUpdatedPosts,
@@ -11,6 +9,8 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { AddPostSticky } from '@/components/molecules/addPostSticky'
+import { Drawer } from '@/components/templates/drawer'
 import { config } from '@/utils/config'
 
 export const dynamic = 'force-dynamic'
@@ -25,13 +25,12 @@ export default async function Home() {
   const newPostsResponse = getRecentPosts({})
   return (
     <>
+      <Drawer categoryListPromise={Promise.resolve(categoriesResponse)} />
       <Content>
-        <CategoryToolbox />
-        <CategoryList categories={categoriesResponse.data} />
         <PostList
           initialPosts={postsResponse.data}
           showCategory={true}
-          label="Feeds"
+          label="Latest Feeds"
           typeOfList="recent"
         />
       </Content>
@@ -41,6 +40,7 @@ export default async function Home() {
           categoryListPromise={Promise.resolve(categoriesResponse)}
         />
       </Suspense>
+      <AddPostSticky />
     </>
   )
 }

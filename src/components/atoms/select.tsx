@@ -23,22 +23,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex items-center gap-2">
         {label && (
-          <label className={`block mb-1 text-foreground ${labelClassName}`}>
+          <label
+            className={`text-foreground mb-1 block ${labelClassName}`}
+            htmlFor={props.id}
+          >
             {label}
           </label>
         )}
         <select
           ref={ref}
-          className={`
-            bg-background
-            border border-border
-            rounded-md
-            text-foreground
-            focus:ring-2 focus:ring-primary focus:border-transparent
-            disabled:opacity-50 disabled:cursor-not-allowed
-            ${error ? 'border-danger' : ''}
-            ${className}
-          `}
+          className={`bg-background border-border text-foreground focus:ring-primary rounded-md border focus:border-transparent focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 ${error ? 'border-danger' : ''} ${className} `}
           {...props}
         >
           {/* <option value="">Select...</option> */}
@@ -48,7 +42,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="mt-1 text-sm text-danger">{error}</p>}
+        {error && <p className="text-danger mt-1 text-sm">{error}</p>}
       </div>
     )
   }

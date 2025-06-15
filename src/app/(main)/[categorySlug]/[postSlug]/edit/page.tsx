@@ -5,10 +5,14 @@ import { notFound } from 'next/navigation'
 import { Content } from '@/components/templates/content'
 import { Sidebar } from '@/components/templates/sidebar'
 import { getRecentPosts } from '@/process/actions/postAction'
-import { getAllCategories } from '@/process/actions/categoryAction'
+import {
+  getAllLowLevelCategories,
+  getAllCategories,
+} from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function EditPage({
   params,
@@ -20,6 +24,7 @@ export default async function EditPage({
   if (!postResponse.success) {
     return notFound()
   }
+  const categoryListForSelectResponse = await getAllLowLevelCategories()
 
   // for sidebar (suspended)
   const newPostsResponse = getRecentPosts({})
@@ -28,10 +33,12 @@ export default async function EditPage({
   return (
     <>
       <Alert response={postResponse} />
+      <Drawer categoryListPromise={categoryListPromise} />
       <Content>
         <PostEdit
           post={postResponse.data}
-          category={postResponse.data?.category}
+          categorySlug={postResponse.data?.category.slug}
+          categories={categoryListForSelectResponse.data ?? []}
         />
       </Content>
       <Suspense fallback={<SidebarSkeleton />}>

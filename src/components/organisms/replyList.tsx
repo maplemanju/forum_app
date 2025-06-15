@@ -60,7 +60,7 @@ export const ReplyList = ({
 
   return (
     <>
-      <div className="ml-1">
+      <div className="my-2" role="list">
         {/* reply form */}
         {openReply && (
           <CommentEdit
@@ -72,16 +72,17 @@ export const ReplyList = ({
         )}
         {optimisticReplies.map((reply) => (
           <div
+            role="listitem"
             key={reply.id || `optimistic-child-comment-${crypto.randomUUID()}`}
             className={`mt-2 p-2 ${
-              reply.isNewComment ? 'mt-2 bg-highlight rounded-lg' : ''
-            } transition-colors duration-400 border-b border-border-secondary last:border-b-0`}
+              reply.isNewComment ? 'bg-highlight mt-2 rounded-lg' : ''
+            } border-border-secondary border-b transition-colors duration-400 last:border-b-0`}
           >
             <ReplyContent comment={reply} postId={parentPostId} />
           </div>
         ))}
         {optimisticReplies.length > 0 && (
-          <div className="flex justify-center mt-2">
+          <div className="mt-2 flex justify-center">
             <Button
               onClick={closeReplies}
               label="Hide replies"
@@ -89,6 +90,7 @@ export const ReplyList = ({
               color="fade"
               boxStyle="box"
               leftIcon="expand_less"
+              aria-label="Hide replies"
             />
             <Button
               onClick={handleLoadMore}
@@ -99,6 +101,7 @@ export const ReplyList = ({
               leftIcon="expand_more"
               isLoading={isLoading}
               disabled={!hasMore}
+              aria-label="Load more"
             />
           </div>
         )}
