@@ -49,7 +49,7 @@ export const TextEditor = ({
   }, [markdown])
 
   const handleChange = debounce((newContent: string) => {
-    setContent(newContent)
+    onChangeCallback(newContent)
   }, 300) // 300ms delay
 
   return (
@@ -77,8 +77,9 @@ export const TextEditor = ({
 
             <div>
               <textarea
-                className={`w-full px-3 py-2 content-editable ${className}`}
-                value={markdown}
+                id="replyeditor"
+                className={`content-editable w-full px-3 py-2 ${className}`}
+                defaultValue={markdown}
                 rows={10}
                 onChange={(e) => handleChange(e.target.value)}
               />

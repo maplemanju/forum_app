@@ -12,6 +12,8 @@ import { Sidebar } from '@/components/templates/sidebar'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
+import { AddPostSticky } from '@/components/molecules/addPostSticky'
 import { config } from '@/utils/config'
 
 export default async function PostPage({
@@ -48,6 +50,10 @@ export default async function PostPage({
   return (
     <>
       <Alert response={postResponse} />
+      <Drawer
+        categoryListPromise={categoryListPromise}
+        subCategoryListPromise={Promise.resolve(categoryResponse)}
+      />
       <Content>
         <Breadcrumbs
           category={categoryResponse.data}
@@ -69,6 +75,7 @@ export default async function PostPage({
           subCategoryListPromise={Promise.resolve(categoryResponse)}
         />
       </Suspense>
+      <AddPostSticky categorySlug={categorySlug} />
     </>
   )
 }

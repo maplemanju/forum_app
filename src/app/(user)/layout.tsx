@@ -9,7 +9,9 @@ export default function SearchLayout({
   return (
     <>
       <Header />
-      <div className="single-container">{children}</div>
+      <div id="container" className="single-container">
+        {children}
+      </div>
       <Footer />
     </>
   )

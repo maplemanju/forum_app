@@ -69,7 +69,7 @@ const CommentList: React.FC<CommentsProps> = ({
   }
   return (
     <div id="comments" className="mt-6">
-      <div className="p-4 mb-4">
+      <div className="mb-4 p-4">
         <div className="divider-label flex items-center justify-between">
           <Button
             onClick={() => {
@@ -99,13 +99,13 @@ const CommentList: React.FC<CommentsProps> = ({
         )}
       </div>
       {optimisticComments.length === 0 ? (
-        <div className="p-4 text-subtext">No comments yet</div>
+        <div className="text-subtext p-4">No comments yet</div>
       ) : (
         optimisticComments.map((comment) => {
           return (
             <div
               key={comment.id || `optimistic-comment-${crypto.randomUUID()}`}
-              className={`p-4 shadow-sm transition-colors duration-300 border-b border-border-secondary ${
+              className={`border-border-secondary border-b p-4 transition-colors duration-300 ${
                 comment.isNewComment ? 'bg-highlight' : ''
               }`}
             >
@@ -115,7 +115,7 @@ const CommentList: React.FC<CommentsProps> = ({
         })
       )}
 
-      <div className="flex items-center justify-between gap-4 mt-4">
+      <div className="mt-4 flex items-center justify-between gap-4">
         {/* Jump to Oldest + Previous */}
         <div className="flex items-center gap-2">
           <Button

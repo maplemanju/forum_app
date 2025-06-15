@@ -34,7 +34,7 @@ export default function PostToolbox({ post }: PostToolboxProps) {
   }
 
   return (
-    <div className="flex gap-2 justify-end mt-4">
+    <div className="mt-4 flex justify-end gap-2 px-4">
       <Button
         linkPath={`/${post.category.slug}/${post.slug}/edit`}
         label="Edit"

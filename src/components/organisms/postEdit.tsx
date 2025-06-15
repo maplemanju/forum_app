@@ -1,6 +1,12 @@
 'use client'
 
-import { useActionState, useState, useEffect, useCallback } from 'react'
+import {
+  useActionState,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react'
 import { useRouter } from 'next/navigation'
 import { CategoryType } from '@/types/category'
 import { PostType } from '@/types/post'
@@ -17,13 +23,19 @@ import { Button } from '@/components/atoms/button'
 import { useSession } from 'next-auth/react'
 import { ROLES } from '@/utils/consts'
 import { HeroImageUpload } from '@/components/molecules/heroImageUpload'
+import { Select } from '../atoms/select'
 
 interface PostEditProps {
   post?: PostType
-  category?: CategoryType
+  categories: CategoryType[]
+  categorySlug?: string
 }
 
-export default function PostEdit({ post, category }: PostEditProps) {
+export default function PostEdit({
+  post,
+  categorySlug,
+  categories,
+}: PostEditProps) {
   const router = useRouter()
   const [alert, setAlert] = useState<ResponseType<unknown>>()
   const [content, setContent] = useState<string>('')
@@ -50,13 +62,20 @@ export default function PostEdit({ post, category }: PostEditProps) {
     prevState: UpdatePostResponse,
     formData: FormData
   ): Promise<UpdatePostResponse> => {
-    if (!category) {
-      return { success: false }
-    }
     const tags = formData.get('tags') as string
+    const selectedCategorySlug = formData.get('category') as string
+    const category = categories.find(
+      (category) => category.slug === selectedCategorySlug
+    )
+    if (!category) {
+      return {
+        success: false,
+      }
+    }
 
     const args = {
       postTitle: formData.get('title') as string,
+      categoryId: category.id,
       postContent: content,
       heroImage: heroImage || null,
       postTags: {
@@ -68,7 +87,7 @@ export default function PostEdit({ post, category }: PostEditProps) {
     if (post) {
       response = await updatePost({ ...args, id: post.id })
     } else {
-      response = await createPost({ ...args, categoryId: category.id })
+      response = await createPost(args)
     }
     if (response.success) {
       router.push(`/${category.slug}/${response.data?.slug}`)
@@ -88,11 +107,11 @@ export default function PostEdit({ post, category }: PostEditProps) {
   })
 
   const handleDeletePost = async () => {
-    if (!post || !category) return
+    if (!post) return
     if (!confirm('Are you sure you want to delete this post?')) return
     const response = await deletePost({ id: post.id })
     if (response.success) {
-      router.push(`/${category.slug}`)
+      router.push(`/`)
     } else {
       setAlert(response)
     }
@@ -102,8 +121,21 @@ export default function PostEdit({ post, category }: PostEditProps) {
     setHeroImage(url)
   }
 
+  const categoryOptions = useMemo(() => {
+    return categories.map((category: CategoryType) => {
+      let label = category.categoryName
+      if (category.parentCategory) {
+        label = `[${category.parentCategory.categoryName}] ${category.categoryName}`
+      }
+      return {
+        value: category.slug,
+        label,
+      }
+    })
+  }, [categories])
+
   // Return if user doesn't have permission
-  if (!session || !category || (!canEdit && Boolean(post))) {
+  if (!session || (!canEdit && Boolean(post))) {
     return <></>
   }
   return (
@@ -126,26 +158,20 @@ export default function PostEdit({ post, category }: PostEditProps) {
             required
           />
         </div>
-        {category && (
-          <div>
-            <label
-              htmlFor="category"
-              className="mb-1 block text-sm font-medium"
-            >
-              Category
-            </label>
-            <input
-              id="category"
-              type="text"
-              name="category"
-              className="bg-background border-border w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500"
-              defaultValue={category.categoryName}
-              readOnly
-              disabled
-              required
-            />
-          </div>
-        )}
+
+        <div>
+          <label htmlFor="category" className="mb-1 block text-sm font-medium">
+            Category
+          </label>
+          <Select
+            id="category"
+            name="category"
+            defaultValue={categorySlug}
+            className="bg-background border-border w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500"
+            options={categoryOptions}
+          />
+        </div>
+
         <div>
           <label className="mb-1 block text-sm font-medium">Hero Image</label>
           <HeroImageUpload

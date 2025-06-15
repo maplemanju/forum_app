@@ -6,6 +6,8 @@ import { redirect } from 'next/navigation'
 import { authOptions } from '@/utils/auth'
 import { Alert } from '@/components/atoms/alerts'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
+import { getAllCategories } from '@/process/actions/categoryAction'
 
 export default async function EditProfilePage() {
   const session = await getServerSession(authOptions)
@@ -17,11 +19,16 @@ export default async function EditProfilePage() {
   if (!user.success || !user.data) {
     redirect('/')
   }
+  const categoriesResponse = getAllCategories()
+
   return (
-    <Content>
-      <Alert response={user} />
-      <ProfileEdit user={user.data} />
-    </Content>
+    <>
+      <Drawer categoryListPromise={categoriesResponse} />
+      <Content>
+        <Alert response={user} />
+        <ProfileEdit user={user.data} />
+      </Content>
+    </>
   )
 }
 

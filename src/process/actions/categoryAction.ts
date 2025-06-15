@@ -44,6 +44,23 @@ export const getAllCategories = async (): Promise<
   }
 }
 
+export const getAllLowLevelCategories = async (): Promise<
+  ResponseType<CategoryType[]>
+> => {
+  try {
+    const response = await categoryRepository.getAllLowLevelCategories()
+    console.log('getAllLowLevelCategories')
+    return {
+      data: response,
+      success: true,
+    }
+  } catch (err) {
+    const error = err as Error
+    console.error('Error getAllLowLevelCategories:', error?.message)
+    throw new ApplicationError('Error getAllLowLevelCategories')
+  }
+}
+
 export const getCategory = async (
   args: GetCategoryProps
 ): Promise<ResponseType<CategoryType>> => {

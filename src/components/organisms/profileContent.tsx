@@ -14,7 +14,7 @@ export default function ProfileContent({ user }: { user?: User }) {
 
   return (
     <>
-      <div className="bg-background-secondary rounded-lg p-6">
+      <div className="bg-background-secondary rounded-lg p-4">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Profile
@@ -66,7 +66,7 @@ export default function ProfileContent({ user }: { user?: User }) {
       </div>
 
       {/* User Info - Full card for main comments */}
-      <div className="mt-4">
+      <div className="mt-4 p-4">
         <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
           Post Banner
         </h2>
