@@ -54,7 +54,7 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <div className="text-subtext px-4 italic">No posts found</div>
+    return <></>
   }
 
   const sortChangeHandler = (value: string) => {
