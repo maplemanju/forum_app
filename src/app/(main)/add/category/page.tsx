@@ -8,6 +8,7 @@ import { getAllCategories } from '@/process/actions/categoryAction'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function AddCategoryPage({
   searchParams,
@@ -29,8 +30,9 @@ export default async function AddCategoryPage({
 
   return (
     <>
+      <Alert response={parentCategoryResponse} />
+      <Drawer categoryListPromise={categoryListPromise} />
       <Content>
-        <Alert response={parentCategoryResponse} />
         <CategoryEdit
           category={null}
           parentCategory={parentCategoryResponse?.data}

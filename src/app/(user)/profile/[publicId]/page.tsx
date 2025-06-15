@@ -3,6 +3,8 @@ import ProfileContent from '@/components/organisms/profileContent'
 import { Content } from '@/components/templates/content'
 import { getUserById } from '@/process/actions/userActions'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
+import { getAllCategories } from '@/process/actions/categoryAction'
 
 export default async function ProfilePage({
   params,
@@ -11,11 +13,16 @@ export default async function ProfilePage({
 }) {
   const publicId = (await params)?.publicId
   const user = await getUserById({ userId: publicId })
+  const categoriesResponse = getAllCategories()
+
   return (
-    <Content>
-      <Alert response={user} />
-      <ProfileContent user={user.data} />
-    </Content>
+    <>
+      <Drawer categoryListPromise={categoriesResponse} />
+      <Content>
+        <Alert response={user} />
+        <ProfileContent user={user.data} />
+      </Content>
+    </>
   )
 }
 

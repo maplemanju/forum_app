@@ -10,6 +10,7 @@ import {
 } from '@/process/actions/categoryAction'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function AddPostPage({
   searchParams,
@@ -27,6 +28,7 @@ export default async function AddPostPage({
   return (
     <>
       <Alert response={categoryListForSelectResponse} />
+      <Drawer categoryListPromise={categoryListPromise} />
       <Content>
         <PostEdit
           categories={categoryListForSelectResponse.data ?? []}

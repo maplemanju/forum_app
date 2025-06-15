@@ -9,7 +9,7 @@ export default function SearchLayout({
   return (
     <>
       <Header />
-      <div className="middle-container">
+      <div id="container" className="middle-container">
         <>{children}</>
       </div>
       <Footer />

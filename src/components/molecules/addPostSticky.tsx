@@ -1,0 +1,23 @@
+'use client'
+import { useSession } from 'next-auth/react'
+import { Button } from '@/components/atoms/button'
+
+interface AddPostStickyProps {
+  categorySlug?: string
+}
+export const AddPostSticky = ({ categorySlug }: AddPostStickyProps) => {
+  const { data: session } = useSession()
+  if (!session) return <></>
+
+  return (
+    <div className="fixed right-8 bottom-12">
+      <Button
+        linkPath={`/add/post?${categorySlug ? 'categorySlug=' + categorySlug : ''}`}
+        // label="Add Post"
+        leftIcon="add"
+        size="large"
+        boxStyle="box"
+      />
+    </div>
+  )
+}

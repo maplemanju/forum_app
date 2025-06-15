@@ -6,6 +6,7 @@ import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
 import { getImagePath } from '@/utils/getImagePath'
+
 export default function Header() {
   const { data: session } = useSession()
   const { openLoginPopup, isOpen: isLoginPopupOpen } = useLoginPopup()
@@ -19,12 +20,14 @@ export default function Header() {
   }
 
   return (
-    <div className="w-full bg-background-secondary px-4 py-3">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <div className="bg-background-secondary fixed top-0 left-0 z-9 w-full px-4 py-3">
+      <div className="top-header flex items-center justify-between">
         {/** left */}
         <div>
           <Link href="/">
-            <h1 className="text-xl font-semibold">Forum App</h1>
+            <h1 className="pl-[44px] text-xl font-semibold md:pl-0">
+              Forum App
+            </h1>
           </Link>
         </div>
 
@@ -49,7 +52,7 @@ export default function Header() {
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="material-symbols-rounded rounded-full bg-gray-200 text-gray-500 py-1 px-1">
+                  <span className="material-symbols-rounded rounded-full bg-gray-200 px-1 py-1 text-gray-500">
                     person
                   </span>
                 )}

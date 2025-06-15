@@ -10,6 +10,7 @@ import { Suspense } from 'react'
 import { Sidebar } from '@/components/templates/sidebar'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function SearchPage({
   searchParams,
@@ -31,6 +32,7 @@ export default async function SearchPage({
   const categoryListPromise = getAllCategories()
   return (
     <>
+      <Drawer categoryListPromise={categoryListPromise} />
       <Content>
         <SearchBox tags={tagsResponse.data} />
         <PostList

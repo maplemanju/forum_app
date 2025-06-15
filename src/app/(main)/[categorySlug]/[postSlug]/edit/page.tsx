@@ -12,6 +12,7 @@ import {
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function EditPage({
   params,
@@ -32,6 +33,7 @@ export default async function EditPage({
   return (
     <>
       <Alert response={postResponse} />
+      <Drawer categoryListPromise={categoryListPromise} />
       <Content>
         <PostEdit
           post={postResponse.data}

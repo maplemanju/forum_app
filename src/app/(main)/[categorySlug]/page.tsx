@@ -4,7 +4,6 @@ import { CategoryList } from '@/components/organisms/categoryList'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
 import { getPostsByCategory } from '@/process/actions/postAction'
 import { PostList } from '@/components/organisms/postList'
-import CategoryToolbox from '@/components/molecules/categoryToolbox'
 import CategoryContent from '@/components/organisms/categoryContent'
 import { Alert } from '@/components/atoms/alerts'
 import { notFound } from 'next/navigation'
@@ -13,6 +12,8 @@ import { getRecentPosts } from '@/process/actions/postAction'
 import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
+import { AddPostSticky } from '@/components/molecules/addPostSticky'
+import { Drawer } from '@/components/templates/drawer'
 
 export default async function CategoryPage({
   searchParams,
@@ -45,9 +46,12 @@ export default async function CategoryPage({
   return (
     <>
       <Alert response={categoryResponse} />
+      <Drawer
+        categoryListPromise={categoryListPromise}
+        subCategoryListPromise={Promise.resolve(categoryResponse)}
+      />
       <Content>
         <Breadcrumbs category={categoryResponse.data} />
-        <CategoryToolbox category={categoryResponse.data} />
         <CategoryContent category={categoryResponse.data} />
         <CategoryList
           categories={categoryResponse.data?.childCategories}
@@ -71,6 +75,7 @@ export default async function CategoryPage({
           subCategoryListPromise={Promise.resolve(categoryResponse)}
         />
       </Suspense>
+      <AddPostSticky categorySlug={categorySlug} />
     </>
   )
 }
