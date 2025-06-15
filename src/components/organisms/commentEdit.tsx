@@ -78,21 +78,33 @@ export const CommentEdit = ({
   })
 
   return (
-    <div>
+    <>
       <Alert response={formState} />
-      <form action={formAction} className="space-y-4">
-        <input id="postId" type="hidden" name="postId" value={postId ?? ''} />
+      <form
+        action={formAction}
+        className="space-y-4"
+        aria-label={`${commentId ? 'edit' : 'create a'} comment`}
+      >
+        <input
+          id="postId"
+          type="hidden"
+          name="postId"
+          value={postId ?? ''}
+          aria-hidden
+        />
         <input
           id="parentCommentId"
           type="hidden"
           name="parentCommentId"
           value={parentCommentId ?? ''}
+          aria-hidden
         />
         <input
           id="commentId"
           type="hidden"
           name="commentId"
           value={commentId ?? ''}
+          aria-hidden
         />
         <div className="post-content mb-4">
           <TextEditor
@@ -110,6 +122,7 @@ export const CommentEdit = ({
             color="gray"
             leftIcon="cancel"
             size="small"
+            aria-label="Cancel editing"
           />
           <Button
             type="submit"
@@ -117,10 +130,12 @@ export const CommentEdit = ({
             label={isPending ? 'Sending...' : 'Send'}
             leftIcon="send"
             size="small"
+            aria-label={isPending ? 'Sending...' : 'Send'}
+            aria-live="polite"
           />
         </div>
       </form>
-    </div>
+    </>
   )
 }
 

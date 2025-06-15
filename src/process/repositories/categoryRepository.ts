@@ -32,6 +32,9 @@ export const categoryRepository = {
       include: {
         parentCategory: true,
       },
+      orderBy: {
+        parentCategoryId: 'asc',
+      },
     })
   },
   getAllTopLevelCategories: async () => {
@@ -39,6 +42,9 @@ export const categoryRepository = {
       where: {
         parentCategoryId: null,
         isDeleted: false,
+      },
+      orderBy: {
+        id: 'asc',
       },
     })
   },

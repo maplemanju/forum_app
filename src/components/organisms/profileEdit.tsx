@@ -71,19 +71,26 @@ export const ProfileEdit = ({ user }: { user: User }) => {
   })
 
   return (
-    <form action={formAction}>
+    <form action={formAction} aria-labelledby="edit-profile-heading">
       <div className="bg-background-secondary rounded-lg p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1
+            id="edit-profile-heading"
+            className="text-3xl font-bold text-gray-900 dark:text-white"
+          >
             Edit Profile
           </h1>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col justify-center gap-8 md:flex-row">
           {/* Left Side - Avatar */}
           <div className="flex-shrink-0">
-            <label className="group cursor-pointer">
+            <label
+              htmlFor="avatar-upload"
+              className="flex cursor-pointer justify-center text-center"
+            >
               <input
+                id="avatar-upload"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
@@ -95,23 +102,26 @@ export const ProfileEdit = ({ user }: { user: User }) => {
                   <>
                     <Image
                       src={`${config.s3Path}${profileImage}`}
-                      alt="Profile"
+                      alt="Current avatar"
                       fill
                       className="object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-all group-hover:opacity-50">
                       <span className="text-white opacity-0 group-hover:opacity-100">
-                        Change Photo
+                        Change Avatar
                       </span>
                     </div>
                   </>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gray-200 group-hover:bg-gray-300">
-                    <span className="text-gray-500">Upload Photo</span>
+                    <span className="text-gray-500">Upload Avatar</span>
                   </div>
                 )}
                 {isUploading && (
-                  <div className="bg-opacity-50 absolute inset-0 flex items-center justify-center bg-black">
+                  <div
+                    className="bg-opacity-50 absolute inset-0 flex items-center justify-center bg-black"
+                    aria-live="polite"
+                  >
                     <span className="text-white">Uploading...</span>
                   </div>
                 )}
@@ -122,11 +132,14 @@ export const ProfileEdit = ({ user }: { user: User }) => {
           {/* Right Side - User Info */}
           <div className="flex-grow space-y-6">
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              <label
+                htmlFor="display-name-input"
+                className="mb-2 block text-sm font-medium text-gray-500 dark:text-gray-400"
+              >
                 Display Name
               </label>
               <Input
-                id="displayName"
+                id="display-name-input"
                 name="displayName"
                 defaultValue={formState.data?.displayName}
                 className="w-full text-xl"
@@ -140,8 +153,14 @@ export const ProfileEdit = ({ user }: { user: User }) => {
                 onClick={() => router.push(`/profile/${user.publicId}`)}
                 label="Cancel"
                 color="gray"
+                aria-label="Cancel editing"
               />
-              <Button type="submit" label="Save Changes" color="primary" />
+              <Button
+                type="submit"
+                label="Save Changes"
+                color="primary"
+                aria-label="Save changes"
+              />
             </div>
           </div>
         </div>

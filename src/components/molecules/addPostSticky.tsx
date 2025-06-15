@@ -13,10 +13,10 @@ export const AddPostSticky = ({ categorySlug }: AddPostStickyProps) => {
     <div className="fixed right-8 bottom-12">
       <Button
         linkPath={`/add/post?${categorySlug ? 'categorySlug=' + categorySlug : ''}`}
-        // label="Add Post"
         leftIcon="add"
         size="large"
         boxStyle="box"
+        title="Add Post"
       />
     </div>
   )

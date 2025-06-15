@@ -68,8 +68,12 @@ export const HeroImageUpload = ({
   }
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {error && <div className="text-danger text-sm">{error}</div>}
+    <div className={`space-y-4 ${className}`} id="hero-image-upload">
+      {error && (
+        <div className="text-danger text-sm" aria-live="assertive" role="alert">
+          {error}
+        </div>
+      )}
       {preview ? (
         <div className="relative">
           <div className="relative mx-auto max-w-4xl">
@@ -86,6 +90,7 @@ export const HeroImageUpload = ({
             <div
               className="material-symbols-rounded bg-danger cursor-pointer rounded-md p-1"
               onClick={handleRemove}
+              aria-label="Delete hero image"
             >
               delete
             </div>
@@ -93,7 +98,7 @@ export const HeroImageUpload = ({
         </div>
       ) : (
         <div className="border-border rounded-md border-2 border-dashed p-8 text-center">
-          <label className="block cursor-pointer">
+          <label className="block cursor-pointer" htmlFor="heroImage">
             <input
               id="heroImage"
               type="file"
@@ -103,7 +108,11 @@ export const HeroImageUpload = ({
               disabled={isUploading}
             />
             <div className="space-y-2">
-              <div className="text-lg font-medium">
+              <div
+                className="text-lg font-medium"
+                role="state"
+                aria-live="polite"
+              >
                 {isUploading ? 'Uploading...' : 'Upload Hero Image'}
               </div>
               <div className="text-subtext text-sm">

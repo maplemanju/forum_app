@@ -54,7 +54,7 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <div className="text-subtext px-4 italic">No posts found</div>
+    return <></>
   }
 
   const sortChangeHandler = (value: string) => {
@@ -69,15 +69,20 @@ export const PostList = ({
         <h2 className="text-lg font-semibold">{label}</h2>
         {showSort && <SortSelect onChange={sortChangeHandler} />}
       </div>
-      <div>
+      <div role="list">
         {posts.map((post: PostType, index: number) => (
-          <div
+          <article
             key={`feed-${index}`}
             className="border-border-secondary border-b px-4 py-8 text-sm first:pt-2 last:border-b-0"
+            aria-labelledby={`post-title-${index}`}
+            role="listitem"
           >
             {/* category  */}
             {showCategory && (
-              <div className="text-subtext mb-2 flex flex-wrap items-center">
+              <div
+                className="text-subtext mb-2 flex flex-wrap items-center"
+                aria-label={`Go back to ${post.category.parentCategory?.categoryName} list`}
+              >
                 {post.category.parentCategory && (
                   <>
                     <Link
@@ -86,7 +91,7 @@ export const PostList = ({
                     >
                       {post.category.parentCategory.categoryName}
                     </Link>
-                    <span className={`material-symbols-rounded`}>
+                    <span className={`material-symbols-rounded`} aria-hidden>
                       <div className="text-sm">chevron_right</div>
                     </span>
                   </>
@@ -101,21 +106,24 @@ export const PostList = ({
             )}
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <h3 className="text-foreground hover:text-link mb-1 text-xl font-semibold">
+              <h3
+                id={`post-title-${index}`}
+                className="text-foreground hover:text-link mb-1 text-xl font-semibold"
+              >
                 {post.postTitle}
               </h3>
             </Link>
-            <div className="text-subtext mb-1 flex flex-wrap items-center gap-2 text-sm">
-              <span>
-                <UserAndIcon
-                  displayName={
-                    post.createdUser.userInfo?.displayName || 'Anonymous'
-                  }
-                  publicId={post.createdUser.publicId}
-                  profileImage={post.createdUser.userInfo?.profileImage}
-                />
-              </span>
-
+            <div
+              role="group"
+              className="text-subtext mb-1 flex flex-wrap items-center gap-2 text-sm"
+            >
+              <UserAndIcon
+                displayName={
+                  post.createdUser.userInfo?.displayName || 'Anonymous'
+                }
+                publicId={post.createdUser.publicId}
+                profileImage={post.createdUser.userInfo?.profileImage}
+              />
               <Tooltip
                 text={`Posted at ${dayjs(
                   post.publishedAt || post.createdAt
@@ -123,14 +131,22 @@ export const PostList = ({
                 width="115px"
                 className="text-center"
               >
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-rounded !text-sm">
+                <time
+                  dateTime={dayjs(post.publishedAt || post.createdAt).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                  )}
+                  className="flex items-center gap-2"
+                >
+                  <span
+                    className="material-symbols-rounded !text-sm"
+                    aria-hidden
+                  >
                     today
                   </span>
                   <span>
                     {fromNowShort(post.publishedAt || post.createdAt)}
                   </span>
-                </div>
+                </time>
               </Tooltip>
             </div>
 
@@ -155,7 +171,10 @@ export const PostList = ({
 
             {/* info bar  */}
 
-            <div className="text-subtext mt-2 flex flex-wrap items-center gap-2 text-sm">
+            <div
+              className="text-subtext mt-2 flex flex-wrap items-center gap-2 text-sm"
+              role="group"
+            >
               <Button
                 rightIcon="chat"
                 size="small"
@@ -163,6 +182,8 @@ export const PostList = ({
                 boxStyle="box"
                 label={`${post._count.comments || 0}`}
                 linkPath={`/${post.category.slug}/${post.slug}#comments`}
+                title="Comments"
+                arial-label={`See comments for ${post.postTitle}`}
               />
               <VoteButtons
                 postId={post.id}
@@ -171,13 +192,14 @@ export const PostList = ({
                 userVotes={post.votes}
               />
             </div>
-          </div>
+          </article>
         ))}
 
         {/* Loading trigger */}
         <div
           ref={observerTarget}
           className="flex h-[80px] items-center justify-center"
+          aria-hidden
         >
           {isLoading && (
             <div className="text-subtext flex items-center gap-2">

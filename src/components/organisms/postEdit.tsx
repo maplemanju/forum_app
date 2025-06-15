@@ -173,7 +173,12 @@ export default function PostEdit({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Hero Image</label>
+          <label
+            htmlFor="hero-image-upload"
+            className="mb-1 block text-sm font-medium"
+          >
+            Hero Image
+          </label>
           <HeroImageUpload
             onUpload={handleImageUpload}
             currentImage={heroImage}
@@ -213,6 +218,7 @@ export default function PostEdit({
               label="Delete"
               color="danger"
               leftIcon="delete"
+              aria-label="Delete the post"
             />
           )}
           <Button
@@ -221,12 +227,15 @@ export default function PostEdit({
             label="Cancel"
             color="gray"
             leftIcon="cancel"
+            aria-label="Cancel editing"
           />
           <Button
             type="submit"
             disabled={isPending}
             label={isPending ? 'Saving...' : 'Save'}
             leftIcon="save"
+            aria-label={isPending ? 'Saving...' : 'Save'}
+            aria-live="polite"
           />
         </div>
       </form>

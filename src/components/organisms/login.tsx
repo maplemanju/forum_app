@@ -36,20 +36,31 @@ export default function Login() {
   }
 
   return !session ? (
-    <div className="p-4 min-w-[300px] max-w-[500px] w-full mx-auto">
-      <h2 className="text-2xl font-semibold text-center mb-6">Sign In</h2>
+    <div
+      className="mx-auto w-full max-w-[500px] min-w-[300px] p-4"
+      role="form"
+      aria-labelledby="signin-header"
+      aria-live="polite"
+    >
+      <h2
+        id="signin-header"
+        className="mb-6 text-center text-2xl font-semibold"
+      >
+        Sign In
+      </h2>
 
       {/* SNS Login Buttons */}
       <div className="space-y-4">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="w-full py-3 px-4 bg-gray-100 text-black cursor-pointer rounded-md flex items-center justify-center space-x-2 hover:bg-gray-200"
+          className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded-md bg-gray-100 px-4 py-3 text-black hover:bg-gray-200"
+          aria-labelledby="goole-label"
         >
           <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 48 48"
-            className="block w-[30px] h-[30px]"
+            className="block h-[30px] w-[30px]"
           >
             <path
               fill="#EA4335"
@@ -69,11 +80,11 @@ export default function Login() {
             ></path>
             <path fill="none" d="M0 0h48v48H0z"></path>
           </svg>
-          <span>Sign in with Google</span>
+          <span id="goole-label">Sign in with Google</span>
         </button>
       </div>
     </div>
   ) : (
-    <div> You Are Already Logged In!</div>
+    <div>You Are Already Logged In!</div>
   )
 }

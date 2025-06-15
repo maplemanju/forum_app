@@ -68,7 +68,7 @@ const CommentList: React.FC<CommentsProps> = ({
     router.push(`?${current.toString()}`, { scroll: false })
   }
   return (
-    <div id="comments" className="mt-6">
+    <div id="comments" className="mt-6" role="list" aria-label="comments">
       <div className="mb-4 p-4">
         <div className="divider-label flex items-center justify-between">
           <Button
@@ -82,6 +82,7 @@ const CommentList: React.FC<CommentsProps> = ({
             label="Add Comment"
             color="primary"
             leftIcon="chat"
+            title="Add a comment"
           />
           <SortSelect
             onChange={sortChangeHandler}
@@ -108,6 +109,7 @@ const CommentList: React.FC<CommentsProps> = ({
               className={`border-border-secondary border-b p-4 transition-colors duration-300 ${
                 comment.isNewComment ? 'bg-highlight' : ''
               }`}
+              role="listitem"
             >
               <CommentContent comment={comment} postId={postId} />
             </div>
@@ -115,7 +117,7 @@ const CommentList: React.FC<CommentsProps> = ({
         })
       )}
 
-      <div className="mt-4 flex items-center justify-between gap-4">
+      <nav className="mt-4 flex items-center justify-between gap-4">
         {/* Jump to Oldest + Previous */}
         <div className="flex items-center gap-2">
           <Button
@@ -124,7 +126,7 @@ const CommentList: React.FC<CommentsProps> = ({
             leftIcon="first_page"
             disabled={!hasMorePrevious}
             aria-label="Jump to first comments"
-            // className="!p-2"
+            title="Jump to first comments"
           />
           <Button
             onClick={() => handleLoadMore('previous')}
@@ -132,6 +134,7 @@ const CommentList: React.FC<CommentsProps> = ({
             color="fade"
             leftIcon="arrow_back_ios"
             disabled={!hasMorePrevious}
+            title="See previous comments"
           />
         </div>
 
@@ -143,6 +146,7 @@ const CommentList: React.FC<CommentsProps> = ({
             color="fade"
             rightIcon="arrow_forward_ios"
             disabled={!hasMoreNext}
+            title="See more comments"
           />
           <Button
             onClick={() => handleLoadMore('last')}
@@ -150,10 +154,11 @@ const CommentList: React.FC<CommentsProps> = ({
             rightIcon="last_page"
             disabled={!hasMoreNext}
             aria-label="Jump to last comments"
+            title="Jump to last comments"
             // className="!p-2"
           />
         </div>
-      </div>
+      </nav>
     </div>
   )
 }
