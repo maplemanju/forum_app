@@ -13,6 +13,7 @@ import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
 import { Drawer } from '@/components/templates/drawer'
+import { AddPostSticky } from '@/components/molecules/addPostSticky'
 
 export default async function PostPage({
   searchParams,
@@ -74,6 +75,7 @@ export default async function PostPage({
           subCategoryListPromise={Promise.resolve(categoryResponse)}
         />
       </Suspense>
+      <AddPostSticky categorySlug={categorySlug} />
     </>
   )
 }
