@@ -1,3 +1,5 @@
+'use client'
+
 import { $createQuoteNode, $createHeadingNode } from '@lexical/rich-text'
 import { $createParagraphNode } from 'lexical'
 import React from 'react'
@@ -22,7 +24,7 @@ export const BlockTypesButton: React.FC = () => {
         {
           title: 'Quote',
           contents: (
-            <div className="flex material-symbols-rounded">format_quote</div>
+            <div className="material-symbols-rounded flex">format_quote</div>
           ),
           active: currentBlockType === 'quote',
           onChange: () => {
@@ -37,7 +39,7 @@ export const BlockTypesButton: React.FC = () => {
         {
           title: 'Heading 2',
           contents: (
-            <div className="flex material-symbols-rounded">format_h2</div>
+            <div className="material-symbols-rounded flex">format_h2</div>
           ),
           active: currentBlockType === 'h2',
           onChange: () => {
@@ -51,7 +53,7 @@ export const BlockTypesButton: React.FC = () => {
         {
           title: 'Heading 3',
           contents: (
-            <div className="flex material-symbols-rounded">format_h3</div>
+            <div className="material-symbols-rounded flex">format_h3</div>
           ),
           active: currentBlockType === 'h3',
           onChange: () => {

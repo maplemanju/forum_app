@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { config } from '@/utils/config'
 
 type GenerateMetadataProps = {
   title?: string
@@ -24,12 +25,11 @@ export function generateSiteMetadata({
   category,
 }: GenerateMetadataProps): Metadata {
   // Base title
-  const baseTitle = process.env.NEXT_PUBLIC_SITE_NAME || 'A Modern Forum App'
+  const baseTitle = config.siteName
   const finalTitle = title ? `${title} | ${baseTitle}` : baseTitle
 
   // Base description
-  const baseDescription =
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'A Modern Forum App'
+  const baseDescription = config.siteDescription
   const finalDescription = description || baseDescription
 
   return {

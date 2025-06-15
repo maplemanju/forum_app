@@ -14,6 +14,7 @@ import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleto
 import { generateSiteMetadata } from '@/utils/metadata'
 import { Drawer } from '@/components/templates/drawer'
 import { AddPostSticky } from '@/components/molecules/addPostSticky'
+import { config } from '@/utils/config'
 
 export default async function PostPage({
   searchParams,
@@ -36,9 +37,8 @@ export default async function PostPage({
     | 'rated'
   const commentsResponse = await getCommentsByPostId({
     postId: postId,
-    take: Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5),
-    skip:
-      Number(page) * Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5),
+    take: Number(config.commentListPerPage),
+    skip: Number(page) * Number(config.commentListPerPage),
     sort: sort,
   })
   const categorySlug = (await params)?.categorySlug

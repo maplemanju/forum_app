@@ -14,6 +14,7 @@ import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleto
 import { generateSiteMetadata } from '@/utils/metadata'
 import { AddPostSticky } from '@/components/molecules/addPostSticky'
 import { Drawer } from '@/components/templates/drawer'
+import { config } from '@/utils/config'
 
 export default async function CategoryPage({
   searchParams,
@@ -34,7 +35,7 @@ export default async function CategoryPage({
   const postsResponse = categoryId
     ? await getPostsByCategory({
         categoryId: categoryId,
-        take: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE || 5),
+        take: Number(config.postListPerPage),
         sort: sort,
       })
     : null

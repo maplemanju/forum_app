@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { uploadFile, deleteFile } from '@/process/actions/fileUploadAction'
 import { MAX_FILE_SIZE } from '@/utils/consts'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 
 interface HeroImageUploadProps {
   onUpload: (url: string) => void
@@ -72,19 +72,19 @@ export const HeroImageUpload = ({
       {error && <div className="text-danger text-sm">{error}</div>}
       {preview ? (
         <div className="relative">
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative mx-auto max-w-4xl">
             <Image
-              src={getImagePath(preview)}
+              src={`${config.s3Path}${preview}`}
               alt="Hero image preview"
               width={0}
               height={0}
               sizes="100vw"
-              className="w-full h-auto rounded-md"
+              className="h-auto w-full rounded-md"
             />
           </div>
           <div className="absolute top-2 right-2 flex gap-2">
             <div
-              className="material-symbols-rounded cursor-pointer bg-danger rounded-md p-1"
+              className="material-symbols-rounded bg-danger cursor-pointer rounded-md p-1"
               onClick={handleRemove}
             >
               delete
@@ -92,8 +92,8 @@ export const HeroImageUpload = ({
           </div>
         </div>
       ) : (
-        <div className="border-2 border-dashed border-border rounded-md p-8 text-center">
-          <label className="cursor-pointer block">
+        <div className="border-border rounded-md border-2 border-dashed p-8 text-center">
+          <label className="block cursor-pointer">
             <input
               id="heroImage"
               type="file"
@@ -106,7 +106,7 @@ export const HeroImageUpload = ({
               <div className="text-lg font-medium">
                 {isUploading ? 'Uploading...' : 'Upload Hero Image'}
               </div>
-              <div className="text-sm text-subtext">
+              <div className="text-subtext text-sm">
                 Drop an image here or click to upload
               </div>
             </div>

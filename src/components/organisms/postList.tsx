@@ -15,7 +15,7 @@ import { useInfinitePostScroll } from '@/hooks/useInfinitePostScroll'
 import { useRef } from 'react'
 import { SortSelect } from '@/components/molecules/sortSelect'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 import { UserAndIcon } from '@/components/molecules/userAndIcon'
 dayjs.extend(relativeTime)
 
@@ -54,7 +54,7 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <div className="text-subtext italic px-4">No posts found</div>
+    return <div className="text-subtext px-4 italic">No posts found</div>
   }
 
   const sortChangeHandler = (value: string) => {
@@ -73,11 +73,11 @@ export const PostList = ({
         {posts.map((post: PostType, index: number) => (
           <div
             key={`feed-${index}`}
-            className="px-4 py-8 text-sm border-b border-border-secondary last:border-b-0 first:pt-2"
+            className="border-border-secondary border-b px-4 py-8 text-sm first:pt-2 last:border-b-0"
           >
             {/* category  */}
             {showCategory && (
-              <div className="flex items-center text-subtext mb-2 flex-wrap">
+              <div className="text-subtext mb-2 flex flex-wrap items-center">
                 {post.category.parentCategory && (
                   <>
                     <Link
@@ -101,11 +101,11 @@ export const PostList = ({
             )}
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <h3 className="text-xl font-semibold text-foreground hover:text-link mb-1">
+              <h3 className="text-foreground hover:text-link mb-1 text-xl font-semibold">
                 {post.postTitle}
               </h3>
             </Link>
-            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap mb-1">
+            <div className="text-subtext mb-1 flex flex-wrap items-center gap-2 text-sm">
               <span>
                 <UserAndIcon
                   displayName={
@@ -136,15 +136,15 @@ export const PostList = ({
 
             {/* hero image  */}
             {post.heroImage && (
-              <div className="relative max-w-4xl mx-auto my-4">
+              <div className="relative mx-auto my-4 max-w-4xl">
                 <Link href={`/${post.category.slug}/${post.slug}`}>
                   <Image
-                    src={getImagePath(post.heroImage)}
+                    src={`${config.s3Path}${post.heroImage}`}
                     alt={post.postTitle}
                     width={0}
                     height={0}
                     sizes="100vw"
-                    className="w-full h-[150px] sm:h-[300px] rounded-md object-cover object-center"
+                    className="h-[150px] w-full rounded-md object-cover object-center sm:h-[300px]"
                   />
                 </Link>
               </div>
@@ -155,7 +155,7 @@ export const PostList = ({
 
             {/* info bar  */}
 
-            <div className="flex items-center text-sm text-subtext mt-2 gap-2 flex-wrap">
+            <div className="text-subtext mt-2 flex flex-wrap items-center gap-2 text-sm">
               <Button
                 rightIcon="chat"
                 size="small"
@@ -177,11 +177,11 @@ export const PostList = ({
         {/* Loading trigger */}
         <div
           ref={observerTarget}
-          className="h-[80px] flex items-center justify-center"
+          className="flex h-[80px] items-center justify-center"
         >
           {isLoading && (
-            <div className="flex items-center gap-2 text-subtext">
-              <div className="w-5 h-5 border-2 border-subtext border-t-transparent rounded-full animate-spin"></div>
+            <div className="text-subtext flex items-center gap-2">
+              <div className="border-subtext h-5 w-5 animate-spin rounded-full border-2 border-t-transparent"></div>
               <span>Loading more posts</span>
             </div>
           )}

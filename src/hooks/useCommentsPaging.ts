@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { config } from '@/utils/config'
 
-const COMMENTS_PER_PAGE = Number(
-  process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE || 5
-)
+const COMMENTS_PER_PAGE = Number(config.commentListPerPage)
 
 type NavigationType = 'previous' | 'next' | 'first' | 'last'
 

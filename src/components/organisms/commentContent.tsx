@@ -1,3 +1,5 @@
+'use client'
+
 import { CommentType } from '@/types/comment'
 import Tooltip from '../atoms/tooltip'
 import { useEffect, useState } from 'react'

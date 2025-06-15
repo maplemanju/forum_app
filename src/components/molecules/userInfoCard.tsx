@@ -1,7 +1,9 @@
+'use client'
+
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Tooltip from '../atoms/tooltip'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 import Link from 'next/link'
 
 type UserInfoCardProps = {
@@ -33,44 +35,43 @@ export const UserInfoCard = ({
 }: UserInfoCardProps) => {
   return (
     <div
-      className={`flex items-center gap-4 p-4 w-full h-full text-sm flex-wrap bg-accent-light rounded-md
-    md:flex-col md:w-[200px]`}
+      className={`bg-accent-light flex h-full w-full flex-wrap items-center gap-4 rounded-md p-4 text-sm md:w-[200px] md:flex-col`}
       style={{ width: fullWidth ? '100%' : undefined }}
     >
       {/* Avatar */}
-      <div className="w-16 h-16 rounded-full bg-border-secondary overflow-hidden">
+      <div className="bg-border-secondary h-16 w-16 overflow-hidden rounded-full">
         {user?.userInfo?.profileImage ? (
           <Image
-            src={getImagePath(user?.userInfo?.profileImage || '')}
+            src={`${config.s3Path}${user?.userInfo?.profileImage || ''}`}
             alt={user?.userInfo?.displayName || 'User'}
             width={64}
             height={64}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-subtext">
+          <div className="text-subtext flex h-full w-full items-center justify-center">
             <span className="material-symbols-rounded !text-4xl">person</span>
           </div>
         )}
       </div>
 
-      <div className="flex flex-col md:items-center gap-1">
+      <div className="flex flex-col gap-1 md:items-center">
         {/* User Name */}
-        <div className="font-medium text-foreground md:mb-1">
+        <div className="text-foreground font-medium md:mb-1">
           <Link href={`/profile/${user?.publicId}`}>
             {user?.userInfo?.displayName || 'Unknown User'}
           </Link>
         </div>
 
         {/* Join Date */}
-        <div className="text-xs text-subtext md:mb-2">
+        <div className="text-subtext text-xs md:mb-2">
           Joined {dayjs(user?.createdAt).format('MMM YYYY')}
         </div>
 
         {/* Stats */}
-        <div className="flex gap-4 text-xs text-subtext">
+        <div className="text-subtext flex gap-4 text-xs">
           <div>
-            <div className="font-medium flex items-center gap-1">
+            <div className="flex items-center gap-1 font-medium">
               <Tooltip
                 text={`Post count`}
                 width="115px"
@@ -84,7 +85,7 @@ export const UserInfoCard = ({
             </div>
           </div>
           <div>
-            <div className="font-medium flex items-center gap-1">
+            <div className="flex items-center gap-1 font-medium">
               <Tooltip
                 text={`Comment count`}
                 width="115px"
@@ -96,7 +97,7 @@ export const UserInfoCard = ({
             </div>
           </div>
           <div>
-            <div className="font-medium flex items-center gap-1">
+            <div className="flex items-center gap-1 font-medium">
               <Tooltip
                 text={`Hearts received`}
                 width="115px"

@@ -27,7 +27,6 @@ export const Sidebar = ({
   const postList = postListResponse?.data
   const categoryList = categoryListResponse?.data
   const subCategoryList = subCategoryListResponse?.data?.childCategories
-
   return (
     <aside className="bg-background no-scrollbar hidden w-full py-6 md:block">
       <div className="space-y-4 rounded-lg">

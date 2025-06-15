@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/atoms/button'
 import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
-import { getImagePath } from '@/utils/getImagePath'
+import { getImagePath } from '@/utils/imageUtils'
+import { config } from '@/utils/config'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -26,7 +27,7 @@ export default function Header() {
         <div>
           <Link href="/">
             <h1 className="pl-[44px] text-xl font-semibold md:pl-0">
-              Forum App
+              {config.siteName}
             </h1>
           </Link>
         </div>
@@ -45,7 +46,7 @@ export default function Header() {
               <Link href={`/profile/${session.user?.id}`}>
                 {session.user?.profileImage ? (
                   <Image
-                    src={getImagePath(session.user?.profileImage || '')}
+                    src={getImagePath(session.user?.profileImage)}
                     alt={session.user?.name || ''}
                     width={32}
                     height={32}

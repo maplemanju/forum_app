@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/atoms/button'
 import { useRouter } from 'next/navigation'
-import { getImagePath } from '@/utils/getImagePath'
+import { config } from '@/utils/config'
 import { User } from '@/types/user'
 import { UserInfoCard } from '../molecules/userInfoCard'
 import { useSession } from 'next-auth/react'
@@ -27,7 +27,7 @@ export default function ProfileContent({ user }: { user?: User }) {
             <div className="relative h-48 w-48 overflow-hidden rounded-lg">
               {user?.userInfo?.profileImage ? (
                 <Image
-                  src={getImagePath(user.userInfo?.profileImage || '')}
+                  src={`${config.s3Path}${user.userInfo?.profileImage || ''}`}
                   alt="Profile"
                   fill
                   className="object-cover"

@@ -1,4 +1,4 @@
-export enum ROLES  {
+export enum ROLES {
   ADMIN,
   MODERATOR,
   USER,

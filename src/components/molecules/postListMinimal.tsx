@@ -26,7 +26,7 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
         {posts.map((post: PostType) => (
           <li
             key={post.id}
-            className="p-2 text-sm border-b border-border-secondary last:border-b-0"
+            className="border-border-secondary border-b p-2 text-sm last:border-b-0"
           >
             {/* category  */}
             <div className="text-subtext text-xs">
@@ -38,7 +38,7 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
                 {post.postTitle}
               </div>
             </Link>
-            <div className="flex items-center text-sm text-subtext gap-2 flex-wrap text-xs mt-1">
+            <div className="text-subtext mt-1 flex flex-wrap items-center gap-2 text-sm text-xs">
               <UserAndIcon
                 displayName={
                   post.createdUser.userInfo?.displayName || 'Anonymous'
