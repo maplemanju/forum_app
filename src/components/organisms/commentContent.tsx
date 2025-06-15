@@ -99,12 +99,10 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
         session.user.roles?.includes(ROLES.ADMIN))
 
     return (
-      <div className="w-full">
+      <article role="comment" className="w-full">
         <div className="gap-4 md:flex">
           {/* User Info - Full card for main comments */}
-          <div>
-            <UserInfoCard user={commentState.createdUser} />
-          </div>
+          <UserInfoCard user={commentState.createdUser} />
 
           {/* Comment Content */}
           <div className="flex-1">
@@ -139,14 +137,17 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                     className="text-center"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-rounded !text-sm">
+                      <span
+                        className="material-symbols-rounded !text-sm"
+                        aria-hidden
+                      >
                         today
                       </span>
-                      <span>
+                      <time dateTime={commentState.createdAt?.toISOString()}>
                         {commentState.createdAt
                           ? fromNowShort(commentState.createdAt)
                           : ''}
-                      </span>
+                      </time>
                     </div>
                   </Tooltip>
                   {/* updated at  */}
@@ -161,14 +162,17 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                       className="text-center"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="material-symbols-rounded !text-sm">
+                        <span
+                          className="material-symbols-rounded !text-sm"
+                          aria-hidden
+                        >
                           update
                         </span>
-                        <span>
+                        <time dateTime={commentState.updatedAt?.toISOString()}>
                           {commentState.updatedAt
                             ? fromNowShort(commentState.updatedAt)
                             : ''}
-                        </span>
+                        </time>
                       </div>
                     </Tooltip>
                   )}
@@ -180,9 +184,9 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                         color="neutral"
                         boxStyle="box"
                         leftIcon="edit"
-                      >
-                        Edit
-                      </Button>
+                        title="Edit comment"
+                        aria-label={`Edit comment from ${commentState.createdUser?.userInfo?.displayName}`}
+                      />
                     </div>
                   )}
                 </div>
@@ -204,15 +208,18 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
                       color="neutral"
                       boxStyle="box"
                       leftIcon="reply"
-                    >
-                      Reply
-                    </Button>
+                      title="Reply to this comment"
+                      aria-label={`Reply to ${commentState.createdUser?.userInfo?.displayName}'s comment`}
+                    />
                   )}
                   <VoteButtons
                     commentId={commentState.id}
                     voteCount={commentState._count?.votes || 0}
                     canVote={Boolean(session)}
                     userVotes={commentState.votes}
+                    commenterName={
+                      commentState.createdUser?.userInfo?.displayName
+                    }
                   />
                 </div>
 
@@ -231,7 +238,7 @@ const CommentContent: React.FC<CommentContentProps> = ({ comment, postId }) => {
             )}
           </div>
         </div>
-      </div>
+      </article>
     )
   }
 

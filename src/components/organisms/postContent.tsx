@@ -48,22 +48,23 @@ export const PostContent = ({ post }: PostProps) => {
     return <div>Post not found</div>
   }
   return (
-    <div className="bg-background-secondary rounded-lg p-4">
+    <article className="bg-background-secondary rounded-lg p-4">
       {/* title  */}
-
       <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
         {post.postTitle}
       </h1>
 
       {/* info bar top  */}
-      <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-        <div>
-          <UserAndIcon
-            displayName={post.createdUser.userInfo?.displayName || 'Anonymous'}
-            publicId={post.createdUser.publicId}
-            profileImage={post.createdUser.userInfo?.profileImage}
-          />
-        </div>
+      <div
+        className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"
+        role="group"
+        aria-label="User Info"
+      >
+        <UserAndIcon
+          displayName={post.createdUser.userInfo?.displayName || 'Anonymous'}
+          publicId={post.createdUser.publicId}
+          profileImage={post.createdUser.userInfo?.profileImage}
+        />
         <Tooltip
           text={`Posted at ${dayjs(post.publishedAt || post.createdAt).format(
             'YYYY/MM/DD HH:mm'
@@ -71,10 +72,17 @@ export const PostContent = ({ post }: PostProps) => {
           width="115px"
           className="text-center"
         >
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-rounded !text-sm">today</span>
+          <time
+            dateTime={dayjs(post.publishedAt || post.createdAt).format(
+              'YYYY-MM-DDTHH:mm:ssZ'
+            )}
+            className="flex items-center gap-2"
+          >
+            <span className="material-symbols-rounded !text-sm" aria-hidden>
+              today
+            </span>
             <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
-          </div>
+          </time>
         </Tooltip>
       </div>
 
@@ -100,7 +108,11 @@ export const PostContent = ({ post }: PostProps) => {
       </div>
 
       {/* info bar bottom  */}
-      <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+      <div
+        className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"
+        role="group"
+        aria-label="Post information"
+      >
         <Tooltip
           text={`Posted at ${dayjs(post.publishedAt || post.createdAt).format(
             'YYYY/MM/DD HH:mm'
@@ -108,10 +120,15 @@ export const PostContent = ({ post }: PostProps) => {
           width="115px"
           className="text-center"
         >
-          <div className="flex items-center gap-2">
+          <time
+            dateTime={dayjs(post.publishedAt || post.createdAt).format(
+              'YYYY-MM-DDTHH:mm:ssZ'
+            )}
+            className="flex items-center gap-2"
+          >
             <span className="material-symbols-rounded !text-sm">today</span>
             <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
-          </div>
+          </time>
         </Tooltip>
         {!dayjs(post.updatedAt).isSame(dayjs(post.createdAt)) && (
           <Tooltip
@@ -121,14 +138,17 @@ export const PostContent = ({ post }: PostProps) => {
             width="115px"
             className="text-center"
           >
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <time
+              dateTime={dayjs(post.updatedAt).format('YYYY-MM-DDTHH:mm:ssZ')}
+              className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+            >
               <span className="material-symbols-rounded !text-sm">update</span>
               <span>{fromNowShort(post.updatedAt)}</span>
-            </div>
+            </time>
           </Tooltip>
         )}
       </div>
-      <div className="mt-4 flex items-center gap-2">
+      <div className="mt-4 flex items-center gap-2" role="group">
         <Button
           rightIcon="chat"
           size="small"
@@ -136,6 +156,7 @@ export const PostContent = ({ post }: PostProps) => {
           boxStyle="box"
           label={`${post._count.comments || 0}`}
           linkPath={`#comments`}
+          aria-label={`See comments of the post`}
         />
         <VoteButtons
           postId={post.id}
@@ -147,7 +168,10 @@ export const PostContent = ({ post }: PostProps) => {
 
       {/* tags  */}
       {post.postTags?.tags && post.postTags?.tags.join('') && (
-        <div className="flex-column mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <div
+          className="flex-column mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+          aria-label="Tags of the post"
+        >
           <span className={`material-symbols-rounded`}>label</span>
           <span>{post.postTags?.tags.join(', ')}</span>
         </div>
@@ -157,6 +181,6 @@ export const PostContent = ({ post }: PostProps) => {
       <div className="mt-4">
         <UserInfoCard user={post.createdUser} fullWidth={true} />
       </div>
-    </div>
+    </article>
   )
 }

@@ -20,8 +20,9 @@ export const Alert = ({ response }: AlertProps) => {
     <div
       className={`${
         alertStyles[response.type || 'info']
-      } border px-4 py-3 rounded relative mb-4`}
+      } relative mb-4 rounded border px-4 py-3`}
       role="alert"
+      aria-live="assertive"
     >
       <span className="block sm:inline">{response.message}</span>
     </div>

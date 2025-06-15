@@ -60,7 +60,7 @@ export const ReplyList = ({
 
   return (
     <>
-      <div className="my-2">
+      <div className="my-2" role="list">
         {/* reply form */}
         {openReply && (
           <CommentEdit
@@ -72,6 +72,7 @@ export const ReplyList = ({
         )}
         {optimisticReplies.map((reply) => (
           <div
+            role="listitem"
             key={reply.id || `optimistic-child-comment-${crypto.randomUUID()}`}
             className={`mt-2 p-2 ${
               reply.isNewComment ? 'bg-highlight mt-2 rounded-lg' : ''
@@ -89,6 +90,7 @@ export const ReplyList = ({
               color="fade"
               boxStyle="box"
               leftIcon="expand_less"
+              aria-label="Hide replies"
             />
             <Button
               onClick={handleLoadMore}
@@ -99,6 +101,7 @@ export const ReplyList = ({
               leftIcon="expand_more"
               isLoading={isLoading}
               disabled={!hasMore}
+              aria-label="Load more"
             />
           </div>
         )}

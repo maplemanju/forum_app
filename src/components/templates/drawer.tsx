@@ -53,6 +53,8 @@ export const Drawer = ({
           size="medium"
           boxStyle="box"
           color="neutral"
+          title="Explore More Categories"
+          aria-label="Explore More Categories"
         />
       </motion.div>
       <AnimatePresence mode="wait">
@@ -66,6 +68,7 @@ export const Drawer = ({
               transition={{ duration: 0.3 }}
               className="fixed inset-0 z-40 bg-black"
               onClick={() => setIsOpen(false)}
+              aria-hidden
             />
 
             <motion.aside
@@ -74,7 +77,8 @@ export const Drawer = ({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '-100%', opacity: 0 }}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="bg-background fixed top-0 left-0 z-50 h-screen w-full overflow-y-auto py-[56px] md:hidden"
+              className="bg-background fixed top-0 left-0 z-50 h-screen w-full overflow-y-auto pt-[56px] pb-12 md:hidden"
+              aria-live="polite"
             >
               <div className="space-y-4 rounded-lg">
                 {subCategoryList && subCategoryList.length > 0 && (

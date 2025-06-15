@@ -34,11 +34,14 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
             </div>
             {/* title  */}
             <Link href={`/${post.category.slug}/${post.slug}`}>
-              <div className="text-foreground hover:text-link">
+              <h3 className="text-foreground hover:text-link">
                 {post.postTitle}
-              </div>
+              </h3>
             </Link>
-            <div className="text-subtext mt-1 flex flex-wrap items-center gap-2 text-sm text-xs">
+            <div
+              className="text-subtext mt-1 flex flex-wrap items-center gap-2 text-sm text-xs"
+              role="group"
+            >
               <UserAndIcon
                 displayName={
                   post.createdUser.userInfo?.displayName || 'Anonymous'
@@ -55,7 +58,13 @@ export const PostListMinimal = ({ posts, label = 'Posts' }: PostListProps) => {
                 width="115px"
                 className="text-center"
               >
-                <span>{fromNowShort(post.publishedAt || post.createdAt)}</span>
+                <time
+                  dateTime={dayjs(post.publishedAt || post.createdAt).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                  )}
+                >
+                  {fromNowShort(post.publishedAt || post.createdAt)}
+                </time>
               </Tooltip>
             </div>
           </li>

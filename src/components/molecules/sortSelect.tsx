@@ -30,12 +30,14 @@ export const SortSelect = ({
 }: SortSelectProps) => {
   return (
     <Select
+      id={`sort-${contentType}`}
       options={contentType === 'post' ? postSortOptions : commentSortOptions}
       defaultValue={defaultValue}
       onChange={(e) => onChange(e.target.value)}
-      className={`max-w-[200px] ${className} text-xs py-1 px-1`}
+      className={`max-w-[200px] ${className} px-1 py-1 text-xs`}
       label="Sort By"
       labelClassName="text-xs"
+      aria-label={`Sort ${contentType} by`}
     />
   )
 }

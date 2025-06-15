@@ -40,9 +40,14 @@ export default function Header() {
             rightIcon="search"
             linkPath="/search"
             boxStyle="box"
+            title="Search"
+            aria-label="Search"
           />
           {session && (
-            <div className="text-gray-600 dark:text-white">
+            <div
+              className="text-gray-600 dark:text-white"
+              aria-label="Go to your Profie"
+            >
               <Link href={`/profile/${session.user?.id}`}>
                 {session.user?.profileImage ? (
                   <Image
@@ -66,6 +71,8 @@ export default function Header() {
             size="small"
             onClick={loginOrLogout}
             leftIcon={session ? 'logout' : 'login'}
+            title="Logout"
+            aria-label="Logout"
           />
         </div>
       </div>

@@ -35,6 +35,8 @@ export const UserInfoCard = ({
 }: UserInfoCardProps) => {
   return (
     <div
+      role="group"
+      aria-label="User information"
       className={`bg-accent-light flex h-full w-full flex-wrap items-center gap-4 rounded-md p-4 text-sm md:w-[200px] md:flex-col`}
       style={{ width: fullWidth ? '100%' : undefined }}
     >
@@ -43,13 +45,16 @@ export const UserInfoCard = ({
         {user?.userInfo?.profileImage ? (
           <Image
             src={`${config.s3Path}${user?.userInfo?.profileImage || ''}`}
-            alt={user?.userInfo?.displayName || 'User'}
+            alt={`${user?.userInfo?.displayName || 'User'}'s avatar`}
             width={64}
             height={64}
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="text-subtext flex h-full w-full items-center justify-center">
+          <div
+            className="text-subtext flex h-full w-full items-center justify-center"
+            aria-hidden
+          >
             <span className="material-symbols-rounded !text-4xl">person</span>
           </div>
         )}
@@ -57,67 +62,64 @@ export const UserInfoCard = ({
 
       <div className="flex flex-col gap-1 md:items-center">
         {/* User Name */}
-        <div className="text-foreground font-medium md:mb-1">
+        <h3 className="text-foreground font-medium md:mb-1">
           <Link href={`/profile/${user?.publicId}`}>
             {user?.userInfo?.displayName || 'Unknown User'}
           </Link>
-        </div>
+        </h3>
 
         {/* Join Date */}
-        <div className="text-subtext text-xs md:mb-2">
+        <time
+          dateTime={user?.createdAt.toISOString()}
+          className="text-subtext text-xs md:mb-2"
+        >
           Joined {dayjs(user?.createdAt).format('MMM YYYY')}
-        </div>
+        </time>
 
         {/* Stats */}
         <div className="text-subtext flex gap-4 text-xs">
-          <div>
-            <div className="flex items-center gap-1 font-medium">
-              <Tooltip
-                text={`Post count`}
-                width="115px"
-                className="text-center"
-              >
-                <span className="material-symbols-rounded !text-sm">
-                  newsmode
-                </span>
-              </Tooltip>
-              {user?._count?.posts || 0}
-            </div>
+          <div
+            className="flex items-center gap-1 font-medium"
+            aria-label={`${user?.userInfo?.displayName} has created a post ${user?._count?.receivedLikes || 0} times`}
+          >
+            <Tooltip text={`Post count`} width="115px" className="text-center">
+              <span className="material-symbols-rounded !text-sm" aria-hidden>
+                newsmode
+              </span>
+            </Tooltip>
+            {user?._count?.posts || 0}
           </div>
-          <div>
-            <div className="flex items-center gap-1 font-medium">
-              <Tooltip
-                text={`Comment count`}
-                width="115px"
-                className="text-center"
-              >
-                <span className="material-symbols-rounded !text-sm">chat</span>
-              </Tooltip>
-              {user?._count?.comments || 0}
-            </div>
+          <div
+            className="flex items-center gap-1 font-medium"
+            aria-label={`${user?.userInfo?.displayName} has created a comment ${user?._count?.receivedLikes || 0} times`}
+          >
+            <Tooltip
+              text={`Comment count`}
+              width="115px"
+              className="text-center"
+            >
+              <span className="material-symbols-rounded !text-sm" aria-hidden>
+                chat
+              </span>
+            </Tooltip>
+            {user?._count?.comments || 0}
           </div>
-          <div>
-            <div className="flex items-center gap-1 font-medium">
-              <Tooltip
-                text={`Hearts received`}
-                width="115px"
-                className="text-center"
-              >
-                <span className="material-symbols-rounded !text-sm">
-                  favorite
-                </span>
-              </Tooltip>
-              {user?._count?.receivedLikes || 0}
-            </div>
+          <div
+            className="flex items-center gap-1 font-medium"
+            aria-label={`${user?.userInfo?.displayName} has recieved ${user?._count?.receivedLikes || 0} hearts`}
+          >
+            <Tooltip
+              text={`Hearts received`}
+              width="115px"
+              className="text-center"
+            >
+              <span className="material-symbols-rounded !text-sm" aria-hidden>
+                favorite
+              </span>
+            </Tooltip>
+            {user?._count?.receivedLikes || 0}
           </div>
         </div>
-
-        {/* Bio */}
-        {/* {user?.userInfo?.bio && (
-        <div className="mt-2 text-xs text-subtext text-center line-clamp-2">
-          {user.userInfo.bio}
-        </div>
-      )} */}
       </div>
     </div>
   )

@@ -37,8 +37,14 @@ const CategoryContent: React.FC<CategoryContentProps> = ({ category }) => {
   }, [category])
 
   return (
-    <div className="bg-background-secondary mb-6 w-full p-6">
-      <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+    <article
+      aria-labelledby="category-header"
+      className="bg-background-secondary mb-6 w-full p-4"
+    >
+      <h1
+        id="category-header"
+        className="mb-4 text-3xl font-bold text-gray-900 dark:text-white"
+      >
         {category?.categoryName}
       </h1>
 
@@ -47,9 +53,9 @@ const CategoryContent: React.FC<CategoryContentProps> = ({ category }) => {
           <MDXContent source={serializedContent} />
         ) : (
           <CategorySkeleton />
-        )}{' '}
+        )}
       </div>
-    </div>
+    </article>
   )
 }
 
