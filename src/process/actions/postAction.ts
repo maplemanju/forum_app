@@ -7,7 +7,7 @@ import postRepository, {
   UpdatePost,
   DeletePostProps,
 } from '../repositories/postRepository'
-import { PostType } from '@/types/post'
+import { PostType, PostSingleType } from '@/types/post'
 import { authOptions } from '@/utils/auth'
 import { ResponseType, ApplicationError, NotFoundError } from '@/utils/errors'
 import { sanitizeContent } from '@/utils/domPurifier'
@@ -148,7 +148,7 @@ export const getPostsByKeyword = async ({
  */
 export const getPostBySlug = async (
   args: GetBySlug
-): Promise<ResponseType<PostType>> => {
+): Promise<ResponseType<PostSingleType>> => {
   try {
     const response = await postRepository.getBySlug(args)
     console.log('getPostBySlug')

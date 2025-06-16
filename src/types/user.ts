@@ -8,5 +8,12 @@ export type User = Prisma.UsersGetPayload<{
         roleId: true
       }
     }
+    _count: {
+      select: {
+        posts: true
+        comments: true
+        votes: true
+      }
+    }
   }
 }>

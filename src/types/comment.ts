@@ -17,6 +17,13 @@ export type CommentType = Prisma.CommentsGetPayload<{
     createdUser: {
       include: {
         userInfo: true
+        _count: {
+          select: {
+            posts: true
+            comments: true
+            votes: true
+          }
+        }
       }
     }
     _count: {
