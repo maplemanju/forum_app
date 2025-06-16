@@ -71,8 +71,8 @@ export default function Header() {
             size="small"
             onClick={loginOrLogout}
             leftIcon={session ? 'logout' : 'login'}
-            title="Logout"
-            aria-label="Logout"
+            title={session ? 'Logout' : 'Login'}
+            aria-label={session ? 'Logout' : 'Login'}
           />
         </div>
       </div>
