@@ -11,6 +11,7 @@ import {
   linkDialogPlugin,
   linkPlugin,
   imagePlugin,
+  tablePlugin,
   type MDXEditorMethods,
   type MDXEditorProps,
   BoldItalicUnderlineToggles,
@@ -18,6 +19,7 @@ import {
   CreateLink,
   Separator,
   UndoRedo,
+  InsertTable,
 } from '@mdxeditor/editor'
 import { StrikeoutButton } from './mdxEditor/strikeoutButton'
 import { ListsButton } from './mdxEditor/listsButton'
@@ -66,6 +68,7 @@ export default function TextEditorInitialize({
         }),
         linkDialogPlugin(),
         thematicBreakPlugin(),
+        tablePlugin(),
         toolbarPlugin({
           toolbarClassName: 'editor-toolbar',
           toolbarContents: () => (
@@ -83,6 +86,7 @@ export default function TextEditorInitialize({
               <Separator />
               <CreateLink />
               <InsertImage />
+              <InsertTable />
             </>
           ),
         }),

@@ -102,4 +102,18 @@
     margin-top: 1em;
     margin-bottom: 1em;
   }
+
+  table {
+    border-collapse: collapse;
+    overflow: hidden;
+  }
+  td:not([data-tool-cell='true']) {
+    padding: 12px 8px;
+    border: 1px solid var(--color-border-secondary);
+  }
+  th:not([data-tool-cell='true']) {
+    font-weight: 600;
+    padding: 6px 8px;
+    border: 1px solid var(--color-border-secondary);
+  }
 }
