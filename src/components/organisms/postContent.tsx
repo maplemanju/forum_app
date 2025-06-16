@@ -1,6 +1,6 @@
 'use client'
 
-import { PostType } from '@/types/post'
+import { PostSingleType } from '@/types/post'
 import Tooltip from '@/components/atoms/tooltip'
 import { VoteButtons } from '@/components/molecules/voteButtons'
 import dayjs from 'dayjs'
@@ -20,7 +20,7 @@ import { UserAndIcon } from '@/components/molecules/userAndIcon'
 import { config } from '@/utils/config'
 
 type PostProps = {
-  post?: PostType
+  post?: PostSingleType
 }
 
 export const PostContent = ({ post }: PostProps) => {

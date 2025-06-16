@@ -2,7 +2,7 @@ import { ROLES } from '@/utils/consts'
 import prisma from '@/utils/prisma'
 import generateRandomDisplayName from '@/utils/randomNameGenerator'
 import { nanoid } from 'nanoid'
-
+import { User } from '@/types/user'
 export type GetBySnsIdProps = {
   snsId: string
   authProvider: string
@@ -42,7 +42,7 @@ export const userRepository = {
     })
   },
 
-  getById: async (args: GetByIdProps) => {
+  getById: async (args: GetByIdProps): Promise<User> => {
     return await prisma.users.findUniqueOrThrow({
       where: {
         publicId: args.userId,
@@ -53,6 +53,29 @@ export const userRepository = {
         userRoles: {
           select: {
             roleId: true,
+          },
+        },
+        _count: {
+          select: {
+            votes: {
+              where: {
+                vote: 1,
+              },
+            },
+            posts: {
+              where: {
+                isDeleted: {
+                  not: true,
+                },
+              },
+            },
+            comments: {
+              where: {
+                isDeleted: {
+                  not: true,
+                },
+              },
+            },
           },
         },
       },
