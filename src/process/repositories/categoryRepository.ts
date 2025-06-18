@@ -1,6 +1,7 @@
 import prisma from '@/utils/prisma'
 import { Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
+import { Categories } from '@prisma/client'
 
 export type GetCategoryProps = {
   slug: string
@@ -21,6 +22,13 @@ export type DeleteCategoryProps = {
   id: number
 }
 export const categoryRepository = {
+  getAllCategories: async (): Promise<Categories[]> => {
+    return await prisma.categories.findMany({
+      where: {
+        isDeleted: false,
+      },
+    })
+  },
   getAllLowLevelCategories: async () => {
     return await prisma.categories.findMany({
       where: {

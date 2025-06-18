@@ -38,7 +38,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "remark-gfm": "^4.0.1",
-    "sass": "^1.86.3"
+    "sass": "^1.86.3",
+    "sitemap": "^8.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
