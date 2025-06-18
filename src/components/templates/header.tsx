@@ -45,7 +45,7 @@ export default function Header() {
           />
           {session && (
             <div
-              className="text-gray-600 dark:text-white"
+              className="h-[32px] w-[32px] overflow-hidden rounded-full text-gray-600 dark:text-white"
               aria-label="Go to your Profie"
             >
               <Link href={`/profile/${session.user?.id}`}>
@@ -55,7 +55,7 @@ export default function Header() {
                     alt={session.user?.name || ''}
                     width={32}
                     height={32}
-                    className="rounded-full"
+                    className="h-full w-full object-cover"
                   />
                 ) : (
                   <span className="material-symbols-rounded rounded-full bg-gray-200 px-1 py-1 text-gray-500">
