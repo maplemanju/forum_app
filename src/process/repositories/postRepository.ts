@@ -338,6 +338,21 @@ export const postRepository = {
       create: { postId: args.postId, tags: args.tags },
     })
   },
+
+  getAllPost: async () => {
+    return await prisma.posts.findMany({
+      where: {
+        isDeleted: false,
+      },
+      include: {
+        category: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+    })
+  },
 }
 
 export default postRepository
