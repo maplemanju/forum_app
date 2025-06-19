@@ -17,6 +17,7 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
   const canEdit = session && session.user.roles?.includes(ROLES.ADMIN)
 
   const renderCategory = (category: CategoryType) => {
+    const description = stripMarkdown(category.categoryDescription ?? '', 180)
     return (
       <div
         key={category.id}
@@ -30,8 +31,8 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
             </h3>
           </Link>
 
-          <p className="text-subtext line-clamp-1 text-sm">
-            {stripMarkdown(category.categoryDescription ?? '', 180)}
+          <p className="text-subtext line-clamp-1 text-sm" title={description}>
+            {description}
           </p>
         </div>
         {canEdit && (
