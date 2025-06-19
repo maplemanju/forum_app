@@ -39,7 +39,7 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
   ]
 
   const previousPage = paths[paths.length - 2]
-  const currentPage = paths[paths.length - 1]
+  // const currentPage = paths[paths.length - 1]
 
   return (
     <nav className="px-4 py-3" aria-label="Breadcrumb">
