@@ -16,7 +16,7 @@ type GenerateMetadataProps = {
 export function generateSiteMetadata({
   title,
   description,
-  image,
+  image = config.siteUrl + '/images/logo-footer.png',
   type = 'website',
   publishedTime,
   modifiedTime,
