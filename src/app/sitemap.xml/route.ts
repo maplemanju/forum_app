@@ -6,9 +6,11 @@ import { config } from '@/utils/config'
 import categoryRepository from '@/process/repositories/categoryRepository'
 import postRepository from '@/process/repositories/postRepository'
 
+export const dynamic = 'force-dynamic'
+
 // Replace this with your actual data source (e.g., CMS or database)
 async function getCategories() {
-  return await categoryRepository.getAllTopLevelCategories()
+  return await categoryRepository.getAllCategories()
 }
 async function getPosts() {
   return await postRepository.getAllPost()

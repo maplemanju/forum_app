@@ -7,6 +7,7 @@ import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
 import { getImagePath } from '@/utils/imageUtils'
 import { config } from '@/utils/config'
+import headerImage from '/public/images/logo-header.png'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -27,7 +28,12 @@ export default function Header() {
         <div>
           <Link href="/">
             <h1 className="pl-[44px] text-xl font-semibold md:pl-0">
-              {config.siteName}
+              <Image
+                src={headerImage}
+                alt={config.siteName}
+                width={200}
+                className="absolute top-[5px] w-[170px] md:top-0 md:w-[200px] dark:invert-90"
+              />
             </h1>
           </Link>
         </div>
