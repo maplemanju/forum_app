@@ -13,6 +13,7 @@ import { Suspense } from 'react'
 import { SidebarSkeleton } from '@/components/molecules/skeletons/sidebarSkeleton'
 import { generateSiteMetadata } from '@/utils/metadata'
 import { Drawer } from '@/components/templates/drawer'
+import { stripMarkdown } from '@/utils/stripMarkdown'
 
 export default async function EditPage({
   params,
@@ -61,7 +62,7 @@ export async function generateMetadata({
 
   return generateSiteMetadata({
     title: `Edit Post - ${post.data?.postTitle}`,
-    description: post.data?.postContent,
+    description: stripMarkdown(post.data?.postContent ?? ''),
     noIndex: true,
   })
 }
