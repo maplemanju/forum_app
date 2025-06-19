@@ -57,14 +57,8 @@ export const Breadcrumbs = ({ category, post }: BreadcrumbsProps) => {
                 <span className="ml-1 text-sm">{previousPage.name}</span>
               )}
             </Link>
-            <span className="material-symbols-rounded text-subtext">
-              chevron_right
-            </span>
           </>
         )}
-        <span className="text-foreground text-sm font-medium">
-          {currentPage.name}
-        </span>
       </div>
     </nav>
   )
