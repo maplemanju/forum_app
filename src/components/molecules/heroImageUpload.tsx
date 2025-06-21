@@ -115,9 +115,7 @@ export const HeroImageUpload = ({
               >
                 {isUploading ? 'Uploading...' : 'Upload Hero Image'}
               </div>
-              <div className="text-subtext text-sm">
-                Drop an image here or click to upload
-              </div>
+              <div className="text-subtext text-sm">Click to upload</div>
             </div>
           </label>
         </div>
