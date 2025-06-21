@@ -12,6 +12,7 @@ import { generateSiteMetadata } from '@/utils/metadata'
 import { AddPostSticky } from '@/components/molecules/addPostSticky'
 import { Drawer } from '@/components/templates/drawer'
 import { config } from '@/utils/config'
+import { TopContent } from '@/components/organisms/topContent'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,6 +28,7 @@ export default async function Home() {
     <>
       <Drawer categoryListPromise={Promise.resolve(categoriesResponse)} />
       <Content>
+        <TopContent />
         <PostList
           initialPosts={postsResponse.data}
           showCategory={true}

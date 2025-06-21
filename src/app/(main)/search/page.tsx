@@ -43,6 +43,11 @@ export default async function SearchPage({
           keywords={keywords}
           showSort={true}
           sort={sort}
+          noPostMessage={
+            keywords
+              ? 'No Posts Found'
+              : 'Type a keyword to uncover practical hacks for life in Japan.'
+          }
         />
       </Content>
       <Suspense fallback={<SidebarSkeleton />}>

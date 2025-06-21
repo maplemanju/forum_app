@@ -5,27 +5,10 @@ import Image from 'next/image'
 import Tooltip from '../atoms/tooltip'
 import { config } from '@/utils/config'
 import Link from 'next/link'
+import { PostSingleType } from '@/types/post'
 
 type UserInfoCardProps = {
-  user?: {
-    publicId: string
-    userInfo?: {
-      displayName: string
-      createdAt: Date
-      updatedAt: Date
-      isDeleted: boolean
-      userId: number
-      score: number
-      profileImage?: string | null
-      // bio: string
-    } | null
-    createdAt: Date
-    _count?: {
-      posts: number
-      comments: number
-      receivedLikes: number
-    }
-  }
+  user?: PostSingleType['createdUser']
   fullWidth?: boolean
 }
 
@@ -80,9 +63,9 @@ export const UserInfoCard = ({
         <div className="text-subtext flex gap-4 text-xs">
           <div
             className="flex items-center gap-1 font-medium"
-            aria-label={`${user?.userInfo?.displayName} has created a post ${user?._count?.receivedLikes || 0} times`}
+            aria-label={`${user?.userInfo?.displayName} has created a post ${user?._count?.posts || 0} times`}
           >
-            <Tooltip text={`Post count`} width="115px" className="text-center">
+            <Tooltip text={`Posts`} width="115px" className="text-center">
               <span className="material-symbols-rounded !text-sm" aria-hidden>
                 newsmode
               </span>
@@ -91,13 +74,9 @@ export const UserInfoCard = ({
           </div>
           <div
             className="flex items-center gap-1 font-medium"
-            aria-label={`${user?.userInfo?.displayName} has created a comment ${user?._count?.receivedLikes || 0} times`}
+            aria-label={`${user?.userInfo?.displayName} has created a comment ${user?._count?.comments || 0} times`}
           >
-            <Tooltip
-              text={`Comment count`}
-              width="115px"
-              className="text-center"
-            >
+            <Tooltip text={`Comments`} width="115px" className="text-center">
               <span className="material-symbols-rounded !text-sm" aria-hidden>
                 chat
               </span>
@@ -106,10 +85,10 @@ export const UserInfoCard = ({
           </div>
           <div
             className="flex items-center gap-1 font-medium"
-            aria-label={`${user?.userInfo?.displayName} has recieved ${user?._count?.receivedLikes || 0} hearts`}
+            aria-label={`${user?.userInfo?.displayName} has given ${user?._count?.votes || 0} hearts`}
           >
             <Tooltip
-              text={`Hearts received`}
+              text={`Hearts given`}
               width="115px"
               className="text-center"
             >
@@ -117,7 +96,7 @@ export const UserInfoCard = ({
                 favorite
               </span>
             </Tooltip>
-            {user?._count?.receivedLikes || 0}
+            {user?._count?.votes || 0}
           </div>
         </div>
       </div>

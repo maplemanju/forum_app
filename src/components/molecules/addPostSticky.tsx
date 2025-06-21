@@ -10,7 +10,7 @@ export const AddPostSticky = ({ categorySlug }: AddPostStickyProps) => {
   if (!session) return <></>
 
   return (
-    <div className="fixed right-8 bottom-12">
+    <div className="fixed right-8 bottom-12 opacity-60">
       <Button
         linkPath={`/add/post?${categorySlug ? 'categorySlug=' + categorySlug : ''}`}
         leftIcon="add"

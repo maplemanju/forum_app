@@ -7,6 +7,7 @@ import { useLoginPopup } from '@/hooks/useLoginPopup'
 import Image from 'next/image'
 import { getImagePath } from '@/utils/imageUtils'
 import { config } from '@/utils/config'
+import headerImage from '/public/images/logo-header.png'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -27,7 +28,12 @@ export default function Header() {
         <div>
           <Link href="/">
             <h1 className="pl-[44px] text-xl font-semibold md:pl-0">
-              {config.siteName}
+              <Image
+                src={headerImage}
+                alt={config.siteName}
+                width={200}
+                className="absolute top-[5px] w-[170px] md:top-0 md:w-[200px] dark:invert-90"
+              />
             </h1>
           </Link>
         </div>
@@ -45,7 +51,7 @@ export default function Header() {
           />
           {session && (
             <div
-              className="text-gray-600 dark:text-white"
+              className="h-[32px] w-[32px] overflow-hidden rounded-full text-gray-600 dark:text-white"
               aria-label="Go to your Profie"
             >
               <Link href={`/profile/${session.user?.id}`}>
@@ -55,7 +61,7 @@ export default function Header() {
                     alt={session.user?.name || ''}
                     width={32}
                     height={32}
-                    className="rounded-full"
+                    className="h-full w-full object-cover"
                   />
                 ) : (
                   <span className="material-symbols-rounded rounded-full bg-gray-200 px-1 py-1 text-gray-500">
@@ -71,8 +77,8 @@ export default function Header() {
             size="small"
             onClick={loginOrLogout}
             leftIcon={session ? 'logout' : 'login'}
-            title="Logout"
-            aria-label="Logout"
+            title={session ? 'Logout' : 'Login'}
+            aria-label={session ? 'Logout' : 'Login'}
           />
         </div>
       </div>

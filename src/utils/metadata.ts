@@ -16,7 +16,7 @@ type GenerateMetadataProps = {
 export function generateSiteMetadata({
   title,
   description,
-  image,
+  image = config.siteUrl + '/images/logo-footer.png',
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -54,7 +54,7 @@ export function generateSiteMetadata({
       ...(author && { authors: [author] }),
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: finalTitle,
       description: finalDescription,
       ...(image && { images: [image] }),

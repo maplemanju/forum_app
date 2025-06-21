@@ -6,6 +6,7 @@ import { use, useState, useEffect } from 'react'
 import { Button } from '@/components/atoms/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ResponseType } from '@/utils/errors'
+import Link from 'next/link'
 
 type SidebarProps = {
   categoryListPromise?: Promise<ResponseType<CategoryType[]>>
@@ -77,10 +78,19 @@ export const Drawer = ({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '-100%', opacity: 0 }}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="bg-background fixed top-0 left-0 z-50 h-screen w-full overflow-y-auto pt-[56px] pb-12 md:hidden"
+              className="bg-background fixed top-0 left-0 z-50 h-screen w-full overflow-y-auto pb-12 md:hidden"
               aria-live="polite"
             >
-              <div className="space-y-4 rounded-lg">
+              <div className="flex h-[56px] items-center px-4">
+                <Link
+                  href="/"
+                  title="Go to top page"
+                  aria-label="Go to top page"
+                >
+                  <span className="material-symbols-rounded">Home</span>
+                </Link>
+              </div>
+              <div className="space-y-4">
                 {subCategoryList && subCategoryList.length > 0 && (
                   <div>
                     <CategoryList

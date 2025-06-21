@@ -8,4 +8,5 @@ export const config = {
   postListPerPage: Number(process.env.NEXT_PUBLIC_POST_LIST_PER_PAGE) || 5,
   commentListPerPage:
     Number(process.env.NEXT_PUBLIC_COMMENT_LIST_PER_PAGE) || 5,
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
 } as const

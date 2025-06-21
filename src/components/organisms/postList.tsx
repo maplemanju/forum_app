@@ -24,6 +24,7 @@ type PostListProps = {
   showCategory?: boolean
   label?: string
   showSort?: boolean
+  noPostMessage?: string
 
   // for infinity scroll fetch
   typeOfList?: 'recent' | 'category' | 'keyword'
@@ -40,6 +41,7 @@ export const PostList = ({
   categoryId,
   keywords,
   showSort,
+  noPostMessage,
 }: PostListProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -54,7 +56,13 @@ export const PostList = ({
   })
 
   if (!posts || posts.length === 0) {
-    return <></>
+    return noPostMessage ? (
+      <p className="text-subtext italize my-3 px-4 text-center">
+        {noPostMessage}
+      </p>
+    ) : (
+      <></>
+    )
   }
 
   const sortChangeHandler = (value: string) => {

@@ -15,6 +15,7 @@ import { generateSiteMetadata } from '@/utils/metadata'
 import { Drawer } from '@/components/templates/drawer'
 import { AddPostSticky } from '@/components/molecules/addPostSticky'
 import { config } from '@/utils/config'
+import { stripMarkdown } from '@/utils/stripMarkdown'
 
 export default async function PostPage({
   searchParams,
@@ -90,8 +91,10 @@ export async function generateMetadata({
 
   return generateSiteMetadata({
     title: post.data?.postTitle,
-    description: post.data?.postContent,
-    image: post.data?.heroImage ?? undefined,
+    description: stripMarkdown(post.data?.postContent ?? ''),
+    image: post.data?.heroImage
+      ? config.s3Path + post.data?.heroImage
+      : undefined,
     type: 'article',
     publishedTime: post.data?.publishedAt?.toISOString(),
     modifiedTime: post.data?.updatedAt?.toISOString(),

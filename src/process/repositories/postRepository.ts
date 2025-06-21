@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { getServerSession, Session } from 'next-auth'
 import { NotFoundError } from '@/utils/errors'
 import { authOptions } from '@/utils/auth'
+import { PostSingleType, PostType } from '@/types/post'
 
 export type GetByCategory = {
   categoryId: number
@@ -52,7 +53,7 @@ export type PostStats = {
 }
 
 export const postRepository = {
-  getPosts: async (args: GetPostBy & PostStats) => {
+  getPosts: async (args: GetPostBy & PostStats): Promise<PostType[]> => {
     const session = await getServerSession(authOptions)
     const posts = await prisma.posts.findMany({
       where: { ...args.where, isDeleted: false, publishedAt: { not: null } },
@@ -185,7 +186,7 @@ export const postRepository = {
     return posts
   },
 
-  getBySlug: async (args: GetBySlug) => {
+  getBySlug: async (args: GetBySlug): Promise<PostSingleType> => {
     const session = await getServerSession(authOptions)
     const post = await prisma.posts.findUnique({
       where: {
@@ -219,6 +220,29 @@ export const postRepository = {
         createdUser: {
           include: {
             userInfo: true,
+            _count: {
+              select: {
+                votes: {
+                  where: {
+                    vote: 1,
+                  },
+                },
+                posts: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+                comments: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         votes: session
@@ -312,6 +336,21 @@ export const postRepository = {
       where: { postId: args.postId },
       update: { tags: args.tags },
       create: { postId: args.postId, tags: args.tags },
+    })
+  },
+
+  getAllPost: async () => {
+    return await prisma.posts.findMany({
+      where: {
+        isDeleted: false,
+      },
+      include: {
+        category: {
+          select: {
+            slug: true,
+          },
+        },
+      },
     })
   },
 }

@@ -3,6 +3,7 @@ import { getServerSession, Session } from 'next-auth'
 import postRepository from './postRepository'
 import { authOptions } from '@/utils/auth'
 import type { Prisma } from '@prisma/client'
+import { CommentType } from '@/types/comment'
 
 export type GetByPostId = {
   postId: number
@@ -32,7 +33,9 @@ export type CommentStats = {
 }
 
 export const commentRepository = {
-  getByPostId: async (args: GetByPostId & CommentStats) => {
+  getByPostId: async (
+    args: GetByPostId & CommentStats
+  ): Promise<CommentType[]> => {
     const session = await getServerSession(authOptions)
     let orderBy: Prisma.CommentsOrderByWithRelationInput[] = []
     if (args.sort === 'popular') {
@@ -54,6 +57,29 @@ export const commentRepository = {
         createdUser: {
           include: {
             userInfo: true,
+            _count: {
+              select: {
+                votes: {
+                  where: {
+                    vote: 1,
+                  },
+                },
+                posts: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+                comments: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         _count: {
@@ -122,6 +148,29 @@ export const commentRepository = {
         createdUser: {
           include: {
             userInfo: true,
+            _count: {
+              select: {
+                votes: {
+                  where: {
+                    vote: 1,
+                  },
+                },
+                posts: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+                comments: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -150,6 +199,29 @@ export const commentRepository = {
         createdUser: {
           include: {
             userInfo: true,
+            _count: {
+              select: {
+                votes: {
+                  where: {
+                    vote: 1,
+                  },
+                },
+                posts: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+                comments: {
+                  where: {
+                    isDeleted: {
+                      not: true,
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
