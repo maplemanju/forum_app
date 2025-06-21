@@ -93,7 +93,7 @@ export async function generateMetadata({
     title: post.data?.postTitle,
     description: stripMarkdown(post.data?.postContent ?? ''),
     image: post.data?.heroImage
-      ? config.siteUrl + post.data?.heroImage
+      ? config.s3Path + post.data?.heroImage
       : undefined,
     type: 'article',
     publishedTime: post.data?.publishedAt?.toISOString(),
