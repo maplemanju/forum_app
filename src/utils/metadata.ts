@@ -54,7 +54,7 @@ export function generateSiteMetadata({
       ...(author && { authors: [author] }),
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: finalTitle,
       description: finalDescription,
       ...(image && { images: [image] }),
