@@ -84,6 +84,7 @@ export const PostList = ({
             className="border-border-secondary border-b px-4 py-8 text-sm first:pt-2 last:border-b-0"
             aria-labelledby={`post-title-${index}`}
             role="listitem"
+            data-testid="post-card"
           >
             {/* category  */}
             {showCategory && (

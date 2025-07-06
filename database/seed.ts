@@ -98,6 +98,7 @@ async function main() {
         postContent: 'Welcome to our new forum. We hope you enjoy your stay!',
         createdBy: admin.publicId,
         updatedBy: admin.publicId,
+        updatedAt: new Date('2025-10-05T00:00:00Z'),
         publishedAt: new Date(),
       },
       {
@@ -108,6 +109,7 @@ async function main() {
           'Please read our community guidelines carefully. Be respectful to others and follow our posting rules.',
         createdBy: admin.publicId,
         updatedBy: admin.publicId,
+        updatedAt: new Date('2025-10-04T00:00:00Z'),
         publishedAt: new Date(),
       },
       {
@@ -118,6 +120,7 @@ async function main() {
           'Learn how to use markdown formatting to make your posts more readable and engaging.',
         createdBy: admin.publicId,
         updatedBy: admin.publicId,
+        updatedAt: new Date('2025-10-03T00:00:00Z'),
         publishedAt: new Date(),
       },
       {
@@ -128,6 +131,7 @@ async function main() {
           'Find answers to common questions about using the forum and your account settings.',
         createdBy: admin.publicId,
         updatedBy: admin.publicId,
+        updatedAt: new Date('2025-10-02T00:00:00Z'),
         publishedAt: new Date(),
       },
       {
@@ -138,6 +142,7 @@ async function main() {
           'We value your input! Let us know what features you would like to see added to the forum.',
         createdBy: admin.publicId,
         updatedBy: admin.publicId,
+        updatedAt: new Date('2025-10-01T00:00:00Z'),
         publishedAt: new Date(),
       },
     ],
@@ -149,6 +154,7 @@ async function main() {
       await prisma.postUpdates.create({
         data: {
           postId: post.id,
+          updatedAt: post.updatedAt,
         },
       })
     })

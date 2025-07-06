@@ -20,6 +20,7 @@ export const CategoryList = ({ categories, label = 'Categories' }: Props) => {
     const description = stripMarkdown(category.categoryDescription ?? '', 180)
     return (
       <div
+        data-testid="sidebar-category-item"
         key={category.id}
         role="listitem"
         className="flex-column border-border-secondary flex justify-between gap-2 border-b p-2"
