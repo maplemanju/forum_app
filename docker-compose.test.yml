@@ -54,7 +54,9 @@ services:
       - '3001:3001'
 
   tests:
-    image: mcr.microsoft.com/playwright:v1.53.2-jammy
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     container_name: playwright-tests
     depends_on:
       app-test:
@@ -63,9 +65,7 @@ services:
       CI: 'true'
     networks:
       - test-net
-    working_dir: /app
     volumes:
-      - .:/app
       - ./playwright-report:/app/playwright-report
     entrypoint: sh -c "
       npx wait-on http://app-test:3001 &&
