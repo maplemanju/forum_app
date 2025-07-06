@@ -63,6 +63,9 @@ services:
       CI: 'true'
     networks:
       - test-net
+    working_dir: /app
+    volumes:
+      - .:/app
     entrypoint: sh -c "
       corepack enable &&
       yarn install &&
