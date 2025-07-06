@@ -54,6 +54,7 @@ services:
       - '3001:3001'
 
   playwright-tests:
+    image: mcr.microsoft.com/playwright:v1.53.2-jammy
     container_name: playwright-tests
     depends_on:
       app-test:
