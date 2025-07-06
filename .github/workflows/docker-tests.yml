@@ -23,7 +23,7 @@ jobs:
 
       - name: Run docker-compose services
         run: |
-          docker compose -f docker-compose.test.yml up --abort-on-container-exit  --exit-code-from
+          docker compose -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from playwright-tests
         # This runs all services, exits when tests finish, and uses the test container's exit code.
 
       - name: Show logs from test container (if failed)
