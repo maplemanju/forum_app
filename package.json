@@ -13,11 +13,13 @@
     "prisma:studio": "dotenv -e env/.env.dev prisma studio",
     "prisma:seed": "dotenv -e env/.env.dev prisma db seed",
     "prisma:reset": "dotenv -e env/.env.dev prisma migrate reset",
-    "test:e2e": "start-server-and-test test:e2e:run http://localhost:3001 test:e2e:test",
-    "test:e2e:run": "dotenv -e env/.env.test next dev",
+    "test:e2e": "start-server-and-test test:run http://localhost:3001 test:e2e:test",
     "test:e2e:test": "dotenv -e env/.env.test playwright test",
     "test:e2e:report": "dotenv -e env/.env.test playwright show-report",
-    "test:db:reset": "dotenv -e env/.env.test prisma migrate reset --force"
+    "test:run": "dotenv -e env/.env.test next dev",
+    "test:start": "dotenv -e env/.env.test next start",
+    "test:build": "dotenv -e env/.env.test prisma generate && dotenv -e env/.env.test next build",
+    "test:db:reset": "dotenv -e env/.env.test -- prisma migrate reset --force"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} database/seed.ts",

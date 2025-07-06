@@ -14,7 +14,7 @@ export default defineConfig({
   workers: isCI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: isCI ? 'http://app-test:3000' : 'http://localhost:3001',
+    baseURL: isCI ? 'http://app-test:3001' : 'http://localhost:3001',
     trace: 'on-first-retry',
   },
   projects: [

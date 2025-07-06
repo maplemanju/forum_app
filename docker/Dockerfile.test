@@ -1,0 +1,20 @@
+# Use Node base image
+FROM node:18-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Set environment
+ENV NODE_ENV=test
+
+# Generate Prisma client and build the application
+RUN yarn test:build
+
+CMD ["sh", "-c", "yarn test:db:reset && yarn test:start"]
