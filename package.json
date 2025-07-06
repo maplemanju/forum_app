@@ -12,7 +12,12 @@
     "prisma:migrate": "dotenv -e env/.env.dev prisma migrate dev",
     "prisma:studio": "dotenv -e env/.env.dev prisma studio",
     "prisma:seed": "dotenv -e env/.env.dev prisma db seed",
-    "prisma:reset": "dotenv -e env/.env.dev prisma migrate reset"
+    "prisma:reset": "dotenv -e env/.env.dev prisma migrate reset",
+    "test:e2e": "start-server-and-test test:e2e:run http://localhost:3001 test:e2e:test",
+    "test:e2e:run": "dotenv -e env/.env.test next dev",
+    "test:e2e:test": "dotenv -e env/.env.test playwright test",
+    "test:e2e:report": "dotenv -e env/.env.test playwright show-report",
+    "test:db:reset": "dotenv -e env/.env.test prisma migrate reset --force"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} database/seed.ts",
@@ -34,6 +39,7 @@
     "next": "15.3.1",
     "next-auth": "^4.24.11",
     "next-mdx-remote": "^5.0.0",
+    "playwright": "^1.53.2",
     "prisma": "^6.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -43,6 +49,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@playwright/test": "^1.53.2",
     "@types/dompurify": "^3.2.0",
     "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.16",
@@ -56,6 +63,7 @@
     "postcss-import": "^16.1.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "start-server-and-test": "^2.0.12",
     "tailwindcss": "^4.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

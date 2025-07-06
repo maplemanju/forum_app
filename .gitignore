@@ -43,3 +43,10 @@ next-env.d.ts
 
 # uploads
 public/uploads
+
+# tests
+/playwright-report/
+/playwright-traces/
+/test-results/
+/tests/e2e/videos/
+/tests/e2e/screenshots/
