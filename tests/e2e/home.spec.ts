@@ -8,5 +8,5 @@ test('Home page loads recent posts', async ({ page }) => {
   await expect(posts.first()).toBeVisible()
 
   // check post title
-  await expect(posts.first()).toContainText('Share Your Feedback') // from seed data
+  await expect(posts.first()).toContainText('Welcome to our Forum') // from seed data
 })

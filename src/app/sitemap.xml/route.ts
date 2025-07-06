@@ -33,11 +33,13 @@ export async function GET() {
   }))
 
   const postList = await getPosts()
-  const dynamicPosts = postList.map((post) => ({
-    url: `/${post.category.slug}/${post.slug}`,
-    changefreq: 'weekly',
-    priority: 0.8,
-  }))
+  const dynamicPosts = postList.map(
+    (post: { slug: string; category: { slug: string } }) => ({
+      url: `/${post.category.slug}/${post.slug}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    })
+  )
 
   const allPages = [...staticPages, ...dynamicCategories, ...dynamicPosts]
 
