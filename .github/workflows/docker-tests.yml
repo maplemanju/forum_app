@@ -19,7 +19,7 @@ jobs:
       - name: Create test env file from GitHub secrets
         run: |
           mkdir -p env
-          echo "${{ secrets.TEST_ENV_VARS }}" > env/.env.test
+          echo "${{ secrets.TEST_ENV_VARS }}" > .env
 
       - name: Run docker-compose services
         run: |

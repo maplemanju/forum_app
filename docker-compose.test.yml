@@ -69,7 +69,7 @@ services:
       - ./playwright-report:/app/playwright-report
     entrypoint: sh -c "
       npx wait-on http://app-test:3001 &&
-      yarn test:e2e:test
+      yarn playwright test
       "
 
 volumes:

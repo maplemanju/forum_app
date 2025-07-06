@@ -11,10 +11,10 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Set environment
-ENV NODE_ENV=test
+# Generate Prisma client
+RUN yarn prisma generate
 
-# Generate Prisma client and build the application
-RUN yarn test:build
+# Build Next.js app
+RUN yarn next build
 
-CMD ["sh", "-c", "yarn test:db:reset && yarn test:start"]
+CMD ["sh", "-c", "yarn prisma migrate reset --force && yarn next start"]
