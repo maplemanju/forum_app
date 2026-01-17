@@ -56,6 +56,7 @@ export const Drawer = ({
           color="neutral"
           title="Explore More Categories"
           aria-label="Explore More Categories"
+          data-testid="drawer-toggle-button"
         />
       </motion.div>
       <AnimatePresence mode="wait">
@@ -80,6 +81,7 @@ export const Drawer = ({
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="bg-background fixed top-0 left-0 z-50 h-screen w-full overflow-y-auto pb-12 md:hidden"
               aria-live="polite"
+              data-testid="mobile-menu"
             >
               <div className="flex h-[56px] items-center px-4">
                 <Link
@@ -99,7 +101,7 @@ export const Drawer = ({
                     />
                   </div>
                 )}
-                <div>
+                <div data-testid="drawer-categories">
                   {categoryList && categoryList.length > 0 && (
                     <CategoryList
                       categories={categoryList}

@@ -40,7 +40,7 @@ export const Sidebar = ({
             <CategoryList categories={subCategoryList} label="Sub Categories" />
           )}
         </div>
-        <div>
+        <div data-testid="sidebar-categories">
           {categoryList && categoryList.length > 0 && (
             <CategoryList categories={categoryList} label="Categories" />
           )}

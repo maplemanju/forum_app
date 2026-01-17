@@ -1,0 +1,8 @@
+node_modules
+playwright-report
+test-results
+*.log
+.git
+.vscode
+coverage
+dist
